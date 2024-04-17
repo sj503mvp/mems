@@ -1,0 +1,37 @@
+{
+  "name": "mems",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "core-js": "^3.36.1",
+    "echarts": "^5.5.0",
+    "element-ui": "^2.15.14",
+    "iview": "^3.5.4",
+    "tanikawa-tis": "1.5.116-alpha.8",
+    "vue": "^2.7.16",
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.19",
+    "@vue/cli-plugin-router": "^4.5.19",
+    "@vue/cli-plugin-vuex": "^4.5.19",
+    "@vue/cli-service": "^4.5.19",
+    "font-awesome": "^4.7.0",
+    "less": "^3.13.1",
+    "less-loader": "^5.0.0",
+    "sass": "^1.74.1",
+    "sass-loader": "^8.0.2",
+    "sass-resources-loader": "^2.2.5",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
