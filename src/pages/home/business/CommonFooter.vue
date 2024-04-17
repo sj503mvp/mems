@@ -20,7 +20,7 @@
             </div>
             <li id="b_open" class="sidebar-icon" @click="submitOpen">
                 <a style="color: #fff">
-                    <span>{{strOpen}}</span>
+                    <span>{{strOpen}}asd</span>
                     <i class="fa fa-bars" style="font-size: 20px;"></i>
                 </a>
             </li>
