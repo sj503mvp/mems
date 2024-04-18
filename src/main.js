@@ -14,12 +14,17 @@ import "./my_theme/front_standard.less"
 import TanikawaTis from "tanikawa-tis";
 import 'tanikawa-tis/dist/styles/tis.css'
 
+import * as echarts from 'echarts';
+
+Vue.prototype.$echarts = echarts
+
 Vue.config.productionTip = false
 
 Vue.use(iview);
 Vue.use(TanikawaTis);
 new Vue({
+    el: '#app',
     router,
     store,
     render: h => h(App)
-}).$mount('#app')
+})

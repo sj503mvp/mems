@@ -1,10 +1,10 @@
 const home = {
     path: 'home',
+    name: '首页',
     meta: {
         title: '首页',
     },
-    name: 'home',
-    component: () => import('@/components/common/router_view/RouterView.vue'),
+    component: () => import('@/pages/home/Home.vue'),
 }
 
 export default home;

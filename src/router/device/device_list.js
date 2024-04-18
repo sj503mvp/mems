@@ -30,6 +30,15 @@ const allDevice = {
                 title: '跟进中-全部设备'
             },
             component: () => import('@/pages/device/device_list/all_device/AllDevice.vue'), 
+        },
+        // 用于高层观看的
+        {
+            path: 'all_device_collection',
+            name: 'all_device_collection',
+            meta: {
+                title: '我关注的-所有设备'
+            },
+            component: () => import('@/pages/device/device_list/all_device/AllDevice.vue'),
         }
     ]
 }
@@ -43,24 +52,24 @@ const myDevice = {
     component: () => import('@/pages/device/device_list/my_device/MyDevice.vue'),
     children: [
         {
-            path: 'all_device_follow',
-            name: 'all_device_follow',
+            path: 'my_device_follow',
+            name: 'my_device_follow',
             meta: {
                 title: '跟进中-我的设备'
             },
             component: () => import('@/pages/device/device_list/my_device/MyDevice.vue'),
         },
         {
-            path: 'all_device_my_input',
-            name: 'all_device_my_input',
+            path: 'my_device_my_input',
+            name: 'my_device_my_input',
             meta: {
                 title: '我录入的-我的设备'
             },
             component: () => import('@/pages/device/device_list/my_device/MyDevice.vue'),
         },
         {
-            path: 'all_device_collection',
-            name: 'all_device_collection',
+            path: 'my_device_collection',
+            name: 'my_device_collection',
             meta: {
                 title: '我关注的-我的设备'
             },

@@ -1,0 +1,91 @@
+.main-header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    z-index: 10;
+    .header-menu {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        min-width: 1080px;
+        display: flex;
+        justify-content: space-between;
+        background-image: url(../../../assets/common/header_background_10year.jpg);
+        background-size: cover;
+        .header-logo {
+            float: left;
+            width: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            height: 50px;
+            a {
+                line-height: 42px;
+                margin-top: -2px;
+                width: 177px;
+                margin-right: 4px;
+                height: 42px;
+                padding: 0;
+                display: block;
+                img {
+                    width: 100%;
+                }
+            }
+            .menu-icon {
+                width: 30px;
+                height: 100%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                &:hover {
+                    background-color: #1f6cdd;
+                }
+            }
+        }
+        .header-middle {
+            width: 500px;
+            padding: 8px 0;
+        }
+        .header-avatar-con {
+            height: 50px;
+            margin-right: 24px;
+            ul {
+                height: 50px;
+                display: flex;
+                align-items: center;
+                li {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    margin-right: 16px;
+                    cursor: pointer;
+                    span {
+                        color: #f8f8f8;
+                    }
+                    i {
+                        color: #f8f8f8;
+                    }
+                    &:hover {
+                        span {
+                            color: #408ef5;
+                        }
+                        i {
+                            color: #408ef5;
+                        }
+                    }
+                    &:active {
+                        span {
+                            color: #0C50C7;
+                        }
+                        i {
+                            color: #0C50C7;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

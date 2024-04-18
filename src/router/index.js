@@ -7,14 +7,16 @@ const page403 = {
         hideMenu: true
     },
     name: 'error-403',
-    component: () =>
-        import('@/components/common/error_page/new_403.vue')
+    component: () => import('@/components/common/error_page/new_403.vue')
 };
 
 export const appRouter = {
     path: '/Mems/',
     name: 'home_index',
-    component: () => import('@/pages/home/Home'),
+    redirect: {
+        name: 'home'
+    },
+    component: () => import('@/pages/layout/Layout.vue'),
     children: [
         home,
         device,
