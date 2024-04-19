@@ -45,4 +45,32 @@ $api.getPieData = async(params) => {
     }
 }
 
+/**
+ * 获取首页设备总数数据
+ */
+$api.getAllDevice = async() => {
+    // const url = '';
+    // return await $http.get(url);
+    return {
+        code: 200,
+        data: {
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    data: [820, 932, 1231, 1131, 2006, 1231, 1248, 2564, 2345, 1234, 3214, 3421],
+                    type: 'line',
+                    areaStyle: {}
+                }
+            ]
+        }
+    }
+}
+
 export default $api;
