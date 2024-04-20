@@ -2,7 +2,7 @@
     <div class="main-header">
         <div class="header-menu">
             <div class="header-logo">
-                <a href="Mems"><img src="../../../assets/common/xnlogo.png"></a>
+                <a href="Mems"><img src="../../../assets/common/logo.png"></a>
                 <div class="menu-icon">
                     <tis-icon type="ios-menu" size="20" color="#f8f8f8"/><tis-icon ></tis-icon>
                 </div>

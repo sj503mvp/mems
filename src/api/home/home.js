@@ -8,39 +8,77 @@ const $api = {};
 $api.getPieData = async(params) => {
     // const url = '';
     // return await $http.get(url, {params: params})
-    return {
-        code: 200, 
-            data:{
-            title: {
-                text: '各厂区设备数',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'item'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left'
-            },
-            series: [{
-                name: '设备数量',
-                type: 'pie',
-                radius: '70%',
-                data: [
-                    { value: 1048, name: '1号厂区' },
-                    { value: 735, name: '2号厂区' },
-                    { value: 580, name: '3号厂区' },
-                    { value: 484, name: '4号厂区' },
-                    { value: 300, name: '5号厂区' }
-                ],
-                emphasis: {
-                    itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+    if(params.type == 'ascription'){
+        return {
+            code: 200, 
+                data:{
+                title: {
+                    text: '各厂区设备数',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [{
+                    name: '设备数量',
+                    type: 'pie',
+                    radius: '70%',
+                    data: [
+                        { value: 1048, name: '1号厂区' },
+                        { value: 735, name: '2号厂区' },
+                        { value: 580, name: '3号厂区' },
+                        { value: 484, name: '4号厂区' },
+                        { value: 300, name: '5号厂区' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     }
-                }
-            }]
+                }]
+            }
+        }
+    }
+    else {
+        return {
+            code: 200, 
+                data:{
+                title: {
+                    text: '全部设备状态',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [{
+                    name: '设备状态',
+                    type: 'pie',
+                    radius: '70%',
+                    data: [
+                        { value: 2031, name: '正常' },
+                        { value: 103, name: '异常' },
+                        { value: 30, name: '维修中' },
+                        { value: 210, name: '报废' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            }
         }
     }
 }

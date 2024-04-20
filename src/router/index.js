@@ -1,3 +1,4 @@
+import login from './login/login.js'
 import home from './home/home.js'
 import device from './device/device.js'
 const page403 = {
@@ -10,11 +11,22 @@ const page403 = {
     component: () => import('@/components/common/error_page/new_403.vue')
 };
 
+// 登录和注册
+export const loginRouter = {
+    path: '/',
+    name: 'login_index',
+    component: () => import('@/pages/login/Login.vue'),
+    redirect: '/Mems/login',
+    children: [
+        login
+    ]
+}
+
 export const appRouter = {
-    path: '/Mems/',
+    path: '/Mems',
     name: 'home_index',
     redirect: {
-        name: 'home'
+        name: '首页'
     },
     component: () => import('@/pages/layout/Layout.vue'),
     children: [
@@ -25,5 +37,6 @@ export const appRouter = {
 };
 
 export const routers = [
+    loginRouter,
     appRouter,
 ];
