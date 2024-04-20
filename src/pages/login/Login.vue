@@ -72,7 +72,6 @@ export default {
             this.$nextTick(() => {
                 let isError = document.getElementsByClassName('itis-form-item-error')
                 isError[0].querySelector('input').focus()  // 只定位到第一个必填项位置
-                console.log();
             })
         },
     }
