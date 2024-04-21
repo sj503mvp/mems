@@ -13,12 +13,28 @@ Vue.use(Router);
 
 
 const router = new Router(RouterConfig);
+
+router.beforeEach(async(to, from, next) => {
+    if(routePass(to)) {
+        next();
+    }else {
+        let uid = Cookies.get('uid');
+        let token = Cookies.get('token');
+        if(uid && token) {
+            next();
+        }else {
+            next({replace: true, name: '登录'})
+        }
+    }
+})
+
 /**
  * 定义一些可以直接通行的路由
  * @return {boolean}
  */
 const routePass = (to) => {
     const routesName = [
+        '登录',
         'error-404',
         'error-403',
         'error-500',
