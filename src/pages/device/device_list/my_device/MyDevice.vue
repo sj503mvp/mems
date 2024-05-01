@@ -20,6 +20,7 @@ export default {
     data() {
         return {
             loading: false,
+            asd: 12,
             backData: {
                 count: 4,
                 data: {
