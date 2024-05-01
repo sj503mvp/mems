@@ -14,6 +14,11 @@ import "./my_theme/front_standard.less"
 import TanikawaTis from "tanikawa-tis";
 import 'tanikawa-tis/dist/styles/tis.css'
 
+import title from './directive/title';
+// 溢出打点自定义指令
+Vue.directive('title', title)
+
+
 import * as echarts from 'echarts';
 
 Vue.prototype.$echarts = echarts

@@ -1,11 +1,237 @@
-.device-list {
-    
-    position: relative;
-    padding: 16px 24px 0;
+.device-list-bg {
     border-radius: 4px;
-    .list-tabel {
-        th {
-            height: 40px;
+    background-color: white;
+    .list-bg-content {
+        position: relative;
+        .list-top {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #F2F3F5;
+            font-size: 0;
+            .info-icon {
+                margin-right: 4px;
+                color: #1F6CDD;
+            }
+            .info-word {
+                font-size: 14px;
+                color: #5c5c5c;
+                line-height: 22px;
+            }
+        }
+        .list-content {
+            .list-item {
+                padding: 24px;
+                position: relative;
+                display: flex;
+                .item-left {
+                    width: 16px;
+                    margin: 3px 16px 0 0;
+                }
+                .item-right {
+                    flex: 1;
+                    width: auto;
+                    min-width: 0;
+                    .item-right-top {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 8px;
+                        .item-title {
+                            flex: 1;
+                            display: flex;
+                            overflow: hidden;
+                            align-items: center;
+                            .item-title-word {
+                                font-size: 16px;
+                                font-weight: bold;
+                                color: #303030;
+                                line-height: 24px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                cursor: pointer;
+                            }
+                            .title-tag {
+                                margin-left: 8px;
+                                .content {
+                                    i {
+                                        vertical-align: middle;
+                                    }
+                                    .deal-word {
+                                        margin-left: 4px;
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .item-bottom {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-top: 4px;
+                        .item-bottom-left {
+                            flex: 1;
+                            display: flex;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            margin-right: 24px;
+                            .item-bottom-field {
+                                font-size: 14px;
+                                color: #5c5c5c;
+                                line-height: 22px;
+                                position: relative;
+                                margin-right: 24px;
+                                display: flex;
+                            }
+                            .item-bottom-field:last-child {
+                                margin-right: 0;
+                            }
+                            .info-factory-field {
+                                max-width: 280px;
+                                .info-factory {
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+                            }
+                        }
+                        .item-bottom-share {
+                            display: flex;
+                            align-items: center;
+                            visibility: hidden;
+                            cursor: pointer;
+                            .share-icon {
+                                font-size: 18px;
+                                margin-right: 4px;
+                                color: #1F6CDD;
+                                line-height: 22px;
+                            }
+                            .share-word {
+                                font-size: 14px;
+                                color: #1F6CDD;
+                                line-height: 22px;
+                                white-space: nowrap;
+                            }
+                        }
+                        .item-bottom-share:hover .share-icon {
+                            color: #408EF5;
+                        }
+                        .item-bottom-share:active .share-icon {
+                            color: #0C50C7;
+                        }
+                        .item-bottom-share:hover .share-word {
+                            color: #408EF5;
+                        }
+                        .item-bottom-share:active .share-word {
+                            color: #0C50C7;
+                        }
+                    }
+                }
+    
+            }
+            .list-item:hover {
+                background: #FAFAFA;
+            }
+            .list-item:hover .item-right .item-right-top .item-title-word {
+                color: #1F6CDD;
+            }
+            .list-item:hover .item-right .item-bottom .item-bottom-share {
+                visibility: visible;
+            }
+            .list-item:last-child::after {
+                display: none;
+            }
+            .list-item:not(:last-child):after {
+                content: "";
+                display: block;
+                height: 1px;
+                background: #F2F3F5;
+                position: absolute;
+                width: calc( ~"100% - 48px");
+                bottom: 0;
+            }
+        }
+    }
+    .list-bottom-less {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        border-radius: 0 0 4px 4px;
+        background: white;
+        .bottom-left {
+            display: flex;
+            align-items: center;
+            .bottom-left-word {
+                color: #303030;
+            }
+            /* 已选择多少条 */
+            .num-selected {
+                color: #5c5c5c;
+                padding-left: 16px;
+                line-height: 32px;
+                .num {
+                    color: #303030;
+                    margin: 0 4px;
+                }
+            }
+        }
+        .bottom-info-less {
+            font-size: 14px;
+            color: #5c5c5c;
+            line-height: 22px;
+        }
+    }
+    .list-bottom {
+        position: relative;
+        bottom: 0;
+        /* 不被loading遮挡 */
+        z-index: 10;
+        border-radius: 0 0 4px 4px;
+        background: white;
+        height: 56px;
+        &.is-sticky {
+            .bottom-line-page {
+                background-color: #F2F3F5;
+            }
+        }
+        .bottom-page {
+            display: flex;
+            padding: 12px 24px;
+            justify-content: space-between;
+            align-items: center;
+            .bottom-right{
+                height: 32px;
+                margin-right: 2px;
+                .itis-page{
+                    min-width: auto;
+                }
+            }
+            .bottom-left {
+                display: flex;
+                align-items: center;
+                .bottom-left-word {
+                    color: #303030 ;
+                }
+                /* 已选择多少条 */
+                .num-selected {
+                    color: #5c5c5c;
+                    padding-left: 16px;
+                    line-height: 32px;
+                    .num {
+                        color: #303030 ;
+                        margin: 0 4px;
+                    }
+                }
+            }
+        }
+        .bottom-line-page{
+            flex: 1;
+            margin: 0;
+            height: 1px;
+            background: transparent;
         }
     }
 }

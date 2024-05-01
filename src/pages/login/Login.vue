@@ -12,10 +12,10 @@
                             <tis-input placeholder="请输入账号" v-model="formValidate.account"></tis-input>
                         </tis-form-item>
                         <tis-form-item prop="passWord">
-                            <tis-input placeholder="请输入密码" v-model="formValidate.passWord"></tis-input>
+                            <tis-input placeholder="请输入密码" type="password" v-model="formValidate.passWord"></tis-input>
                         </tis-form-item>
                         <tis-form-item v-if="!isLogin" prop="confirmPassWord">
-                            <tis-input placeholder="请再次输入密码" v-model="formValidate.confirmPassWord"></tis-input>
+                            <tis-input placeholder="请再次输入密码" type="password" v-model="formValidate.confirmPassWord"></tis-input>
                         </tis-form-item>
                         <div class="form-bottom">
                             <tis-button v-if="isLogin" class="login-button" type="primary" @click="handleSubmit('formValidate')">登录</tis-button>

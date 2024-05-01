@@ -12,7 +12,7 @@
             </div>
             <div class="header-avatar-con">
                 <ul>
-                    <li v-for="(item, index) in headerRight" :key="index">
+                    <li v-for="(item, index) in headerRight" :key="index" :class="item.title=='退出'? 'header-logout' : ''">
                         <tis-icon :type=item.type style="margin-right: 8px" size="24"></tis-icon>
                         <span>{{item.title}}</span>
                     </li>
@@ -22,6 +22,7 @@
     </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 export default {
     data() {
         return {
@@ -42,12 +43,21 @@ export default {
             ]
         }
     },
+    mounted() {
+        let logout = document.querySelector('.header-logout');
+        logout.addEventListener('click', this.logOut)
+    },
     methods: {
         clickUser() {
             this.userClick = !this.userClick
         },
         logOut() {
-            console.log('点击退出，待后续登录页写完跳转到登录页');
+            this.$router.push({
+                name: 'login_index'
+            })
+            Cookies.remove('username');
+            Cookies.remove('uid');
+            Cookies.remove('token');
         },
     }
 }
