@@ -3,13 +3,13 @@
         <!-- 头部导航栏 -->
         <header-menu @shrink-menu="retractMenu"></header-menu>
         <!-- 左侧菜单栏 -->
-        <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}">
+        <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}" v-if="hideLeftMenuArr.indexOf($route.name) === -1">
             <sidebarMenu v-show="!shrink" :menu-array="menuArray" @on-change="handleChange"></sidebarMenu>
             <sidebar-menu-shrink v-show="shrink" :menu-array="menuArray" @on-change="handleChange"></sidebar-menu-shrink>
         </div>
         <div class="single-page-con" ref="pageBody"
-            :style="{minWidth: shrink?'1440px':'1200px',
-            marginLeft: shrink?'60px':'220px'}">
+            :style="{minWidth: contentBoxArr.indexOf($route.name) != -1? '1440px':'1200px',
+            marginLeft:contentBoxArr.indexOf($route.name) != -1? '0px':shrink?'60px':'220px'}">
             <div class="single-page">
                 <router-view ref="view"></router-view>
                 <!-- <water-mark ref="waterMark"></water-mark> -->
@@ -35,7 +35,23 @@ export default {
         return {
             menuArray: menuArray, //左侧列表
             isRetract: false,
-            shrink: false,  
+            shrink: false,
+            hideLeftMenuArr: [
+                'device_one',
+                'device_two',
+                'device_three',
+                'device_four',
+                'device_five',
+                'device_detail'
+            ],
+            contentBoxArr: [
+            'device_one',
+                'device_two',
+                'device_three',
+                'device_four',
+                'device_five',
+                'device_detail'
+            ]
         }
     },
     methods: {

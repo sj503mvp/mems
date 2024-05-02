@@ -64,7 +64,7 @@ export default {
          * 递归找到选中的菜单
          *
          * @param {array} menuArray 部分菜单
-         * @param {strin} name 名字
+         * @param {string} name 名字
          * @return {object}
          */
         getMenuItem(menuArray, name){

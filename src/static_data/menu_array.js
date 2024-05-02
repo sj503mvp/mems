@@ -63,27 +63,27 @@ const menuArray = [
                     {
                         id: 1,
                         title: "冶炼设备",
-                        openName: "deviceOne",
+                        openName: "device_one",
                     },
                     {
                         id: 2,
                         title: "连铸设备",
-                        openName: "deviceTwo",
+                        openName: "device_two",
                     },
                     {
                         id: 3,
                         title: "轧制设备",
-                        openName: "deviceThree",
+                        openName: "device_three",
                     },
                     {
                         id: 4,
                         title: "后步精整设备",
-                        openName: "deviceFour",
+                        openName: "device_four",
                     },
                     {
                         id: 5,
                         title: "辅助设备",
-                        openName: "deviceFive",
+                        openName: "device_five",
                     },
                 ],
                 children: []

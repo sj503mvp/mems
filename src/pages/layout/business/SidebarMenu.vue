@@ -55,7 +55,8 @@ export default {
             activeMenu: "",
             menuDropDownIsOpen: false, // 下拉菜单是否展开
             openMenu: [],
-            itemPopAgoMenu: 'home', // 项目头部下点击项目录入气泡之前选中的菜单
+            itemPopAgoMenu: 'home', // 项目头部下点击项目录入气泡之前选中的菜单,
+            lastActiveMenu: "", //上一次选中的
         }
     },
     mounted() {
@@ -136,13 +137,16 @@ export default {
             let url = this.$router.resolve({
                 name: routeName
             });
+            console.log(routeName,'qwe');
             window.open(url.href);
             window.opener = null;
             // 选中上次点击的菜单
             this.activeMenu = this.itemPopAgoMenu
         },
         changeMenu(active) {
+            this.menuDropDownIsOpen = false
             if(active == this.$route.name) return
+            this.itemPopAgoMenu = active
             let menuItem = this.getMenuItem(this.menuArray, active);
             this.$emit('on-change', menuItem);
         },
