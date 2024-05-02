@@ -11,6 +11,7 @@ const device = {
     name: 'device',
     meta: {
         title: '设备',
+        openName: 'device',
     },
     redirect: {
         name: 'pending_device' 

@@ -8,6 +8,12 @@
                     <span class="info-word">请及时推送给相应人员消除以待处理设备</span>
                 </div>
             </template>
+            <template v-if="$route.name === 'recycle_device'">
+                <div class="list-top">
+                    <tis-icon class="info-icon" type="ios-information-circle" size="18"></tis-icon>
+                    <span class="info-word">设备报废审批通过后将会出现在此列表</span>
+                </div>
+            </template>
             <div class="list-content">
                 <div class="list-item" v-for="(item,index) in dataList" :key="item.deviceId">
                     <div class="item-left" v-if="$route.name === 'pending_device'">
@@ -21,6 +27,7 @@
                                 <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='异常'">异常</tis-tag>
                                 <tis-tag type="brimless" color="blue" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
                                 <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='待确认'">待确认</tis-tag>
+                                <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='报废'">报废</tis-tag>
                             </div>
                             <div>
                                 <tis-icon></tis-icon>

@@ -100,11 +100,6 @@ export default {
                 {
                     id: 'my_device_my_input',
                     label: '我录入的',
-                    render: (h) => {
-                        return h('div', {class: {'tis-tabs-span': true,}},
-                            [h('tis-badge', {props: {count: Number(123)},style: {fontWeight: 'normal'}},
-                                [h('span', {style:{fontWeight: 'bold'}},'我录入的')],)])
-                    }
                 },
                 {
                     id: 'my_device_follow',
@@ -118,11 +113,6 @@ export default {
                 {
                     id: 'my_device_collection',
                     label: '我关注的',
-                    render: (h) => {
-                        return h('div', {class: {'tis-tabs-span': true,}},
-                            [h('tis-badge', {props: {count: Number(123)},style: {fontWeight: 'normal'}},
-                                [h('span', {style:{fontWeight: 'bold'}},'我关注的')],)])
-                    }
                 },
             ],
             startTab: '我录入的',

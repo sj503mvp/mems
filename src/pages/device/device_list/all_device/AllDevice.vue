@@ -94,11 +94,6 @@ export default {
                 {
                     id: 'all_device',
                     label: '全部设备',
-                    render: (h) => {
-                        return h('div', {class: {'tis-tabs-span': true,}},
-                            [h('tis-badge', {props: {count: Number(123)},style: {fontWeight: 'normal'}},
-                                [h('span', {style:{fontWeight: 'bold'}},'全部设备')],)])
-                    }
                 },
                 {
                     id: 'all_device_follow',

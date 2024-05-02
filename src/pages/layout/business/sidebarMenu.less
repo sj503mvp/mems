@@ -10,5 +10,65 @@
             margin-right: 0;
             padding-right: 30px;
         }
-    }   
+    }
+    .menu-tis-dropdown {
+        width: 100%;
+        .menu-drop-in {
+            overflow: hidden;
+            background-color: #363e4f;
+            font-size: 14px;
+            color: rgba(255, 255, 255, .7);
+            height: 44px;
+            line-height: 44px;
+            cursor: pointer;
+            width: 100%;
+            padding-left: 43px;
+
+            .fa {
+                width: 14px;
+                font-size: 14px;
+                margin-right: 16px;
+            }
+
+            &:hover {
+                color: white;
+            }
+            .fa-pop-icon {
+                margin-right: 24px !important;
+            }
+            .last-icon {
+                line-height: 44px;
+                margin-right: 24px;
+                float: right;
+            }
+        }
+
+        .itis-select-dropdown {
+            background: #3c4454 !important;
+            width: 120px;
+
+            .itis-dropdown-item {
+                background-color: #3c4454 !important;
+                color: rgba(229, 239, 255, 0.5) !important;
+                height: 30px;
+                padding: 0px 16px;
+                line-height: 30px;
+                margin: 4px 0;
+
+                &:hover {
+                    color: #50A6FF !important;
+                    background: rgba(36, 47, 63, 0.7) !important;
+                    filter: alpha(opacity=70);
+                    opacity: 1;
+                }
+            }
+
+            &:before {
+                background-color: #3c4454 !important;
+            }
+            &:after {
+                background-color: #3c4454 !important;
+            }
+        }
+    } 
 }

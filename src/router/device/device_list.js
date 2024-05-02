@@ -22,7 +22,7 @@ const allDevice = {
             path: 'all_device_all',
             name: 'all_device_all',
             meta: {
-                title: '全部设备'
+                title: '全部设备',
             },
             component: () => import('@/pages/device/device_list/all_device/AllDevice.vue'), 
         },
@@ -30,7 +30,7 @@ const allDevice = {
             path: 'all_device_follow',
             name: 'all_device_follow',
             meta: {
-                title: '跟进中-全部设备'
+                title: '跟进中-全部设备',
             },
             component: () => import('@/pages/device/device_list/all_device/AllDevice.vue'), 
         }
@@ -52,7 +52,7 @@ const myDevice = {
             path: 'my_device_my_input',
             name: 'my_device_my_input',
             meta: {
-                title: '我录入的-我的设备'
+                title: '我录入的-我的设备',
             },
             component: () => import('@/pages/device/device_list/my_device/MyDevice.vue'),
         },
@@ -60,7 +60,7 @@ const myDevice = {
             path: 'my_device_follow',
             name: 'my_device_follow',
             meta: {
-                title: '跟进中-我的设备'
+                title: '跟进中-我的设备',
             },
             component: () => import('@/pages/device/device_list/my_device/MyDevice.vue'),
         },
@@ -68,7 +68,7 @@ const myDevice = {
             path: 'my_device_collection',
             name: 'my_device_collection',
             meta: {
-                title: '我关注的-我的设备'
+                title: '我关注的-我的设备',
             },
             component: () => import('@/pages/device/device_list/my_device/MyDevice.vue'),
         }
