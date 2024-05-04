@@ -1,6 +1,11 @@
 import login from './login/login.js'
 import home from './home/home.js'
 import device from './device/device.js'
+
+import notify from './notify/notify.js'
+import permission from './permission/permission.js'
+import userInfo from './user/user.js'
+
 const page403 = {
     path: '403',
     meta: {
@@ -33,6 +38,9 @@ export const appRouter = {
         home,
         device,
         page403,
+        notify,
+        userInfo,
+        permission,
     ],
 };
 

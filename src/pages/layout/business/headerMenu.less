@@ -52,38 +52,86 @@
         .header-avatar-con {
             height: 50px;
             margin-right: 24px;
-            ul {
-                height: 50px;
-                display: flex;
+            display: flex;
+            align-items: center;
+            div {
+                position: relative;
                 align-items: center;
-                li {
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                    margin-right: 16px;
-                    cursor: pointer;
+                cursor: pointer;
+                span {
+                    color: #f8f8f8;
+                }
+                i {
+                    color: #f8f8f8;
+                }
+                &:hover {
                     span {
-                        color: #f8f8f8;
+                        color: #408ef5;
                     }
                     i {
-                        color: #f8f8f8;
+                        color: #408ef5;
                     }
-                    &:hover {
+                }
+                &:active {
+                    span {
+                        color: #0C50C7;
+                    }
+                    i {
+                        color: #0C50C7;
+                    }
+                }
+            }
+            .header-dropdown {
+                .dropdown-box {
+                    position: absolute;
+                    display: none;
+                    top: 50px;
+                    left: -100px;
+                    width: 250px;
+                    background: white;
+                    box-shadow: 0 4px 4px 0 #eeeeee;
+                    border-bottom: 1px solid #f2f3f5;
+                    .dropdown-info-box {
+                        padding-bottom: 8px; 
+                        border-bottom: 1px solid #f2f3f5;
+                        &:hover {
+                            background: #f2f3f5;
+                        }  
+                        .info-top {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 8px;
+                            .info-title {
+                                font-size: 14px;
+                                font-weight: bold;
+                            }
+                            
+                        }
+                        .info-bottom {
+                            font-size: 12px;
+                            padding: 0 8px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            &:last-child {
+                                padding-bottom: 0;
+                            }
+                        }
+                    }
+                    .header-button{
                         span {
-                            color: #408ef5;
+                            color: #f8f8f8;
                         }
-                        i {
-                            color: #408ef5;
-                        }
-                    }
-                    &:active {
+                    }  
+                    .header-button:hover {
                         span {
-                            color: #0C50C7;
-                        }
-                        i {
-                            color: #0C50C7;
+                            color: #f8f8f8;
                         }
                     }
+                }
+                &:hover .dropdown-box {
+                    display: block;
                 }
             }
         }

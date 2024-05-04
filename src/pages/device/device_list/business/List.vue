@@ -23,7 +23,7 @@
                         <div class="item-right-top">
                             <div class="item-title">
                                 <p class="item-title-word" v-title>[{{ item.deviceNumber }}] {{ item.title }}</p>
-                                <tis-tag type="brimless" color="green" class="title-tag" v-if="item.status=='处理中'">处理中</tis-tag>
+                                <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
                                 <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='异常'">异常</tis-tag>
                                 <tis-tag type="brimless" color="blue" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
                                 <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='待确认'">待确认</tis-tag>
@@ -100,6 +100,17 @@
             </div>
         </div>
         <confirm-modal ref="confirmItemModal" @reload-list="reloadList"></confirm-modal>
+        <tis-push-range
+            ref="tisPushRange"
+            :people-data="peopleList"
+            children-key="children"
+            :diyFooterLeft="true"
+            :diy-tab="['people']"
+            @push-sure="pushConfirm"
+            :useTreeNode="true"
+            :userMoreParams="['company_id']"
+            title="推送范围">
+        </tis-push-range>
     </div>
 </template>
 <script>
@@ -125,6 +136,8 @@ export default {
     data() {
         return {
             selectIds: [],
+            peopleList: [],
+            singleId: [],
         }
     },
     watch: {
@@ -139,6 +152,7 @@ export default {
         window.addEventListener("scroll", this.suctionBottom);
         // 调整页面高度触发
         window.addEventListener("resize", this.suctionBottom);
+        this.getTreeList();
     },
     beforeDestroy() {
         // 销毁监听事件
@@ -196,6 +210,9 @@ export default {
                 this.singleId.push(item.deviceId);
             }
         },
+        openModal() {
+            this.$refs.tisPushRange.show();
+        },
         /**
          * 选中逻辑判断
          * @param {Boolean} event 是否选中
@@ -241,6 +258,71 @@ export default {
             //     }
             // }
         },
+        /**
+         * 获取数据
+         */
+         async getTreeList(val) {
+            // let res = await $api.getPushData();
+            let res = {
+                data: {
+                    userTree: [
+                        {
+                            id: "1264",
+                            name: "设备管理员",
+                            children: [
+                                {
+                                    id: "100124",
+                                    name: "狗头苏丹",
+                                    gourpName: "设备管理员",
+                                },
+                                {
+                                    id: "100125",
+                                    name: "狗头苏丹1",
+                                    gourpName: "设备管理员",
+                                },
+                            ]
+                        },
+                        {
+                            id: "1266",
+                            name: "维修人员",
+                            children: [
+                                {
+                                    id: "100127",
+                                    name: "狗头苏丹",
+                                    gourpName: "维修人员",
+                                },
+                                {
+                                    id: "100128",
+                                    name: "狗头苏丹1",
+                                    gourpName: "维修人员",
+                                },
+                            ]
+                        },
+                    ]
+                }                
+            };
+            let pushData = res.data;
+            this.peopleList = JSON.parse(JSON.stringify(pushData.userTree));
+            console.log(this.peopleList,'qwe');
+            if (this.$refs.tisPushRange) {
+                this.$refs.tisPushRange.hideLoading();
+            }
+        },
+        /**
+         * 点击确定后的回调
+         */
+         async pushConfirm(data) {
+            const uidArray = [];
+            data.forEach((item, index, array)=> {
+                uidArray.push(item.deviceId)
+            })
+            let params = {
+                uidArray: uidArray,
+                itemIdArray: this.singleId.length == 1? this.singleId: this.selectIds,
+            }
+            // let res = await $api.pushItem(params);
+            this.selectIds = [];
+        }
     }
 }
 </script>

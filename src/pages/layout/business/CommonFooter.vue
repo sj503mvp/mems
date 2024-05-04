@@ -94,7 +94,6 @@ export default {
     },
     methods: {
         clickFeedback(){
-            console.log('123');
             this.showFeedback = true;
             this.feedbackForm.url = window.location.href;
         },

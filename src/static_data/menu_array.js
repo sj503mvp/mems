@@ -100,16 +100,8 @@ const menuArray = [
         ]
     },
     {
-        name: "日程管理",
-        url: "/Mems/schedule",
-        routerName: "schedule",
-        openName: "schedule",
-        goUrlLocation: false,
-        iconAwesome: "fa fa-calendar-o"
-    },
-    {
         name: "通知公告",
-        url: "/Mems/notify/index.html",
+        url: "/Mems/notify",
         routerName: "notify",
         openName: "notify",
         iconAwesome: "fa fa-book",
@@ -120,7 +112,7 @@ const menuArray = [
                 openName: "notify_add",
                 title: "发布通知",
                 goUrlLocation: false,
-                url: "/Mems/office/Notify/index.html"
+                url: "/Mems/notify/notify_add"
             },
             {
                 iconAwesome: "fa fa fa-gavel",
@@ -128,15 +120,7 @@ const menuArray = [
                 openName: "notify_approval",
                 title: "审批通知",
                 goUrlLocation: false,
-                url: "/Mems/office/Notify/notifyList/list/approval"
-            },
-            {
-                iconAwesome: "fa fa-check",
-                name: "notify_my",
-                openName: "notify_my",
-                title: "我发布的通知",
-                goUrlLocation: false,
-                url: "/Mems/office/Notify/notifyList/list/my"
+                url: "/Mems/notify/notify_approval"
             },
             {
                 iconAwesome: "fa fa-sign-in",
@@ -144,7 +128,7 @@ const menuArray = [
                 openName: "notify_all",
                 title: "全部通知",
                 goUrlLocation: false,
-                url: "/Mems/office/Notify/notifyList/list/all"
+                url: "/Mems/notify/notify_all"
             },
             {
                 iconAwesome: "fa fa-eye-slash",
@@ -152,16 +136,8 @@ const menuArray = [
                 openName: "notify_unread",
                 title: "未查看的通知",
                 goUrlLocation: false,
-                url: "/Mems/office/Notify/notifyList/list/unread"
+                url: "/Mems/notify/notify_unread"
             },
-            {
-                iconAwesome: "fa fa-trash-o",
-                name: "notify_delete",
-                openName: "notify_delete",
-                title: "回收站",
-                goUrlLocation: false,
-                url: "/Mems/office/Notify/notifyList/list/del"
-            }
         ]
     },
     {
@@ -171,15 +147,6 @@ const menuArray = [
         openName: "process",
         iconAwesome: "fa fa-calendar-minus-o",
         menuList: [
-            {
-
-                iconAwesome: "fa fa-edit",
-                name: "process_add",
-                openName: "process_add",
-                title: "新建流程",
-                goUrlLocation: false,
-                url: "/Mems/process/add"
-            },
             {
                 iconAwesome: "fa fa-paper-plane",
                 name: "process_my_launch",
@@ -208,7 +175,7 @@ const menuArray = [
     },
     {
         name: "权限",
-        url: "/Mems/permission/user_manage",
+        url: "/Mems/permission",
         routerName: "permission",
         openName: "permission",
         iconAwesome: "fa fa-sun-o",

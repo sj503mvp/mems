@@ -1,10 +1,10 @@
 <template>
     <div class="main">
         <!-- 头部导航栏 -->
-        <header-menu @shrink-menu="retractMenu"></header-menu>
+        <header-menu @shrink-menu="retractMenu" @go-home="goHome"></header-menu>
         <!-- 左侧菜单栏 -->
         <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}" v-if="hideLeftMenuArr.indexOf($route.name) === -1">
-            <sidebarMenu v-show="!shrink" :menu-array="menuArray" @on-change="handleChange"></sidebarMenu>
+            <sidebarMenu v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
             <sidebar-menu-shrink v-show="shrink" :menu-array="menuArray" @on-change="handleChange"></sidebar-menu-shrink>
         </div>
         <div class="single-page-con" ref="pageBody"
@@ -72,6 +72,9 @@ export default {
         },
         retractMenu() {
             this.shrink = !this.shrink
+        },
+        goHome() {
+            this.$refs.sidebarMenu.goHome();
         }
     }
 }

@@ -12,24 +12,25 @@
         </div>
         <div class="home-right-info">
             <div class="home-info-top">
-                <div class="home-info-box">
+                <div class="home-info-box" @click="toDevicePage('pending_device')">
                     <tis-icon type="ios-bug" size="72" color="#ED3737"></tis-icon>
                     <p>待处理设备</p>
                 </div>
-                <div class="home-info-box">
+                <div class="home-info-box" @click="toDevicePage('all_device')">
                     <tis-icon type="ios-cube" size="72" color="#00C284"></tis-icon>
                     <p>全部设备</p>
                 </div>
-                <div class="home-info-box">
+                <div class="home-info-box" @click="toDevicePage('my_device')">
                     <tis-icon type="ios-list" size="72" color="#6D63FF"></tis-icon>
                     <p>我的设备</p>
                 </div>
-                <div class="home-info-box">
+                <div class="home-info-box" @click="toDevicePage('recycle_device')">
                     <tis-icon type="ios-ionic" size="72" color="#FFBC47"></tis-icon>
                     <p>回收站</p>
                 </div>
             </div>
-            <div class="home-info-bottom" ref="mySecondChart" style="width: 586px ;height: 73%; background: white; margin-top: 16px;"></div>
+            <p style="margin: 16px auto -16px; padding: 8px 0 ; background: white; width: 100%; text-align: center; border-bottom: 1px solid #f2f3f5; font-weight: bold;">企业总设备数量</p>
+            <div class="home-info-bottom" ref="mySecondChart" style="width: 586px ;height: 68%; background: white; margin-top: 16px;"></div>
         </div>
     </div>
 </template>
@@ -84,6 +85,11 @@ export default {
                 this.optionTwo = res.data;
                 this.initEcharts();
             }
+        },
+        toDevicePage(router) {
+            this.$router.push({
+                name: router
+            })
         }
     },
 }

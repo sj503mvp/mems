@@ -59,6 +59,11 @@ export default {
             lastActiveMenu: "", //上一次选中的
         }
     },
+    watch: {
+        $route: function () {
+            this.initMenuStatus();
+        },
+    },
     mounted() {
         this.initMenuStatus();
     },
@@ -77,7 +82,6 @@ export default {
                     this.itemPopAgoMenu = openName;
                 }
             })
-            console.log(this.menuArray);
             this.menuArray.map((item, index) => {
                 this.cycle(item, openName);
             })
@@ -97,6 +101,10 @@ export default {
                         if(this.$route.path.split('/')[3] == item.menuList[i].openName) {
                             this.activeMenu = item.menuList[i].openName;
                         }
+                    }
+                }else {
+                    if(this.$route.path.split('/')[2] == item.openName) {
+                        this.activeMenu = item.name;
                     }
                 }
             }
@@ -172,6 +180,9 @@ export default {
             }
             return item;
         },
+        goHome() {
+            this.activeMenu = '首页'
+        }
     }
 }
 </script>
