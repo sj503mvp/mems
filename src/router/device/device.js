@@ -3,7 +3,7 @@ import {
     allDeviceRouter,
     myDeviceRouter,
     recycleDeviceRouter,
-    reportDeviceRouter,
+    deviceDetailRouter
 } from "./device_list";
 import {
     deviceOneRouter,
@@ -12,7 +12,9 @@ import {
     deviceFourRouter,
     deviceFiveRouter
 } from "./device_add";
-
+import {
+    deviceEditRouter,
+} from "./device_edit";
 
 const device = {
     path: 'device',
@@ -30,12 +32,13 @@ const device = {
         allDeviceRouter,
         myDeviceRouter,
         recycleDeviceRouter,
-        reportDeviceRouter,
+        deviceDetailRouter,
         deviceOneRouter,
         deviceTwoRouter,
         deviceThreeRouter,
         deviceFourRouter,
-        deviceFiveRouter
+        deviceFiveRouter,
+        deviceEditRouter,
     ]
 };
 

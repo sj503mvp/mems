@@ -29,7 +29,7 @@ export default {
                         status: '异常',
                         buyTime: '2021-03-26',
                         ownFactory: '华东冶炼一厂',
-                        type: '冶炼设备',
+                        typeName: '冶炼设备',
                         lastFitTime: '2023-04-12',
                         },
                         {
@@ -39,7 +39,7 @@ export default {
                         status: '待确认',
                         buyTime: '2021-03-26',
                         ownFactory: '华东冶炼一厂',
-                        type: '冶炼设备',
+                        typeName: '冶炼设备',
                         lastFitTime: '2023-04-12',
                         },
                         {
@@ -49,7 +49,7 @@ export default {
                         status: '异常',
                         buyTime: '2021-03-26',
                         ownFactory: '华东冶炼一厂',
-                        type: '冶炼设备',
+                        typeName: '冶炼设备',
                         lastFitTime: '2023-04-12',
                         },
                     ]
@@ -63,7 +63,7 @@ export default {
                    status: '异常',
                    buyTime: '2021-03-26',
                    ownFactory: '华东冶炼一厂',
-                   type: '冶炼设备',
+                   typeName: '冶炼设备',
                    lastFitTime: '2023-04-12',
                 },
                 {
@@ -73,7 +73,7 @@ export default {
                    status: '待确认',
                    buyTime: '2021-03-26',
                    ownFactory: '华东冶炼一厂',
-                   type: '冶炼设备',
+                   typeName: '冶炼设备',
                    lastFitTime: '2023-04-12',
                 },
                 {
@@ -83,7 +83,7 @@ export default {
                    status: '异常',
                    buyTime: '2021-03-26',
                    ownFactory: '华东冶炼一厂',
-                   type: '冶炼设备',
+                   typeName: '冶炼设备',
                    lastFitTime: '2023-04-12',
                 },
             ],

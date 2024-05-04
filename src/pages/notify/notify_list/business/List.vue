@@ -73,5 +73,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import './searchOption.less';
+@import './list.less';
 </style>

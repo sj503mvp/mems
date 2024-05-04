@@ -107,7 +107,7 @@ export default {
         },
         toAllNotice() {
             this.$router.push({
-                name: ''
+                name: 'notify_all'
             })
         }
     }

@@ -11,7 +11,7 @@ $api.getPieData = async(params) => {
     if(params.type == 'ascription'){
         return {
             code: 200, 
-                data:{
+            data:{
                 title: {
                     text: '各厂区设备数',
                     left: 'center'
@@ -48,7 +48,7 @@ $api.getPieData = async(params) => {
     else {
         return {
             code: 200, 
-                data:{
+            data:{
                 title: {
                     text: '全部设备状态',
                     left: 'center'

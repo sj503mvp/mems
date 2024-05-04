@@ -1,0 +1,37 @@
+.device-detail {
+    overflow: hidden;
+    .device-card {
+        padding: 24px;
+        background-color: white;
+        margin-bottom: 16px;
+    }
+    .device-info {
+        background-color: white;
+        padding: 24px;
+        width: 60%;
+        float: left;
+        .device-info-top {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        .device-info-box {
+            .device-info-hang {
+                padding: 0 16px;
+                margin-bottom: 16px;
+                line-height: 40px;
+                .device-detail-title {
+                    margin-right: 24px;
+                }
+                &:nth-child(2n) {
+                    background: #f8f8f8;
+                }
+            }
+        }
+    }
+    .device-chart {
+        float: right;
+        width: 40%;
+        height: 500px;
+    }
+}

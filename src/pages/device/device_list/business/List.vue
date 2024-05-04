@@ -22,7 +22,7 @@
                     <div class="item-right">
                         <div class="item-right-top">
                             <div class="item-title">
-                                <p class="item-title-word" v-title>[{{ item.deviceNumber }}] {{ item.title }}</p>
+                                <p class="item-title-word" v-title @click="toDetail(item)">[{{ item.deviceNumber }}] {{ item.title }}</p>
                                 <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
                                 <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='异常'">异常</tis-tag>
                                 <tis-tag type="brimless" color="blue" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="item-bottom">
                             <div class="item-bottom-left">
-                                <div class="item-bottom-field">设备种类：{{item.type}}</div>
+                                <div class="item-bottom-field">设备种类：{{item.typeName}}</div>
                                 <div class="item-bottom-field info-factory-field">所属厂区：<span class="info-factory">{{item.ownFactory}}</span></div>
                                 <div class="item-bottom-field">购入时间：{{item.buyTime}}</div>
                                 <div class="item-bottom-field">最后一次维修时间：{{item.lastFitTime}}</div>
@@ -322,6 +322,17 @@ export default {
             }
             // let res = await $api.pushItem(params);
             this.selectIds = [];
+        },
+        toDetail(item) {
+            this.openDetailPage('device_detail', item.deviceId)
+        },
+        openDetailPage(pageName, device_id) {
+            window.open(this.$router.resolve({
+                name: pageName,
+                params: {
+                    device_id
+                }
+            }).href, '_blank')
         }
     }
 }

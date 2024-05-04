@@ -14,6 +14,11 @@
                             <tis-radio label="2">异常</tis-radio>
                         </tis-radio-group>
                     </tis-form-item>
+                    <tis-form-item prop="reason" label="维修原因">
+                        <tis-select scroll-id="scrollId" v-model="confirmData.reason" filterable clearable multiple>
+                            <tis-option v-for="item in reasonList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
+                        </tis-select>
+                    </tis-form-item>
                 </tis-form>
             </div>
             <div class="confirm-body-footer">
@@ -30,13 +35,31 @@ export default {
             confirmModal: false,
             confirmData: {
                 status: '',
+                reason: [],
             },
             confirmRule: {
                 status: [
                     { required: true, message: '请选择状态', trigger: 'change' }
+                ],
+                reason: [
+                    { required: true, type: 'array', min: 1,  message: '请选择原因', trigger: 'change' }
                 ]
             },
-            item: {}
+            item: {},
+            reasonList: [
+                {
+                    id: '1',
+                    name: '设备年老'
+                },
+                {
+                    id: '2',
+                    name: '工作时间过长'
+                },
+                {
+                    id: '3',
+                    name: '设备不符合生产'
+                },
+            ]
         }
     },
     methods: {

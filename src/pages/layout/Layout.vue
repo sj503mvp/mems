@@ -42,7 +42,8 @@ export default {
                 'device_three',
                 'device_four',
                 'device_five',
-                'device_detail'
+                'device_detail',
+                'device_edit',
             ],
             contentBoxArr: [
             'device_one',
@@ -50,7 +51,8 @@ export default {
                 'device_three',
                 'device_four',
                 'device_five',
-                'device_detail'
+                'device_detail',
+                'device_edit',
             ]
         }
     },

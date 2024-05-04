@@ -4,7 +4,7 @@
             <div class="search-area">
                 <tis-row :gutter="12">
                     <tis-col span="6">
-                        <tis-input placeholder="公告标题" clearable  :max-length="20" v-model="searchData.keyword"></tis-input>
+                        <tis-input placeholder="公告标题" clearable :max-length="20" v-model="searchData.keyword"></tis-input>
                     </tis-col>
                     <tis-col span="6">
                         <tis-date-picker type="date" placeholder="发布时间" :value="searchData.notifyTime" @on-change="dateChange"></tis-date-picker>

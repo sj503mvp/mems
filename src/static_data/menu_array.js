@@ -88,15 +88,6 @@ const menuArray = [
                 ],
                 children: []
             },
-            {
-                iconAwesome: "fa fa-bar-chart",
-                name: "report_device",
-                openName: "report_device",
-                title: "设备报表",
-                url: "/Mems/device/device_chart",
-                goUrlLocation: false,
-                children: []
-            }
         ]
     },
     {
@@ -148,28 +139,36 @@ const menuArray = [
         iconAwesome: "fa fa-calendar-minus-o",
         menuList: [
             {
+                iconAwesome: "fa fa-edit",
+                name: "process_add",
+                openName: "process_add",
+                title: "新建流程",
+                goUrlLocation: false,
+                url: "/Mems/process/processAdd"
+            },
+            {
                 iconAwesome: "fa fa-paper-plane",
-                name: "process_my_launch",
-                openName: "process_my_launch",
+                name: "process_created",
+                openName: "process_created",
                 title: "我发起的",
                 goUrlLocation: false,
-                url: "/Mems/process/created"
+                url: "/Mems/process/processCreated"
             },
             {
                 iconAwesome: "fa fa-gavel",
-                name: "process_pending_approval",
-                openName: "process_pending_approval",
+                name: "process_approval",
+                openName: "process_approval",
                 title: "待我审批",
                 goUrlLocation: false,
-                url: "/Mems/process/pendingApproval"
+                url: "/Mems/process/processApproval"
             },
             {
                 iconAwesome: "fa fa-edit",
-                name: "process_my_approved",
-                openName: "process_my_approved",
+                name: "process_approved",
+                openName: "process_approved",
                 title: "我已审批",
                 goUrlLocation: false,
-                url: "/Mems/process/myApproved"
+                url: "/Mems/process/processApproved"
             },
         ]
     },

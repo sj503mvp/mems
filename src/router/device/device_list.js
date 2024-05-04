@@ -84,17 +84,17 @@ const recycleDevice = {
     component: () => import('@/pages/device/device_list/recycle_device/RecycleDevice.vue'),
 }
 
-const reportDevice = {
-    path: 'report_device',
-    name: 'report_device',
+const deviceDetail = {
+    path: 'device_detail/:device_id',
+    name: 'device_detail',
     meta: {
-        title: '设备报表',
+        title: '项目详情页',
     },
-    component: () => import('@/pages/device/device_list/report_device/ReportDevice.vue'),
+    component: () => import('@/pages/device/device_detail/DeviceDetail.vue')
 }
 
 export const pendingDeviceRouter = pendingDevice;
 export const allDeviceRouter = allDevice;
 export const myDeviceRouter = myDevice;
 export const recycleDeviceRouter = recycleDevice;
-export const reportDeviceRouter = reportDevice;
+export const deviceDetailRouter = deviceDetail;

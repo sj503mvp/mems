@@ -1,7 +1,7 @@
 import login from './login/login.js'
 import home from './home/home.js'
 import device from './device/device.js'
-
+import process from './process/process.js'
 import notify from './notify/notify.js'
 import permission from './permission/permission.js'
 import userInfo from './user/user.js'
@@ -41,6 +41,7 @@ export const appRouter = {
         notify,
         userInfo,
         permission,
+        process
     ],
 };
 

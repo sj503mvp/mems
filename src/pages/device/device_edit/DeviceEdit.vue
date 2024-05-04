@@ -2,15 +2,15 @@
     <div class="device-add">
         <div class="device-content-box">
             <div class="device-add-content" id="base-info">
-                <p class="device-add-top">{{ type }}设备录入</p>
+                <p class="device-add-top">{{ type }}设备编辑</p>
                 <div class="device-base-info">
                     <p class="device-info-title">设备信息</p>
-                    <tis-form ref="baseInfo" :model="baseInfo" :rules="baseInfoRule" :label-width="100" class="base-info">
+                    <tis-form ref="deviceData" :model="deviceData" :rules="deviceDataRule" :label-width="100" class="base-info">
                         <tis-form-item label="设备名称" prop="deviceName">
-                            <tis-input v-model="baseInfo.deviceName" placeholder="设备名称" style="width: 500px" clearable></tis-input>
+                            <tis-input v-model="deviceData.deviceName" placeholder="设备名称" style="width: 500px" clearable></tis-input>
                         </tis-form-item>
                         <tis-form-item label="设备种类">
-                            <tis-radio-group v-model="baseInfo.type" class="form-radio-class">
+                            <tis-radio-group v-model="deviceData.type" class="form-radio-class">
                                 <tis-radio label="1">
                                     <span>冶炼设备</span>
                                 </tis-radio>
@@ -29,7 +29,7 @@
                             </tis-radio-group>
                         </tis-form-item>
                         <tis-form-item label="录入人" prop="deviceManager">
-                            <tis-select v-model="baseInfo.deviceManager" filterable clearable style="width: 500px">
+                            <tis-select v-model="deviceData.deviceManager" filterable clearable style="width: 500px" disabled>
                                 <tis-option v-for="item in managerList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
                             </tis-select>
                         </tis-form-item>
@@ -40,19 +40,19 @@
                                 :unit-list="unitList"
                                 isClearable
                                 input1-placeholder="请输入金额"
-                                :default-text1="baseInfo.deviceMoney"
+                                :default-text1="deviceData.deviceMoney"
                                 @change-input="changeInput"
                                 style="width: 500px">
                             </tis-splicing-input>
                         </tis-form-item>
                         <tis-form-item label="购入时间" prop="deviceTime">
-                            <tis-date-picker type="date" placeholder="购入时间" :value="baseInfo.deviceTime" style="width: 500px" @on-change="dateChange"></tis-date-picker>
+                            <tis-date-picker type="date" placeholder="购入时间" :value="deviceData.deviceTime" style="width: 500px" @on-change="dateChange" disabled></tis-date-picker>
                         </tis-form-item>
                         <tis-form-item label="生产厂家">
-                            <tis-input v-model="baseInfo.deviceCreater" placeholder="请输入生产产家" style="width: 500px" clearable></tis-input>
+                            <tis-input v-model="deviceData.deviceCreater" placeholder="请输入生产产家" style="width: 500px" clearable></tis-input>
                         </tis-form-item>
                         <tis-form-item label="设备介绍">
-                            <tis-input type="textarea" v-model="baseInfo.deviceDesc" placeholder="设备介绍" :autosize="{}" show-word-limit maxlength="200"></tis-input>
+                            <tis-input type="textarea" v-model="deviceData.deviceDesc" placeholder="设备介绍" :autosize="{}" show-word-limit maxlength="200"></tis-input>
                         </tis-form-item>
                     </tis-form>
                 </div>
@@ -62,7 +62,7 @@
                     <p class="device-info-title">其他信息</p>
                     <tis-form :label-width="100" class="base-info">
                         <tis-form-item label="来源渠道">
-                            <tis-radio-group v-model="baseInfo.source" class="form-radio-class">
+                            <tis-radio-group v-model="deviceData.source" class="form-radio-class">
                                 <tis-radio label="1">
                                     <span>制造商直接采购</span>
                                 </tis-radio>
@@ -104,18 +104,8 @@
 export default {
     data() {
         return {
-            baseInfo: {
-                deviceName: '',
-                type: '',
-                deviceManager: '',
-                deviceMoney: '',
-                unit: '',
-                deviceTime: '',
-                deviceCreater: '',
-                deviceDesc: '',
-                source: '',
-            },
-            baseInfoRule: {
+            deviceData: {},
+            deviceDataRule: {
                 deviceName: [
                     { required: true, message: '请输入设备名称', trigger: 'blur' }
                 ],
@@ -158,25 +148,39 @@ export default {
     },
     computed: {
         type() {
-            if(this.$route.name == 'device_one') {
-                this.baseInfo.type = '1';
+            if(this.deviceData.type = '1') {
                 return '冶炼';
-            }else if(this.$route.name == 'device_two') {
-                this.baseInfo.type = '2';
+            }else if(this.deviceData.type = '2') {
                 return '连铸';
-            }else if(this.$route.name == 'device_three') {
-                this.baseInfo.type = '3';
+            }else if(this.deviceData.type = '3') {
                 return '轧制';
-            }else if(this.$route.name == 'device_four') {
-                this.baseInfo.type = '4';
+            }else if(this.deviceData.type = '4') {
                 return '后步精整';
             }else {
-                this.baseInfo.type = '5';
                 return '辅助';
             }
         }
     },
     mounted() {
+        // let res = $api. (this.$route.params.device_id)
+        let res = {
+            deviceNumber: 'YL-1',
+            deviceId: '1',
+            deviceName: '冶炼设备一号',
+            status: '异常',
+            deviceTime: '2021-03-26',
+            ownFactory: '华东冶炼一厂',
+            type: '1',
+            deviceManager: '1',
+            deviceMoney: '15000',
+            typeName: '冶炼设备',
+            lastFitTime: '2023-04-12',
+            deviceCreater: '有限制造公司',
+            deviceDesc: '设备介绍',
+            source: '2',
+            isFocus: true,
+        }
+        this.deviceData = res;
         let that = this;
         this.$on('scrollToFirst',function (msg) {
             that.scrollToFirst();
@@ -227,7 +231,7 @@ export default {
         async submit() {
             this.submitLoading = true;
             // 验证表单
-            let validate = await this.$refs.baseInfo.validate();
+            let validate = await this.$refs.deviceData.validate();
             if(!validate) {
                 this.validateStatus = false;
                 this.$TisMessage.error('请完善信息');
@@ -235,11 +239,11 @@ export default {
                 return false;
             }else {
                 this.validateStatus = true;
-                let data = this.baseInfo;
+                let data = this.deviceData;
                 // let res = await $api. ()
                 this.$TisMessage.success('保存成功');
                 this.submitLoading = false;
-                this.$refs.baseInfo.resetFields();
+                this.$refs.deviceData.resetFields();
                 this.$router.push({
                     name: '首页'
                 })
@@ -254,19 +258,19 @@ export default {
             })
         },
         changeInput(index, type ,tel) {
-            this.baseInfo.deviceMoney = type
-            this.baseInfo.unit= tel
+            this.deviceData.deviceMoney = type
+            this.deviceData.unit= tel
         },
         /**
          * 日期改变
          * @param {Array} date 选择的日期
         */
         dateChange(date) {
-            this.baseInfo.deviceTime = date;
+            this.deviceData.deviceTime = date;
         },
     }
 }
 </script>
 <style lang="less">
-@import './deviceAdd.less';
+@import './deviceEdit.less';
 </style>

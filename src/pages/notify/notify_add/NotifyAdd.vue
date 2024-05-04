@@ -1,7 +1,7 @@
 <template>
     <div class="notify-add" :style="{'min-height': `calc(100vh - 117px)`}">
-        <div class="nofity-content-box">
-            <tis-form ref="notify-info" :model="notifyInfo" :rules="notifyInfoRule" :label-width="100" class="notify-info">
+        <div class="notify-content-box">
+            <tis-form ref="notifyInfo" :model="notifyInfo" :rules="notifyInfoRule" :label-width="100" class="notify-info">
                 <tis-form-item label="公告标题" prop="notifyName">
                     <tis-input v-model="notifyInfo.notifyName" placeholder="请输入公告标题" style="width: 500px" clearable></tis-input>
                 </tis-form-item>
@@ -30,6 +30,7 @@ export default {
             notifyInfo: {
                 notifyName: '',
                 notifyContent: '',
+                notifyStatus: '',
                 notifyTime: '' // 这里时间发布时取，并且将发布人加上
             },
             notifyInfoRule: {
@@ -40,7 +41,7 @@ export default {
                     { required: true, message: '请选择紧急程度', trigger: 'change' }
                 ],
                 notifyContent: [
-                { required: true, message: '请输入公告内容', trigger: 'blur' }
+                    { required: true, message: '请输入公告内容', trigger: 'blur' }
                 ]
             },
             // 后端获取人员id列表
@@ -73,11 +74,14 @@ export default {
         }
     },
     methods: {
-        submit() {
-            this.notifyInfo.notifyTime = new Date();
-            let data = this.notifyInfo;
-            data.userName = this.userName;
-            console.log(data,'qwe');
+        async submit() {
+            let validate = await this.$refs.notifyInfo.validate();
+            if(validate) {
+                this.notifyInfo.notifyTime = new Date();
+                let data = this.notifyInfo;
+                data.userName = this.userName;
+                console.log(data,'qwe');
+            }
         }
     }
 }

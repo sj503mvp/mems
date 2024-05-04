@@ -1,0 +1,152 @@
+.device-add {
+    font-size: 14px;
+    background: rgba(248, 248, 248, 1);
+    .device-content-box {
+        margin: 0 auto;
+        width: 1280px;
+        overflow: hidden;
+        margin-bottom: 24px;
+        .device-add-content {
+            background-color: white;
+            width: 1118px;
+            margin-right: 16px;
+            float: left;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 4px 0 #eeeeee;
+            border-radius: 4px;
+            .device-add-top {
+                font-size: 20px;
+                padding: 10px 0 8px 24px;
+                color: #333333;
+                font-weight: bold;
+            }
+            .device-base-info {
+                .device-info-title {
+                    padding: 16px 0 16px 24px;
+                    color: #333333;
+                    font-weight: bold;
+                    border-bottom: 1px solid #ececec;
+                }
+                .base-info {
+                    padding: 24px;
+                }
+            }
+            .device-other-info {
+                .device-info-title {
+                    padding: 16px 0 16px 24px;
+                    color: #333333;
+                    font-weight: bold;
+                    border-bottom: 1px solid #ececec;
+                }
+                .base-info {
+                    padding: 24px;
+                }
+            }
+        }
+        #other-info {
+            margin-bottom: 78px;
+        }
+        .item-add-anchor {
+            width: auto;
+            height: 658px;
+            position: fixed;
+            margin-left: 1134px;
+            padding-left: 16px;
+            padding-top: 18px;
+            top: 114px;
+            .itis-anchor-link {
+                padding: 16px;
+            }
+            .validate-error{
+                .itis-anchor-link-title{
+                    color: #ed4014;
+                }
+                a:hover {
+                    color: #ed4014;
+                }
+            }
+        }
+    }
+    .item-add-footer {
+        position: fixed;
+        width: 100%;
+        height: 64px;
+        background: rgba(255, 255, 255, 1);
+        left: 0;
+        bottom:0;
+        z-index:1000;
+        &.fix-footer{
+            bottom:36px;
+            box-shadow: 0px 4px 4px 0px rgba(238, 238, 238, 1);
+        }
+        .btn-sub {
+            margin-right: 8px;
+        }
+
+        .item-footer-box {
+            margin: 0 auto;
+            max-width: 1230px;
+            height: 64px;
+            overflow: hidden;
+
+            .item-footer-left {
+                margin-top: 16px;
+                font-size: 0;
+                float: left;
+
+                .ivu-btn-default {
+                    background: #ffffff;
+                    color: #666666;
+                    border: 1px solid #d9d9d9;
+                }
+                .ivu-btn-primary {
+                    background: #1F6CDD;
+                    color: #fff;
+                    border: 1px solid #1f6CDD;
+                }
+
+                .ivu-btn {
+                    margin-left: 16px;
+                    padding: 0 30px;
+                    height: 32px;
+                    &.create-btn {
+                        padding: 0 16px;
+                    }
+                }
+
+                .ivu-btn-ghost {
+                    color: #666;
+                }
+
+                .ivu-btn-primary {
+                    background: #1F6CDD;
+                    color: #fff;
+                    border: 1px solid #1f6CDD;
+                    &:hover {
+                        background: #468eeb;
+                        color: #fff;
+                        border: 1px solid #468eeb;
+                    }
+                    &:active {
+                        background: #114eb8;
+                        color: #fff;
+                        border: 1px solid #114eb8;
+                    }
+                }
+                .ivu-btn-default {
+                    background: #ffffff;
+                    color: #666666;
+                    border: 1px solid #d9d9d9;
+                    &:hover {
+                        color: #468eeb;
+                        border: 1px solid #468eeb;
+                    }
+                    &:active {
+                        color: #114eb8;
+                        border: 1px solid #114eb8;
+                    }
+                }
+            }
+        }
+    }
+}
