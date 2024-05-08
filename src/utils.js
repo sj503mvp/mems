@@ -1,3 +1,5 @@
+import { Message } from 'iview';
+
 let utils = {};
 
 utils.notice = (content, action = 'warning', duration = 2) => {
@@ -6,15 +8,15 @@ utils.notice = (content, action = 'warning', duration = 2) => {
     config.content = content;
     switch (action) {
         case 'info':
-            return TisMessage.info(config);
+            return Message.info(config);
         case 'success':
-            return TisMessage.success(config);
+            return Message.success(config);
         case 'error':
-            return TisMessage.error(config);
+            return Message.error(config);
         case 'loading':
-            return TisMessage.loading(config);
+            return Message.loading(config);
         default:
-            return TisMessage.warning(config);
+            return Message.warning(config);
     }
 }
 

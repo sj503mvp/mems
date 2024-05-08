@@ -8,11 +8,11 @@
                 <div class="login-bg">
                     <p class="login-title">欢迎<span v-if="isLogin">登录</span><span v-else>注册</span> <br> Mems金属冶炼设备管理系统</p>
                     <tis-form class="login-form" :model="formValidate" :rules="ruleValidate" ref="loginForm" :key="isLogin">
-                        <tis-form-item prop="account">
-                            <tis-input placeholder="请输入账号" v-model="formValidate.account"></tis-input>
+                        <tis-form-item prop="username">
+                            <tis-input placeholder="请输入账号" v-model="formValidate.username"></tis-input>
                         </tis-form-item>
-                        <tis-form-item prop="passWord">
-                            <tis-input placeholder="请输入密码" type="password" v-model="formValidate.passWord"></tis-input>
+                        <tis-form-item prop="password">
+                            <tis-input placeholder="请输入密码" type="password" v-model="formValidate.password"></tis-input>
                         </tis-form-item>
                         <tis-form-item v-if="!isLogin" prop="confirmPassWord">
                             <tis-input placeholder="请再次输入密码" type="password" v-model="formValidate.confirmPassWord"></tis-input>
@@ -34,38 +34,47 @@ import Cookies from 'js-cookie'
 import $api from '@/api/login/index.js'
 export default {
     data() {
+        var reconfirm = (rule, value, callback) => {
+            if(value === '') {
+                callback(new Error('请输入确认密码'))
+            }else if(value !== this.formValidate.password) {
+                callback(new Error('两次密码不一致'))
+            }else {
+                callback();
+            }
+        }
         return {
             isLogin: true,
             formValidate: {
-                account: '',
-                passWord: '',
+                username: '',
+                password: '',
                 confirmPassWord: '',
             },
             ruleValidate: {
-                account: [
+                username: [
                     {
                         required: true, message: '用户名不能为空', trigger: 'blur',
                     },
                 ],
-                passWord: [
+                password: [
                     {
-                        required: true, message: '密码不能为空', trigger: 'blur',
+                        required: true, message: '请输入密码', trigger: 'blur',
                     },
                 ],
                 confirmPassWord: [
                     {
-                        required: true, message: '确认密码不能为空', trigger: 'blur',
+                        required: true, validator: reconfirm, trigger: 'blur',
                     },
                 ]
-            }
+            },
         }
     },
     watch: {
         isLogin(newVal, oldVal) {
             if(newVal != oldVal) {
                 this.formValidate = {
-                    account: '',
-                    passWord: '',
+                    username: '',
+                    password: '',
                     confirmPassWord: '',
                 }
             }
@@ -82,17 +91,16 @@ export default {
             this.$refs.loginForm.validate(async (valid) => {
                 if (valid) {
                     let data = {
-                        uid: this.formValidate.account,
-                        passWord: this.formValidate.passWord,
-                        confirmPassWord: this.isLogin? this.formValidate.confirmPassWord : '',
+                        username: this.formValidate.username,
+                        password: this.formValidate.password,
+                        confirmPassWord: !this.isLogin? this.formValidate.confirmPassWord : '',
                     }
                     if(this.isLogin) {
                         let res = await $api.login(data);
                         if(res.code == 200) {
                             this.$TisMessage.success('登录成功');
-                            Cookies.set('username',res.data.username);
-                            Cookies.set('uid',res.data.uid);
-                            Cookies.set('token',res.data.token);
+                            Cookies.set('uid',res.uid);
+                            Cookies.set('token',res.token);
                             this.$router.push({
                                 name: '首页'
                             })
@@ -103,9 +111,11 @@ export default {
                         let res = await $api.register(data);
                         if(res.code == 200) {
                             this.$TisMessage.success('注册成功，即将跳转登录页面');
-                            this.isLogin = true;
+                            setTimeout(()=>{
+                                this.isLogin = true;
+                            }, 500);
                         }else {
-                            this.$TisMessage.error(res.data.msg);
+                            this.$TisMessage.error(res.msg);
                         }
                     }
                 }
