@@ -29,7 +29,7 @@ export default {
         headerMenu,
         sidebarMenu,
         CommonFooter,
-        sidebarMenuShrink
+        sidebarMenuShrink,
     },
     data() {
         return {
