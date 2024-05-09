@@ -2,52 +2,59 @@
     <Menu class="left-menu" ref="sideMenu" theme="dark" width="auto" accordion :active-name="activeMenu" :open-names="openMenu" @on-select="changeMenu">
         <div v-for="(menu, index) in menuArray" :key="index" class="every-menu">
             <!-- 有二级菜单 -->
-            <Submenu :key="index" v-if="menu.menuList && menu.menuList.length > 0" :name="menu.name">
-                <template slot="title">
-                    <div class="menu first-menu">
-                        <i class="fa first-icon" :class=[menu.iconAwesome] aria-hidden="true"></i>
-                        <span>{{ menu.name }}</span>
-                    </div>
-                </template>
-                <template v-for="item of menu.menuList">
-                    <!-- 一级（下拉气泡） -->
-                    <tis-dropdown v-if="item.dropdownList && item.dropdownList.length > 0" :visible="menuDropDownIsOpen" :class="{'menu-tis-dropdown-select': item.name==activeMenu}" class="menu-tis-dropdown" :use-button="false" placement="right-start" @on-click="event => menuDropdownClick(event, item.dropdownList)" @on-visible-change="menuDropVisibleChange" :key="item.name">
-                        <div class="menu-drop-in" :class="{'ivu-menu-item-active ivu-menu-item-selected': item.name==activeMenu}" :name="menu.name" @click="showPop(item.dropdownList, item.name)">
-                            <i class="fa" :class=[item.iconAwesome] aria-hidden="true"></i>
-                            <span>{{ item.title }}</span>
-                            <tis-icon v-if="item.lastIconAwesome" class="last-icon fa-pop-icon" :class=[item.lastIconAwesome] type="md-add" size="18" />
+            <div v-show="!menu.powerStatus || handleCode(menu.powerStatus)">
+                <Submenu :key="index" v-if="menu.menuList && menu.menuList.length > 0" :name="menu.name">
+                    <template slot="title">
+                        <div class="menu first-menu">
+                            <i class="fa first-icon" :class=[menu.iconAwesome] aria-hidden="true"></i>
+                            <span>{{ menu.name }}</span>
                         </div>
-                        <tis-dropdown-menu slot="list">
-                            <tis-dropdown-item v-for="dropdownItem of item.dropdownList" :key="dropdownItem.id" :name="dropdownItem.title">{{ dropdownItem.title }}</tis-dropdown-item>
-                        </tis-dropdown-menu>
-                    </tis-dropdown>
-                    <MenuItem :key="item.name" :name="item.name" v-else>
-                        <div class="menu second-menu">
-                            <i class="fa first-icon" :class=[item.iconAwesome] aria-hidden="true"></i>
-                            <span>{{ item.title }}</span>
+                    </template>
+                    <template v-for="item of menu.menuList">
+                        <!-- 一级（下拉气泡） -->
+                        <tis-dropdown v-if="item.dropdownList && item.dropdownList.length > 0" :visible="menuDropDownIsOpen" :class="{'menu-tis-dropdown-select': item.name==activeMenu}" class="menu-tis-dropdown" :use-button="false" placement="right-start" @on-click="event => menuDropdownClick(event, item.dropdownList)" @on-visible-change="menuDropVisibleChange">
+                            <div class="menu-drop-in" :class="{'ivu-menu-item-active ivu-menu-item-selected': item.name==activeMenu}" :name="menu.name" @click="showPop(item.dropdownList, item.name)">
+                                <i class="fa" :class=[item.iconAwesome] aria-hidden="true"></i>
+                                <span>{{ item.title }}</span>
+                                <tis-icon v-if="item.lastIconAwesome" class="last-icon fa-pop-icon" :class=[item.lastIconAwesome] type="md-add" size="18" />
+                            </div>
+                            <tis-dropdown-menu slot="list">
+                                <tis-dropdown-item v-for="dropdownItem of item.dropdownList" :key="dropdownItem.id" :name="dropdownItem.title">{{ dropdownItem.title }}</tis-dropdown-item>
+                            </tis-dropdown-menu>
+                        </tis-dropdown>
+                        <MenuItem :key="item.name" :name="item.name" v-if="!item.powerStatus || handleCode(item.powerStatus)">
+                            <div class="menu second-menu">
+                                <i class="fa first-icon" :class=[item.iconAwesome] aria-hidden="true"></i>
+                                <span>{{ item.title }}</span>
+                            </div>
+                        </MenuItem>
+                    </template>
+                </Submenu>
+                <!-- 一级菜单 -->
+                <template v-else>
+                    <MenuItem :name="menu.name">
+                        <div class="menu first-menu">
+                            <i class="fa first-icon" :class=[menu.iconAwesome] aria-hidden="true"></i>
+                            <span>{{ menu.name }}</span>
                         </div>
                     </MenuItem>
                 </template>
-            </Submenu>
-            <!-- 一级菜单 -->
-            <template v-else>
-                <MenuItem :name="menu.name">
-                    <div class="menu first-menu">
-                        <i class="fa first-icon" :class=[menu.iconAwesome] aria-hidden="true"></i>
-                        <span>{{ menu.name }}</span>
-                    </div>
-                </MenuItem>
-            </template>
+            </div>
         </div>
     </Menu>
 </template>
 <script>
+import utils from "@/utils";
 export default {
     props: {
         menuArray: {
             type: Array,
             default: []
         },
+        power: {
+            type: Array,
+            default: []
+        }
     },
     data() {
         return {
@@ -68,6 +75,12 @@ export default {
         this.initMenuStatus();
     },
     methods: {
+        /**
+         * 处理权限码
+         */
+        handleCode(data) {
+            return utils.codeStatus(this.power, data);
+        },
         /**
          * 初始化菜单
          */

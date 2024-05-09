@@ -30,8 +30,10 @@
     </div>
 </template>
 <script>
-import Cookies from 'js-cookie'
-import $api from '@/api/login/index.js'
+import Cookies from 'js-cookie';
+import $api from '@/api/login/index.js';
+import { createNamespacedHelpers } from 'vuex';
+const userUid = createNamespacedHelpers('userUid');
 export default {
     data() {
         var reconfirm = (rule, value, callback) => {
@@ -69,6 +71,9 @@ export default {
             },
         }
     },
+    computed: {
+        ...userUid.mapGetters(['uid']),
+    },
     watch: {
         isLogin(newVal, oldVal) {
             if(newVal != oldVal) {
@@ -81,6 +86,9 @@ export default {
         }
     },
     methods: {
+        ...userUid.mapActions([
+            'getUserUid'
+        ]),
         changeIsLogin() {
             this.$refs.loginForm.resetFields();
             setTimeout( ()=> {
@@ -101,6 +109,7 @@ export default {
                             this.$TisMessage.success('登录成功');
                             Cookies.set('uid',res.uid);
                             Cookies.set('token',res.token);
+                            this.getUserUid();
                             this.$router.push({
                                 name: '首页'
                             })

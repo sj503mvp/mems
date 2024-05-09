@@ -4,7 +4,7 @@
         <header-menu @shrink-menu="retractMenu" @go-home="goHome"></header-menu>
         <!-- 左侧菜单栏 -->
         <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}" v-if="hideLeftMenuArr.indexOf($route.name) === -1">
-            <sidebarMenu v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
+            <sidebarMenu :power="powerSiderData" v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
             <sidebar-menu-shrink v-show="shrink" :menu-array="menuArray" @on-change="handleChange"></sidebar-menu-shrink>
         </div>
         <div class="single-page-con" ref="pageBody"
@@ -19,11 +19,13 @@
     </div>
 </template>
 <script>
-import menuArray from '@/static_data/menu_array.js'
-import headerMenu from './business/HeaderMenu.vue'
-import sidebarMenu from './business/SidebarMenu.vue'
-import sidebarMenuShrink from './business/SidebarMenuShrink.vue'
+import menuArray from '@/static_data/menu_array.js';
+import headerMenu from './business/HeaderMenu.vue';
+import sidebarMenu from './business/SidebarMenu.vue';
+import sidebarMenuShrink from './business/SidebarMenuShrink.vue';
 import CommonFooter from './business/CommonFooter.vue';
+import Cookies from 'js-cookie';
+import $api from '@/api/layout/index.js';
 export default {
     components: {
         headerMenu,
@@ -53,13 +55,32 @@ export default {
                 'device_five',
                 'device_detail',
                 'device_edit',
-            ]
+            ],
+            powerSiderData: [], //侧边栏权限,
         }
     },
+    created() {
+        this.initData();
+    },
     methods: {
+        initData() {
+            this.initMenuAuth();
+        },
         // 侧边栏展开收起
         changeMenuStatus() {
             this.isRetract = !this.isRetract;
+        },
+        // 获得菜单权限
+        async initMenuAuth() {
+            let params = {
+                uid: Cookies.get('uid'),
+            }
+            let power = await $api.getPowerData(params);
+            let HASNOTIFYAPPROVAL = power.hasNotifyApproval != undefined || power.hasNotifyApproval != null? power.hasNotifyApproval: [];
+            let HASPROCESSAPPROVAL = power.hasProcessApproval != undefined || power.hasProcessApproval != null? power.hasProcessApproval: [];
+            let HASPROCESSAPPROVED = power.hasProcessApproved != undefined || power.hasProcessApproved != null? power.hasNotifyApproval: [];
+            let HASCHANGEPERMISSION = power.hasChangePermission != undefined || power.hasChangePermission != null? power.hasChangePermission: [];
+            this.powerSiderData = [HASNOTIFYAPPROVAL,HASPROCESSAPPROVAL,HASPROCESSAPPROVED,HASCHANGEPERMISSION];
         },
         handleChange(menuItem) {
             if(menuItem.goUrlLocation) {

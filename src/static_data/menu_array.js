@@ -1,9 +1,8 @@
-import cookie from "js-cookie";
-
 const menuArray = [
     {
         name: "首页",
         url: "/Mems/home",
+        powerStatus: "",
         routerName: "home",
         openName: "home",
         iconAwesome: "fa fa-bookmark",
@@ -12,6 +11,7 @@ const menuArray = [
     {
         name: "设备",
         url: "/Mems/device",
+        powerStatus: "",
         routerName: "device",
         iconAwesome: "fa fa-cubes",
         openName: "device",
@@ -22,6 +22,7 @@ const menuArray = [
                 openName: "pending_device",
                 title: "待处理设备",
                 url: "/Mems/device/pending_device",
+                powerStatus: "",
                 goUrlLocation: false,
                 children: []
             },
@@ -31,6 +32,7 @@ const menuArray = [
                 openName: "all_device",
                 title: "全部设备",
                 url: "/Mems/device/all_device",
+                powerStatus: "",
                 goUrlLocation: false,
                 children: []
             },
@@ -40,6 +42,7 @@ const menuArray = [
                 openName: "my_device",
                 title: "我的设备",
                 url: "/Mems/device/my_device",
+                powerStatus: "",
                 goUrlLocation: false,
                 children: []
             },
@@ -49,6 +52,7 @@ const menuArray = [
                 openName: "recycle_device",
                 title: "回收站",
                 url: "/Mems/device/recycle_device",
+                powerStatus: "",
                 goUrlLocation: false,
                 children: []
             },
@@ -57,6 +61,7 @@ const menuArray = [
                 lastIconAwesome: "fa fa-plus",
                 name: "add_device",
                 openName: "add_device",
+                powerStatus: "",
                 title: "设备录入",
                 goUrlLocation: true,
                 dropdownList: [
@@ -93,6 +98,7 @@ const menuArray = [
     {
         name: "通知公告",
         url: "/Mems/notify",
+        powerStatus: "",
         routerName: "notify",
         openName: "notify",
         iconAwesome: "fa fa-book",
@@ -103,6 +109,7 @@ const menuArray = [
                 openName: "notify_add",
                 title: "发布通知",
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/notify/notify_add"
             },
             {
@@ -111,6 +118,7 @@ const menuArray = [
                 openName: "notify_approval",
                 title: "审批通知",
                 goUrlLocation: false,
+                powerStatus: "hasNotifyApproval",
                 url: "/Mems/notify/notify_approval"
             },
             {
@@ -119,6 +127,7 @@ const menuArray = [
                 openName: "notify_all",
                 title: "全部通知",
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/notify/notify_all"
             },
             {
@@ -127,6 +136,7 @@ const menuArray = [
                 openName: "notify_unread",
                 title: "未查看的通知",
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/notify/notify_unread"
             },
         ]
@@ -134,6 +144,7 @@ const menuArray = [
     {
         name: "流程中心",
         url: "/Mems/process/add",
+        powerStatus: "",
         routerName: "process",
         openName: "process",
         iconAwesome: "fa fa-calendar-minus-o",
@@ -144,6 +155,7 @@ const menuArray = [
                 openName: "process_add",
                 title: "新建流程",
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/process/processAdd"
             },
             {
@@ -152,6 +164,7 @@ const menuArray = [
                 openName: "process_created",
                 title: "我发起的",
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/process/processCreated"
             },
             {
@@ -160,6 +173,7 @@ const menuArray = [
                 openName: "process_approval",
                 title: "待我审批",
                 goUrlLocation: false,
+                powerStatus: "hasProcessApproval",
                 url: "/Mems/process/processApproval"
             },
             {
@@ -168,6 +182,7 @@ const menuArray = [
                 openName: "process_approved",
                 title: "我已审批",
                 goUrlLocation: false,
+                powerStatus: "hasProcessApproved",
                 url: "/Mems/process/processApproved"
             },
         ]
@@ -175,6 +190,7 @@ const menuArray = [
     {
         name: "权限",
         url: "/Mems/permission",
+        powerStatus: "hasChangePermission",
         routerName: "permission",
         openName: "permission",
         iconAwesome: "fa fa-sun-o",
@@ -186,6 +202,7 @@ const menuArray = [
                 title: "用户管理",
                 children: [],
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/permission/user_list"
             },
             {
@@ -195,6 +212,7 @@ const menuArray = [
                 title: "管理员管理",
                 children: [],
                 goUrlLocation: false,
+                powerStatus: "",
                 url: "/Mems/permission/manager_list"
             }
         ]
