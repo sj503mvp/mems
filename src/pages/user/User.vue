@@ -9,12 +9,12 @@
             <tis-row v-if="!isEdit">
                 <tis-col span="12">
                     <div class="user-info-content">
-                        <p class="info-content"><span class="info-type">姓名</span>：{{ info.name }}</p>
-                        <p class="info-content"><span class="info-type">厂区</span>：{{ info.factory }}</p>
-                        <p class="info-content"><span class="info-type">职位</span>：{{ info.position }}</p>
-                        <p class="info-content"><span class="info-type">手机</span>：{{ info.phone }}</p>
-                        <p class="info-content"><span class="info-type">邮箱</span>：{{ info.email }}</p>
-                        <p class="info-content"><span class="info-type">个人简介</span>：{{ info.desc }}</p>    
+                        <p class="info-content"><span class="info-type">姓名</span><span>：</span>{{ info.name }}</p>
+                        <p class="info-content"><span class="info-type">厂区</span><span>：</span>{{ info.factory }}</p>
+                        <p class="info-content"><span class="info-type">职位</span><span>：</span>{{ info.position }}</p>
+                        <p class="info-content"><span class="info-type">手机</span><span>：</span>{{ info.phone }}</p>
+                        <p class="info-content"><span class="info-type">邮箱</span><span>：</span>{{ info.email }}</p>
+                        <p class="info-content"><span class="info-type">个人简介</span><span>：</span>{{ info.descText }}</p>    
                     </div>
                 </tis-col>
                 <tis-col span="12">
@@ -37,7 +37,7 @@
                         </p>
                         <p class="info-content"><span class="info-type">手机</span>：<tis-input v-model="info.phone" placeholder="请输入手机号" clearable style="width: 200px;"></tis-input></p>
                         <p class="info-content"><span class="info-type">邮箱</span>：<tis-input v-model="info.email" placeholder="请输入邮箱" clearable style="width: 200px;"></tis-input></p>
-                        <p class="info-content"><span class="info-type">个人简介</span>：<tis-input v-model="info.desc" placeholder="简介" clearable style="width: 400px;" type="textarea" maxlength="200" show-word-limit></tis-input></p>    
+                        <p class="info-content"><span class="info-type">个人简介</span>：<tis-input v-model="info.descText" placeholder="简介" clearable style="width: 400px;" type="textarea" maxlength="200" show-word-limit></tis-input></p>    
                     </div>
                     <tis-button type="primary" style="margin-top: 16px;" @click="submitInfo">保存</tis-button>
                 </tis-col>
@@ -56,51 +56,51 @@
     </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
+import $api from '@/api/layout/index.js'
+import $userApi from '@/api/user/index.js'
 export default {
     data() {
         return {
-            // 从后端获取
-            info: {
-                name: '狗头苏丹',
-                factoryId: '1',
-                factory: '华东冶炼一厂',
-                positionId: '1',
-                position: '设备管理人员',
-                phone: '15935478232',
-                email: '443119974@qq.com',
-                desc: '个人简介个人简介个人简介个人简介个人简介',
-                img: require('../../assets/common/测试图.jpg')
-            },
+            info: {},
             changeTitle: '编辑资料',
             isEdit: false,
             // 从后端获取
             factoryList: [
                 {
                     id: '1',
-                    name: '华东冶炼一厂'
+                    name: '总部'
                 },
                 {
                     id: '2',
-                    name: '华南冶炼二厂'
+                    name: '华东冶炼一厂'
                 },
                 {
                     id: '3',
-                    name: '华北制造三厂'
+                    name: '华南轧制二厂'
+                },
+                {
+                    id: '4',
+                    name: '华东连铸三厂'
+                },
+                {
+                    id: '5',
+                    name: '华北冶炼四厂'
+                },
+                {
+                    id: '6',
+                    name: '华南冶炼五厂'
                 },
             ],
             positionList: [
-            {
+                {
                     id: '1',
                     name: '设备管理员'
                 },
                 {
                     id: '2',
                     name: '维修人员'
-                },
-                {
-                    id: '3',
-                    name: '超级管理员'
-                },
+                }
             ]
         }
     },
@@ -113,18 +113,31 @@ export default {
             }
         }
     },
+    mounted() {
+        this.getUserInfo();
+    },
     methods: {
+        async getUserInfo() {
+            let params = {
+                uid: Cookies.get('uid'),
+            }
+            let res = await $api.getUserInfo(params);
+            this.info = res;
+        },
         changeEdit() {
             this.isEdit = !this.isEdit;
         },
-        submitInfo() {
-            console.log(this.info);
-            // let res = await $api.   (this.info)
-            // if() {
-
-            // }else {
-
-            // }
+        async submitInfo() {
+            let data = {
+                uid: Cookies.get('uid'),
+                ...this.info
+            }
+            let res = await $userApi.editUserInfo(data)
+            if(res.code == 200) {
+                this.$TisMessage.success(res.msg)
+            }else {
+                this.$TisMessage.error(res.msg)
+            }
             this.isEdit = !this.isEdit;
         },
         changeImg() {

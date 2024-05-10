@@ -29,12 +29,10 @@ $http.interceptors.response.use(
             case '401':
                 Cookies.set('uid', '');
                 Cookies.set('token', '');
-                utils.notice(response.data.msg);
                 return response.data;
             case '500': 
                 Cookies.set('uid', '');
                 Cookies.set('token', '');
-                utils.notice(response.data.msg);
                 return response.data;
             default: 
                 return response.data;

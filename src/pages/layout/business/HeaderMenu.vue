@@ -13,7 +13,7 @@
             <div class="header-avatar-con">
                 <div class="header-user" @click="toUser" style="height: 50px; display: flex; margin-right: 16px;">
                     <tis-icon type='ios-contact' style="margin-right: 8px" size="24"></tis-icon>
-                    <span>当前用户名</span>
+                    <span>{{ userName? userName : '暂无，点击编辑' }}</span>
                 </div>
                 <div class="header-dropdown" style="height: 50px; display: flex; margin-right: 16px;">
                     <tis-icon type='ios-megaphone-outline' style="margin-right: 8px" size="24"></tis-icon>
@@ -42,6 +42,7 @@
 </template>
 <script>
 import Cookies from 'js-cookie'
+import $api from '@/api/layout/index.js'
 export default {
     data() {
         return {
@@ -62,12 +63,21 @@ export default {
                     content: '公告内容公告内容公告内容公告内容公告内容公告内容',
                     time: '2024-05-03 16:16'
                 },
-            ]
+            ],
+            userName: '',
         }
     },
     mounted() {
+        this.getUserInfo();
     },
     methods: {
+        async getUserInfo() {
+            let params = {
+                uid: Cookies.get('uid'),
+            }
+            let res = await $api.getUserInfo(params);
+            this.userName = res.name;
+        },
         toUser() {
             this.$router.push({
                 name: 'userInfo'
