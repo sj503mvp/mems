@@ -11,6 +11,18 @@ const RouterConfig = {
 
 Vue.use(Router);
 
+//解决 多次点击跳转同一个路由是不被允许的报错
+//push
+const VueRouterPush = Router.prototype.push;
+Router.prototype.push = function push(to) {
+    return VueRouterPush.call(this, to).catch(err => err)
+}
+
+//replace
+const VueRouterReplace = Router.prototype.replace;
+Router.prototype.replace = function replace(to) {
+    return VueRouterReplace.call(this, to).catch(err => err)
+}
 
 const router = new Router(RouterConfig);
 

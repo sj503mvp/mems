@@ -1,6 +1,6 @@
 .permission-bg {
     background: white;
-    padding: 24px;
+    padding: 24px 24px 0 24px;
     .permission-title {
         font-size: 20px;
         font-weight: bold;
@@ -18,14 +18,100 @@
         width: 136px;
         margin-left: 24px;
         font-size: 0;
-        .search-button:first-child {
-            margin-right: 8px;
-        }
     }
     .permission-list-table {
         margin-top: 16px;
         th {
             height: 40px;
+        }
+    }
+
+    /* 小于等于10条 */
+    .list-bottom-less {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        border-radius: 0 0 4px 4px;
+        background: #ffffff;
+        .bottom-left {
+            display: flex;
+            align-items: center;
+            .bottom-left-word {
+                color: #303030;
+            }
+            .bottom-button {
+                margin-right: 8px;
+            }
+            /* 已选择多少条 */
+            .num-selected {
+                color: #5c5c5c;
+                padding-left: 16px;
+                line-height: 32px;
+                .num {
+                    color: #303030;
+                    margin: 0 4px;
+                }
+            }
+        }
+        .bottom-info-less {
+            font-size: 14px;
+            color: #5c5c5c;
+            line-height: 22px;
+        }
+    }
+    /* 大于10条 */
+    .list-bottom {
+        position: relative;
+        /* 不被loading遮挡 */
+        z-index: 10;
+        bottom: 0;
+        height: 56px;
+        border-radius: 0 0 4px 4px;
+        background: #ffffff;
+        &.is-sticky {
+            .bottom-line-page {
+                background-color: #f2f3f5;
+            }
+        }
+        .bottom-page {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 24px;
+            align-items: center;
+            .bottom-right{
+                height: 32px;
+                margin-right: 2px;
+                .itis-page{
+                    min-width: auto;
+                }
+            }
+            .bottom-left {
+                display: flex;
+                align-items: center;
+                .bottom-left-word {
+                    color: #303030;
+                }
+                .bottom-button {
+                    margin-right: 8px;
+                }
+                /* 已选择多少条 */
+                .num-selected {
+                    color: #5c5c5c;
+                    padding-left: 16px;
+                    line-height: 32px;
+                    .num {
+                        color: #303030;
+                        margin: 0 4px;
+                    }
+                }
+            }
+        }
+        .bottom-line-page{
+            flex: 1;
+            margin: 0;
+            height: 1px;
+            background: transparent;
         }
     }
 }

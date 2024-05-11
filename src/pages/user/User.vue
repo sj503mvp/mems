@@ -65,7 +65,6 @@ export default {
             info: {},
             changeTitle: '编辑资料',
             isEdit: false,
-            // 从后端获取
             factoryList: [
                 {
                     id: '1',
