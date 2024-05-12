@@ -18,5 +18,28 @@ $api.getAllManagerInfo = async(params) => {
     return await $http.get(url, {params: params})
 }
 
+/**
+ * 编辑权限
+ */
+$api.changeUserPower = async(data) => {
+    const url = '/changePowerData';
+    return await $http.post(url, data);
+}
 
+/**
+ * 获得所有非管理员的人员名称
+ */
+$api.getUnrootList = async() => {
+    const url = '/getUnrootUser';
+    return await $http.post(url);
+}
+
+/**
+ * 修改权限的权限
+ */
+$api.changePermission = async(data) => {
+    console.log(data,'qwe');
+    const url = '/changePermission';
+    return await $http.post(url, data)
+}
 export default $api

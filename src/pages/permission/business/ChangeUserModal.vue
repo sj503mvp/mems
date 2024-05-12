@@ -6,8 +6,11 @@
                 <div class="top-word">修改权限</div>
             </div>
             <div class="change-body-middle">
-                <tis-checkbox label="permission" v-model="permission">
-                    <span>权限</span>
+                <tis-checkbox label="hasNotifyApproval" v-model="userPermission.hasNotifyApproval">
+                    <span>公告</span>
+                </tis-checkbox>
+                <tis-checkbox label="hasProcessApproval" v-model="userPermission.hasProcessApproval">
+                    <span>流程</span>
                 </tis-checkbox>
             </div>
             <div class="change-body-footer">
@@ -18,17 +21,17 @@
     </tis-modal>
 </template>
 <script>
+import $api from '@/api/permission/index.js'
 export default {
     props: {
-        permission: {
-            type: Boolean,
-            default: false,
+        userPermission: {
+            type: Object,
+            default: {},
         }
     },
     data() {
         return {
             changeModal: false,
-            // permission: false,
         }
     },
     methods: {
@@ -36,9 +39,18 @@ export default {
             this.changeModal = true;
         },
         async handleSubmit() {
+            let res = await $api.changeUserPower(this.userPermission);
+            if(res.code == 200) {
+                this.$TisMessage.success(res.msg);
+                location.reload();
+            }else {
+                this.$TisMessage.error('修改权限失败，请重试');
+            }
+            this.handleCancel();
         },
         handleCancel() {
             this.changeModal = false;
+            this.$emit('clear-user-permission')
         }
     }
 }

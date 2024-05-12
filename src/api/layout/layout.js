@@ -4,7 +4,7 @@ const $api = {};
 
 
 /**
- * 获取侧边栏权限
+ * 获取权限
  */
 $api.getPowerData = async(params) => {
     const url = '/getPowerData';

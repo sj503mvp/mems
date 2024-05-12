@@ -7,45 +7,56 @@
             </div>
             <div class="add-body-middle">
                 <tis-select v-model="userId">
-                    <tis-option v-for="item in userList" :key="item.id" :value="item.id" :label="item.name"></tis-option>
+                    <tis-option v-for="item in userList" :key="item.uid" :value="item.uid" :label="item.name"></tis-option>
                 </tis-select>
             </div>
             <div class="add-body-footer">
                 <tis-button type="default" @click="handleCancel">取消</tis-button>
-                <tis-button type="primary" style="margin-left: 8px;" @click="handleSubmit()">确定</tis-button>
+                <tis-button type="primary" style="margin-left: 8px;" @click="handleSubmit('add')">确定</tis-button>
             </div>
         </div>
     </tis-modal>
 </template>
 <script>
+import $api from '@/api/permission/index.js'
 export default {
     data() {
         return {
             addModal: false,
             userId: '',
-            userList: [
-                {
-                    id: '1',
-                    name: '狗头苏丹',
-                },
-                {
-                    id: '2',
-                    name: '狗头苏丹2',
-                },
-                {
-                    id: '3',
-                    name: '狗头苏丹3',
-                },
-            ]
+            userList: []
         }
     },
     methods: {
         show() {
+            this.getUnrootList();
             this.addModal = true;
         },
-        async handleSubmit() {
+        async getUnrootList() {
+            let res = await $api.getUnrootList();
+            this.userList = res.data.map(item => {
+                return {
+                    uid: item.uid,
+                    name: item.name,
+                }
+            })
+        },
+        async handleSubmit(type) {
+            let data = {
+                uid: this.userId,
+                type: type,
+            }
+            let res = await $api.changePermission(data);
+            if(res.code == 200) {
+                this.$TisMessage.success(res.msg)
+            }else {
+                this.$TisMessage.success('修改失败，请稍后再试')
+            }
+            this.handleCancel();
+
         },
         handleCancel() {
+            this.userId = '';
             this.addModal = false;
         }
     }

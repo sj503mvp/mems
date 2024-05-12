@@ -66,10 +66,10 @@
                         <td>{{ item.position }}</td>
                         <td>
                             <template v-if="$route.name == 'user'">
-                                <tis-button type="text" color="blue" class="first-button" @click="changeDetail(item)">查看</tis-button>
+                                <tis-button type="text" color="blue" class="first-button" @click="changeDetail(item.uid)">查看</tis-button>
                             </template>
                             <template v-if="$route.name == 'manager'">
-                                <tis-button type="text" color="blue" class="first-button" @click="deleteManager(item)">移除</tis-button>
+                                <tis-button type="text" color="blue" class="first-button" @click="deleteManager(item.uid)">移除</tis-button>
                             </template>
                         </td>
                     </tr>
@@ -113,7 +113,7 @@
                 :new-list="true">
             </empty-view>
         </div>
-        <change-modal ref="changeModal"></change-modal>
+        <change-modal ref="changeModal" :user-permission="userPermission" @clear-user-permission="clearUserPermission"></change-modal>
         <add-modal ref="addModal"></add-modal>
     </div>
 </template>
@@ -124,6 +124,8 @@ import changeModal from './business/ChangeUserModal.vue';
 import addModal from './business/AddModal.vue';
 import $api from '@/api/permission/index.js';
 import EmptyView from '@/components/common/empty_view/EmptyView.vue';
+import $permissionsApi from '@/api/layout/index.js'
+import $changePermissionApi from '@/api/permission/index.js'
 export default {
     mixins: [commonMixin],
     components: {
@@ -189,6 +191,7 @@ export default {
                 },
             ],
             listWidth: [20, 20, 20, 20, 20],
+            userPermission: {},
         }
     },
     watch: {
@@ -368,23 +371,46 @@ export default {
             this.searchData.positionId = params.positionId;
             this.getListData(params);
         },
-        changeDetail(item) {
-            // 调一个接口去请求权限,传入
+        async changeDetail(itemId) {
+            let params = {
+                uid: itemId,
+            }
+            let res = await $permissionsApi.getPowerData(params);
+            this.userPermission = {
+                uid: itemId,
+                hasNotifyApproval: res.hasNotifyApproval? true : false,
+                hasProcessApproval: res.hasProcessApproval? true : false,
+                hasChangePermission: res.hasChangePermission? true : false,
+            };
             this.$refs.changeModal.show();
         },
-        deleteManager() {
+        clearUserPermission() {
+            this.userPermission = {};
+        },
+        deleteManager(userId) {
+            let id = userId;
             this.$TisModal.warning({
-                    title: '移除管理员',
-                    content: '<p>此操作将会移除该管理员，操作不可逆</p>',
-                    maskClosable: true,
-                    okText: '删除',
-                    showCancel: true,
-                    okError: true,
-                    onOk: async () => {
-                    },
-                    onCancel: () => {
+                title: '移除管理员',
+                content: '<p>此操作将会移除该管理员，操作不可逆</p>',
+                maskClosable: true,
+                okText: '删除',
+                showCancel: true,
+                okError: true,
+                onOk: async () => {
+                    let data = {
+                        uid: id,
+                        type: 'delete'
                     }
-                });
+                    let res = await $changePermissionApi.changePermission(data);
+                    if(res.code == 200) {
+                        this.$TisMessage.success(res.msg)
+                    }else {
+                        this.$TisMessage.success('修改失败，请稍后再试')
+                    }
+                },
+                onCancel: () => {
+                }
+            });
         },
         addManager() {
             this.$refs.addModal.show();

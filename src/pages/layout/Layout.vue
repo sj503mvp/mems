@@ -78,9 +78,8 @@ export default {
             let power = await $api.getPowerData(params);
             let HASNOTIFYAPPROVAL = power.hasNotifyApproval != undefined || power.hasNotifyApproval != null? power.hasNotifyApproval: [];
             let HASPROCESSAPPROVAL = power.hasProcessApproval != undefined || power.hasProcessApproval != null? power.hasProcessApproval: [];
-            let HASPROCESSAPPROVED = power.hasProcessApproved != undefined || power.hasProcessApproved != null? power.hasProcessApproved: [];
             let HASCHANGEPERMISSION = power.hasChangePermission != undefined || power.hasChangePermission != null? power.hasChangePermission: [];
-            this.powerSiderData = [HASNOTIFYAPPROVAL,HASPROCESSAPPROVAL,HASPROCESSAPPROVED,HASCHANGEPERMISSION];
+            this.powerSiderData = [HASNOTIFYAPPROVAL,HASPROCESSAPPROVAL,HASCHANGEPERMISSION];
         },
         handleChange(menuItem) {
             if(menuItem.goUrlLocation) {

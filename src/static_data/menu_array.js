@@ -182,7 +182,7 @@ const menuArray = [
                 openName: "process_approved",
                 title: "我已审批",
                 goUrlLocation: false,
-                powerStatus: "hasProcessApproved",
+                powerStatus: "hasProcessApproval",
                 url: "/Mems/process/processApproved"
             },
         ]
