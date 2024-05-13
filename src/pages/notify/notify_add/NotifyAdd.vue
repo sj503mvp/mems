@@ -2,17 +2,17 @@
     <div class="notify-add" :style="{'min-height': `calc(100vh - 117px)`}">
         <div class="notify-content-box">
             <tis-form ref="notifyInfo" :model="notifyInfo" :rules="notifyInfoRule" :label-width="100" class="notify-info">
-                <tis-form-item label="公告标题" prop="notifyName">
-                    <tis-input v-model="notifyInfo.notifyName" placeholder="请输入公告标题" style="width: 500px" clearable></tis-input>
+                <tis-form-item label="公告标题" prop="notifyTitle">
+                    <tis-input v-model="notifyInfo.notifyTitle" placeholder="请输入公告标题" style="width: 500px" clearable></tis-input>
                 </tis-form-item>
                  <tis-form-item label="发布人">
-                    <tis-select v-model="userName" placeholder="请选择发布人" disabled style="width: 300px">
-                        <tis-option v-for="item in userList" :key="item.value" :value="item.value" :label="item.label"></tis-option>
+                    <tis-select v-model="userId" placeholder="请选择发布人" disabled style="width: 300px">
+                        <tis-option v-for="item in userList" :key="item.id" :value="item.id" :label="item.name"></tis-option>
                     </tis-select>
                 </tis-form-item>
                 <tis-form-item label="紧急程度" prop="notifyStatus">
                     <tis-select v-model="notifyInfo.notifyStatus" placeholder="请选择紧急程度" style="width: 300px">
-                        <tis-option v-for="item in statusList" :key="item.value" :value="item.value" :label="item.label"></tis-option>
+                        <tis-option v-for="item in statusList" :key="item.id" :value="item.id" :label="item.name"></tis-option>
                     </tis-select>
                 </tis-form-item>
                 <tis-form-item label="发布内容" prop="notifyContent">
@@ -24,17 +24,19 @@
     </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
+import $api from '@/api/notify/index.js'
 export default {
     data() {
         return {
             notifyInfo: {
-                notifyName: '',
+                notifyTitle: '',
                 notifyContent: '',
-                notifyStatus: '',
-                notifyTime: '' // 这里时间发布时取，并且将发布人加上
+                notifyStatus: '1',
+                notifyTime: ''
             },
             notifyInfoRule: {
-                notifyName: [
+                notifyTitle: [
                     { required: true, message: '请输入公告标题', trigger: 'blur' }
                 ],
                 notifyStatus: [
@@ -44,44 +46,79 @@ export default {
                     { required: true, message: '请输入公告内容', trigger: 'blur' }
                 ]
             },
-            // 后端获取人员id列表
-            userList: [
-                {
-                    value: '1',
-                    label: '当前用户名'
-                },
-                {
-                    value: '2',
-                    label: '其他用户名'
-                },
-            ],
+            userList: [],
             statusList: [
                 {
-                    value: '1',
-                    label: '普通',
+                    id: '1',
+                    name: '普通',
                 },
                 {
-                    value: '2',
-                    label: '紧急',
+                    id: '2',
+                    name: '紧急',
                 },
                 {
-                    value: '3',
-                    label: '非常紧急',
+                    id: '3',
+                    name: '非常紧急',
                 },
             ],
             // 登录存到状态机里取用
-            userName: '1'
+            userId: '',
         }
     },
+    created() {
+        this.getAllUser();
+    },
     methods: {
+        /**
+         * 获得所有用户
+         */
+        async getAllUser() {
+            this.userId = Cookies.get('uid');
+            let res = await $api.getAllUser();
+            this.userList = res.data.map(item => {
+                return {
+                    id: `${item.uid}`,
+                    name: item.name,
+                }
+            })
+        },
         async submit() {
             let validate = await this.$refs.notifyInfo.validate();
             if(validate) {
-                this.notifyInfo.notifyTime = new Date();
+                this.notifyInfo.notifyTime = this.getTime();
                 let data = this.notifyInfo;
-                data.userName = this.userName;
-                console.log(data,'qwe');
+                data.userId = this.userId;
+                let res = await $api.saveNotify(data);
+                if(res.code == 200) {
+                    this.$refs.notifyInfo.resetFields();
+                    this.$TisMessage.success(` ${res.msg},请等待审批`);
+                    // setTimeout(() => {
+                    //     this.notifyInfo = {
+                    //         notifyTitle: '',
+                    //         notifyContent: '',
+                    //         notifyStatus: '1',
+                    //         notifyTime: ''
+                    //     }
+                    // })
+                }else {
+                    this.$TisMessage.error('提交失败，请稍后重试');
+                }
             }
+        },
+        getTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            month = month< 10 ? '0' + month : month;
+            var date = now.getDate();
+            date = date < 10 ? '0' + date : date;
+            var hours = now.getHours();
+            hours = hours < 10 ? '0' + hours : hours;
+            var minutes = now.getMinutes();  
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var seconds = now.getSeconds();  
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds
         }
     }
 }
