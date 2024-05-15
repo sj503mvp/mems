@@ -22,7 +22,7 @@
                                 <tis-dropdown-item v-for="dropdownItem of item.dropdownList" :key="dropdownItem.id" :name="dropdownItem.title">{{ dropdownItem.title }}</tis-dropdown-item>
                             </tis-dropdown-menu>
                         </tis-dropdown>
-                        <MenuItem :key="item.name" :name="item.name" v-if="(!item.powerStatus || handleCode(item.powerStatus)) && !(item.dropdownList && item.dropdownList.length > 0)">
+                        <MenuItem :key="item.name" :name="item.name" v-if="(!item.powerStatus || handleCode(item.powerStatus)) && !(item.dropdownList && item.dropdownList.length > 0)" :class="{'ivu-menu-item-active ivu-menu-item-selected': item.name==activeMenu}">
                             <div class="menu second-menu">
                                 <i class="fa first-icon" :class=[item.iconAwesome] aria-hidden="true"></i>
                                 <span>{{ item.title }}</span>

@@ -37,13 +37,13 @@ export default {
             },
             notifyInfoRule: {
                 notifyTitle: [
-                    { required: true, message: '请输入公告标题', trigger: 'blur' }
+                    { required: true, message: '请输入公告标题', trigger: 'change' }
                 ],
                 notifyStatus: [
                     { required: true, message: '请选择紧急程度', trigger: 'change' }
                 ],
                 notifyContent: [
-                    { required: true, message: '请输入公告内容', trigger: 'blur' }
+                    { required: true, message: '请输入公告内容', trigger: 'change' }
                 ]
             },
             userList: [],
@@ -61,7 +61,6 @@ export default {
                     name: '非常紧急',
                 },
             ],
-            // 登录存到状态机里取用
             userId: '',
         }
     },
@@ -83,23 +82,21 @@ export default {
             })
         },
         async submit() {
+            console.log(this.$refs.clearBtn);
             let validate = await this.$refs.notifyInfo.validate();
             if(validate) {
                 this.notifyInfo.notifyTime = this.getTime();
                 let data = this.notifyInfo;
                 data.userId = this.userId;
+                data.publisher = this.userList.map(item => {
+                    if(this.userId == item.id) {
+                        return item.name
+                    }
+                })
                 let res = await $api.saveNotify(data);
                 if(res.code == 200) {
-                    this.$refs.notifyInfo.resetFields();
                     this.$TisMessage.success(` ${res.msg},请等待审批`);
-                    // setTimeout(() => {
-                    //     this.notifyInfo = {
-                    //         notifyTitle: '',
-                    //         notifyContent: '',
-                    //         notifyStatus: '1',
-                    //         notifyTime: ''
-                    //     }
-                    // })
+                    this.$refs.notifyInfo.resetFields();
                 }else {
                     this.$TisMessage.error('提交失败，请稍后重试');
                 }

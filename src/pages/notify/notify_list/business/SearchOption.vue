@@ -20,15 +20,28 @@
 </template>
 <script>
 export default {
+    props: {
+        resetStatus: {
+            type: Boolean,
+            default: false,
+        },
+        searchData: {
+            type: Object,
+            default: {},
+        }
+    },
     data() {
         return {
-            searchData: {},
-            resetStatus: false,
         }
     },
     methods: {
-        handleSearch() {},
-        handleReset() {},
+        handleSearch() {
+            this.$emit('on-search', this.searchData)
+            console.log(this.searchData,'qwe');
+        },
+        handleReset() {
+            this.$emit('on-clear')
+        },
         dateChange(date) {
             this.searchData.notifyTime = date;
         },

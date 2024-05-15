@@ -1,81 +1,160 @@
 <template>
-    <div class="all-notify" :style="{'min-height': 'calc(100vh - 117px)'}">
-        <search-option></search-option>
-        <notify-list :back-data="backData" :data-list="dataList"></notify-list>
+    <div class="all-notify">
+        <search-option :reset-status="resetStatus" @on-search="onSearch" @on-clear="onClear" :search-data="searchData"></search-option>
+        <notify-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage"></notify-list>
     </div>
 </template>
 <script>
+import {debounce} from "lodash";
+import commonMixin from '@/mixins/common.js';
 import SearchOption from '../business/SearchOption.vue';
 import NotifyList from '../business/List.vue'
+import $api from '@/api/notify/index.js'
 export default {
+    mixins: [commonMixin],
     components: {
         SearchOption,
         NotifyList,
     },
     data() {
         return {
-            backData: {
-                count: 4,
-                list: [
-                    {
-                        id: '1',
-                        title: '公告标题',
-                        publishTime: '2024-05-04',
-                        publisher: '狗头苏丹',
-                        approvalStatus: '审批中',
-                        notifyStatus: '紧急',
-                        notifyContent: '这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容'
-                    },
-                    {
-                        id: '2',
-                        title: '公告标题1',
-                        publishTime: '2024-05-04',
-                        publisher: '狗头苏丹1',
-                        approvalStatus: '审批通过',
-                        notifyStatus: '非常紧急',
-                        notifyContent: '这里是内容这里是内容这里是内容这里是里是内容这里是内容'
-                    },
-                    {
-                        id: '3',
-                        title: '公告标题3',
-                        publishTime: '2024-05-04',
-                        publisher: '狗头苏丹3',
-                        approvalStatus: '审批拒绝',
-                        notifyStatus: '普通',
-                        notifyContent: '这里是内容这里'
-                    },
-                ]
+            searchData: {
+                page: 1,
+                pageSize: 10,
+                keyword: '',
+                notifyTime: [],
             },
-            dataList: [
-                {
-                    id: '1',
-                    title: '公告标题',
-                    publishTime: '2024-05-04',
-                    publisher: '狗头苏丹',
-                    approvalStatus: '审批中',
-                    notifyStatus: '紧急',
-                    notifyContent: '这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容'
-                },
-                {
-                    id: '2',
-                    title: '公告标题1',
-                    publishTime: '2024-05-04',
-                    publisher: '狗头苏丹1',
-                    approvalStatus: '审批通过',
-                    notifyStatus: '非常紧急',
-                    notifyContent: '这里是内容这里是内容这里是内容这里是里是内容这里是内容'
-                },
-                {
-                    id: '3',
-                    title: '公告标题3',
-                    publishTime: '2024-05-04',
-                    publisher: '狗头苏丹3',
-                    approvalStatus: '审批拒绝',
-                    notifyStatus: '普通',
-                    notifyContent: '这里是内容这里'
-                },
-            ]
+            loading: true,
+            backData: {},
+            dataList: [],
+            resetStatus: false,
         }
+    },
+    mounted() {
+        this.initData();
+        this.takeRouteParams();
+    },
+    methods: {
+        onSearch(searchData) {
+            this.searchData = searchData;
+            this.searchData.page = 1;
+            this.pushRouteParams();
+        },
+        onClear() {
+            this.loading = true;
+            this.resetStatus = false;
+            this.searchData = {
+                page: 1,
+                pageSize: this.searchData.pageSize,
+            }
+            this.pushRouteParams();
+        },
+        getNotifyApproval: debounce(async function(params) {
+            this.loading = true;
+            this.dealPageOrPageSize(params);
+            this.$nextTick(() => {
+                this.resetJuged();
+                this.toPageTop();
+            })
+        }, 500),
+        initData() {
+            if(Object.keys(this.$route.query).length == 0) {
+                this.pushRouteParams();
+            }else {
+                let params = JSON.parse(JSON.stringify(this.$route.query));
+                this.getNotifyApproval(params);
+            }
+        },
+        /**
+         * 请求接口并存路由
+         */
+         async pushRouteParams() {
+            let arrType = ['notifyTime']
+            for(let i in this.searchData) {
+                if(!this.searchData[i]) {
+                    delete this.searchData[i]
+                }else if(Array.isArray(this.searchData[i])) {
+                    if(arrType.indexOf(i) != -1 && !this.searchData[i][0]) {
+                        delete this.searchData[i]
+                    }
+                }
+            }
+            // 存路由
+            let params = JSON.parse(JSON.stringify(this.searchData));
+            this.$router.push({
+                name: this.$route.name,
+                query: params
+            })
+            this.getNotifyApproval(params);
+        },
+        /**
+         * 在url中直接修改页码和页面大小的时候处理方法
+         */
+         async dealPageOrPageSize(params) {
+            if(params.pageSize > 40) {
+                params.pageSize = 40;
+            }
+            if(params.pageSize < 10) {
+                params.pageSize = 10;
+            }
+            let newPageSize = Math.round(params.pageSize / 10) * 10;
+            if(params.pageSize % 10 != 0) {
+                params.pageSize = newPageSize;
+            }
+            let res;
+            res = await $api.getNotifyAll(JSON.stringify(params));
+            let newPage = parseInt(res.data.count / params.pageSize);
+            if(res.data.count % params.pageSize != 0) {
+                newPage = newPage + 1;
+            }
+            if(params.page > newPage && res.data.count != 0) {
+                params.page = newPage;
+                res = await $api.getNotifyAll(JSON.stringify(params));
+            }
+            if(res.code == 200) {
+                this.backData = res.data;
+                this.dataList = res.data.list;
+            }
+            this.loading = false;
+            this.$router.push({
+                name: this.$route.name,
+                query: params
+            })
+            setTimeout(() => {
+                this.takeRouteParams();
+            }, 500)
+        },
+        /**
+         * 取出路由参数
+         */
+        takeRouteParams() {
+            if (this.$route.query) {
+                let params = JSON.parse(JSON.stringify(this.$route.query))
+                for (let i in params) {
+                    if (params[i] && i in this.searchData) {
+                        this.searchData[i] = params[i];
+                    }
+                }
+            }
+        },
+        /**
+         * 改变页码、页面大小、排序方式触发搜索
+         */
+        handlePage(page, pageSize) {
+            let params = JSON.parse(JSON.stringify(this.$route.query))
+            params.page = page;
+            params.pageSize = pageSize;
+            this.$router.push ({
+                name: this.$route.name,
+                query: params
+            })
+            // 直接赋值，循环params和this.searchData中有的属性会没有导致回显有问题
+            this.searchData.page = params.page;
+            this.searchData.pageSize = params.pageSize;
+            this.searchData.keyword = params.keyword;
+            this.searchData.notifyTime = params.notifyTime;
+            this.getNotifyApproval(params);
+        },
     }
 }
 </script>

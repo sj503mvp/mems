@@ -10,12 +10,13 @@
                 <p><span class="info-before">申请时间</span>： {{ process.processTime }}</p>
                 <p><span class="info-before">申请类型</span>： {{ process.processType }}</p>
                 <p><span class="info-before">申请内容</span>：<br>
-                    <span class="max-three-line">{{ process.processContent }}</span></p>
+                    <span class="max-five-line">{{ process.processContent }}</span></p>
             </div>
             <div class="process-body-footer">
                 <template v-if="$route.name == 'process_approval'">
                     <tis-button type="primary" @click="handleSubmit('yes')" style="margin-right: 8px;">审批通过</tis-button>
-                    <tis-button type="error" @click="handleSubmit('no')">审批不通过</tis-button>
+                    <tis-button type="error" @click="handleSubmit('no')" style="margin-right: 8px;">审批不通过</tis-button>
+                    <tis-button type="default" @click="handleCancel">取消审批</tis-button>
                 </template>
                 <template v-else>
                     <tis-button type="primary" @click="handleCancel">关闭</tis-button>
@@ -33,14 +34,12 @@ export default {
             process: {}
         }
     },
-    watch: {
-        '$route.name' (newVal, oldVal){
-            if(newVal == 'process_approval') {
-                this.title = '审批申请'
+    computed() {
+        if(this.$route.name == 'process_approval') {
+                return '审批公告'
             }else {
-                this.title = '查看申请'
+                return '查看公告'
             }
-        }
     },
     methods: {
         show(item) {
@@ -48,6 +47,7 @@ export default {
             this.processModal = true;
         },
         handleCancel() {
+            this.process = {};
             this.processModal = false;
         },
         async handleSubmit(type) {
