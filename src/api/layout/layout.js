@@ -25,4 +25,12 @@ $api.getUserInfo = async(params) => {
     }
 }
 
+/**
+ * 头部公告信息
+ */
+$api.getNoticeInfo = async(params) => {
+    const url = '/getNoticeInfo';
+    return await $http.get(url, { params: params })
+}
+
 export default $api;

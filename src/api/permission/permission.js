@@ -38,7 +38,6 @@ $api.getUnrootList = async() => {
  * 修改权限的权限
  */
 $api.changePermission = async(data) => {
-    console.log(data,'qwe');
     const url = '/changePermission';
     return await $http.post(url, data)
 }

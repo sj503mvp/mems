@@ -47,9 +47,6 @@ router.beforeEach(async(to, from, next) => {
 const routePass = (to) => {
     const routesName = [
         '登录',
-        'error-404',
-        'error-403',
-        'error-500',
     ];
     return routesName.indexOf(to.name) >= 0;
 }

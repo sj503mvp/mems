@@ -12,13 +12,14 @@
             marginLeft:contentBoxArr.indexOf($route.name) != -1? '0px':shrink?'60px':'220px'}">
             <div class="single-page">
                 <router-view ref="view"></router-view>
-                <!-- <water-mark ref="waterMark"></water-mark> -->
+                <water-mark ref="waterMark"></water-mark>
             </div>
             <common-footer></common-footer>
         </div>
     </div>
 </template>
 <script>
+import WaterMark from '@/components/common/water_mark/Watermark.vue';
 import menuArray from '@/static_data/menu_array.js';
 import headerMenu from './business/HeaderMenu.vue';
 import sidebarMenu from './business/SidebarMenu.vue';
@@ -32,6 +33,7 @@ export default {
         sidebarMenu,
         CommonFooter,
         sidebarMenuShrink,
+        WaterMark,
     },
     data() {
         return {

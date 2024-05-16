@@ -105,9 +105,14 @@ export default {
                     }
                     if(this.isLogin) {
                         let res = await $api.login(data);
+                        let params = {
+                            uid: res.uid
+                        }
+                        let userRes = await $api.getUserName(params);
                         if(res.code == 200) {
                             this.$TisMessage.success('登录成功');
                             Cookies.set('uid',res.uid);
+                            Cookies.set('username',userRes.data)
                             Cookies.set('token',res.token);
                             this.getUserUid();
                             this.$router.push({

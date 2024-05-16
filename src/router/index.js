@@ -6,16 +6,6 @@ import notify from './notify/notify.js'
 import permission from './permission/permission.js'
 import userInfo from './user/user.js'
 
-const page403 = {
-    path: '403',
-    meta: {
-        title: '403-权限不足',
-        hideMenu: true
-    },
-    name: 'error-403',
-    component: () => import('@/components/common/error_page/new_403.vue')
-};
-
 // 登录和注册
 export const loginRouter = {
     path: '/',
@@ -37,7 +27,6 @@ export const appRouter = {
     children: [
         home,
         device,
-        page403,
         notify,
         userInfo,
         permission,

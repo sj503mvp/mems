@@ -113,7 +113,6 @@ export default {
     methods: {
         handleSearch() {
             console.log('触发搜索');
-            console.log(this.searchData,'qwe');
         },
         handleReset() {
             console.log('重置');

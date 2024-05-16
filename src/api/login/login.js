@@ -20,4 +20,12 @@ $api.register = async(data) => {
     return await $http.post(url, data);
 }
 
+
+/**
+ * 获得username
+ */
+$api.getUserName = async(params) => {
+    const url = '/getUserName';
+    return await $http.get(url, { params: params })
+}
 export default $api

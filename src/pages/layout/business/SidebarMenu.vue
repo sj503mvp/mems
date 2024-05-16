@@ -158,7 +158,6 @@ export default {
             let url = this.$router.resolve({
                 name: routeName
             });
-            console.log(routeName,'qwe');
             window.open(url.href);
             window.opener = null;
             // 选中上次点击的菜单

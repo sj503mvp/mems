@@ -17,7 +17,7 @@
                 </div>
                 <div class="header-dropdown" style="height: 50px; display: flex; margin-right: 16px;">
                     <tis-icon type='ios-megaphone-outline' style="margin-right: 8px" size="24"></tis-icon>
-                    <span>公告</span>
+                    <tis-badge :count="infoNumber"><span style="display: inline-block;">公告</span></tis-badge>
                     <div class="dropdown-box">
                         <div v-for="item in infoList" :key="item.id" class="dropdown-info-box" @click="toNoticeDetail(item)">
                             <div class="info-top">
@@ -26,7 +26,7 @@
                             </div>
                             <div class="info-bottom" v-title>{{ item.content }}</div>
                         </div>
-                        <tis-button style="width: 100%;" type="primary" class="header-button" @click="toAllNotice">查看全部公告</tis-button>
+                        <tis-button style="width: 100%;" type="primary" class="header-button" @click="toAllNotice">查看全部未查看通知</tis-button>
                     </div>  
                 </div>
                 <div class="header-logout" @click="logOut" style="height: 50px; display: flex; margin-right: 16px;">
@@ -47,30 +47,29 @@ export default {
     data() {
         return {
             modal: false,
-            infoList: [
-                {
-                    title: '公告标题',
-                    content: '公告内容公告内容公告内容公告内容公告内容公告内容',
-                    time: '2024-05-03 16:16'
-                },
-                {
-                    title: '公告标题',
-                    content: '公告内容公告内容公告内容公告内容公告内容公告内容',
-                    time: '2024-05-03 16:16'
-                },
-                {
-                    title: '公告标题',
-                    content: '公告内容公告内容公告内容公告内容公告内容公告内容',
-                    time: '2024-05-03 16:16'
-                },
-            ],
+            infoList: [],
+            infoNumber: 0,
             userName: '',
         }
     },
     mounted() {
         this.getUserInfo();
+        this.getNoticeInfo();
     },
     methods: {
+        async getNoticeInfo() {
+            let params = {
+                uid: Cookies.get('uid')
+            }
+            let res = await $api.getNoticeInfo(params);
+            if(res.code == 200) {
+                this.infoNumber = parseInt(res.data.count);
+                this.infoList = res.data.list;
+                if(this.infoList.length > 3) {
+                    this.infoList = this.infoList.slice(0,3)
+                }
+            }
+        },
         async getUserInfo() {
             let params = {
                 uid: Cookies.get('uid'),
@@ -117,7 +116,7 @@ export default {
         },
         toAllNotice() {
             this.$router.push({
-                name: 'notify_all'
+                name: 'notify_unread'
             })
         }
     }
