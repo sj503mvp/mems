@@ -69,14 +69,14 @@
             :title-style="{'font-size': '14px', 'font-weight': '400'}"
             :new-list="true">
         </empty-view>
-        <notify-modal ref="notifyModal"></notify-modal>
+        <notify-modal ref="notifyModal" @reload-page="reloadPage"></notify-modal>
     </div>
 </template>
 <script>
 import Cookies from 'js-cookie';
 import NotifyModal from '@/components/notify/NotifyModal.vue';
 import EmptyView from '@/components/common/empty_view/EmptyView.vue';
-import $api from '@/api/notify/notify';
+import $api from '@/api/notify/index.js';
 export default {
     components: {
         NotifyModal,
@@ -139,6 +139,9 @@ export default {
             this.pageSize = pageSize;
             this.$emit("handle-page", 1, this.pageSize)
         },
+        reloadPage() {
+            this.$emit('reload-page')
+        }
     }
 }
 </script>

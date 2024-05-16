@@ -82,7 +82,6 @@ export default {
             })
         },
         async submit() {
-            console.log(this.$refs.clearBtn);
             let validate = await this.$refs.notifyInfo.validate();
             if(validate) {
                 this.notifyInfo.notifyTime = this.getTime();

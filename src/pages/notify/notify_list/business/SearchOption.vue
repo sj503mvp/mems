@@ -37,7 +37,6 @@ export default {
     methods: {
         handleSearch() {
             this.$emit('on-search', this.searchData)
-            console.log(this.searchData,'qwe');
         },
         handleReset() {
             this.$emit('on-clear')

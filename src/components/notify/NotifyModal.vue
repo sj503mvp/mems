@@ -70,7 +70,7 @@ export default {
                 let res = await $api.approvalNotify(data);
                 if(res.code == 200) {
                     this.$TisMessage.success(res.msg);
-                    location.reload();
+                    this.$emit('reload-page');
                 }else {
                     this.$TisMessage.error('审批失败')
                 }
@@ -84,7 +84,7 @@ export default {
                 let res = await $api.approvalNotify(data);
                 if(res.code == 200) {
                     this.$TisMessage.success(res.msg);
-                    location.reload();
+                    this.$emit('reload-page');
                 }else {
                     this.$TisMessage.error('审批失败')
                 }

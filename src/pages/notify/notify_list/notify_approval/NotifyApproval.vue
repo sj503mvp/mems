@@ -1,7 +1,7 @@
 <template>
     <div class="approval-notify">
         <search-option :reset-status="resetStatus" @on-search="onSearch" @on-clear="onClear" :search-data="searchData"></search-option>
-        <notify-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage"></notify-list>
+        <notify-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage" @reload-page="reloadPage"></notify-list>
     </div>
 </template>
 <script>
@@ -155,6 +155,10 @@ export default {
             this.searchData.notifyTime = params.notifyTime;
             this.getNotifyApproval(params);
         },
+        async reloadPage() {
+            let params = JSON.parse(JSON.stringify(this.$route.query));
+            await this.getNotifyApproval(params);
+        }
     }
 }
 </script>

@@ -7,10 +7,10 @@
                         <tis-input placeholder="流程标题" clearable :max-length="20" v-model="searchData.keyword"></tis-input>
                     </tis-col>
                     <tis-col span="6">
-                        <tis-date-picker type="date" placeholder="发起时间" :value="searchData.processTime" @on-change="dateChange"></tis-date-picker>
+                        <tis-date-picker type="daterange" placeholder="发起时间" :value="searchData.processTime" @on-change="dateChange"></tis-date-picker>
                     </tis-col>
                     <tis-col span="6">
-                        <tis-select v-model="searchData.processType" clearable>
+                        <tis-select v-model="searchData.processType" clearable placeholder="申请种类">
                             <tis-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.name }}</tis-option>
                         </tis-select>
                     </tis-col>
@@ -25,9 +25,18 @@
 </template>
 <script>
 export default {
+    props: {
+        resetStatus: {
+            type: Boolean,
+            default: false,
+        },
+        searchData: {
+            type: Object,
+            default: {},
+        }
+    },
     data() {
         return {
-            resetStatus: false,
             typeList: [
                 {
                     id: '1',
@@ -38,16 +47,17 @@ export default {
                     name: '报废申请'
                 }
             ],
-            searchData: {
-
-            }
         }
     },
     methods: {
-        handleSearch() {},
-        handleReset() {},
-        dateChange(data) {
-            this.searchData.processTime = data;
+        handleSearch() {
+            this.$emit('on-search', this.searchData)
+        },
+        handleReset() {
+            this.$emit('on-clear')
+        },
+        dateChange(date) {
+            this.searchData.processTime = date;
         },
     }
 }
