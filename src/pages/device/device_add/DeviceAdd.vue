@@ -175,7 +175,6 @@ export default {
             validateStatus: true,
             submitLoading: false,
             scrollOffset: 0,
-            recordUserId: '',
         }
     },
     computed: {

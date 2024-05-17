@@ -164,7 +164,6 @@ export default {
             validateStatus: true,
             submitLoading: false,
             scrollOffset: 0,
-            recordUserId: '',
         }
     },
     computed: {
@@ -183,33 +182,29 @@ export default {
         }
     },
     mounted() {
-        // let res = $api. (this.$route.params.device_id)
-        let res = {
-            deviceNumber: 'YL-1',
-            deviceId: '1',
-            name: '冶炼设备一号',
-            status: '异常',
-            buyTime: '2021-03-26',
-            ownFactory: '华东冶炼一厂',
-            type: '1',
-            recordUserId: '1',
-            buyMoney: '15000',
-            typeName: '冶炼设备',
-            lastFitTime: '2023-04-12',
-            productor: '有限制造公司',
-            introduce: '设备介绍',
-            sourceId: '2',
-            isFocus: true,
-        }
-        this.deviceData = res;
         let that = this;
         this.$on('scrollToFirst',function (msg) {
             that.scrollToFirst();
         })
         document.addEventListener('scroll',this.loadImg,false)
         this.getAllUser();
+        this.getDeviceInfo();
     },
     methods: {
+        /**
+         * 获得设备信息
+         */
+        async getDeviceInfo() {
+            let params = {
+                deviceId: this.$route.params.device_id
+            }
+            let res = await $api.getDeviceInfo(params);
+            if(res.code == 200) {
+                this.deviceData = res.data
+                // 修改为字符串类型，不然组件回显不上
+                this.deviceData.recordUserId = String(this.deviceData.recordUserId)
+            }
+        },
         /**
          * 获得所有用户
          */
