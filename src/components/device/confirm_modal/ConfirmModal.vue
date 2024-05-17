@@ -12,6 +12,7 @@
                         <tis-radio-group v-model="confirmData.status">
                             <tis-radio label="1">正常</tis-radio>
                             <tis-radio label="2">异常</tis-radio>
+                            <tis-radio label="3">报废</tis-radio>
                         </tis-radio-group>
                     </tis-form-item>
                     <tis-form-item prop="reason" label="维修原因">

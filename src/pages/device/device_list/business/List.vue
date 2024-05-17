@@ -1,6 +1,6 @@
 <template>
-    <div class="device-list-bg" :key="$route.name">
-        <div class="list-bg-content">
+    <div class="device-list-bg">
+        <div class="list-bg-content" :style="{'min-height': `calc(100vh - 205px)`}">
             <tis-spin v-if="loading" fix></tis-spin>
             <template v-if="$route.name === 'pending_device'">
                 <div class="list-top">
@@ -11,40 +11,37 @@
             <template v-if="$route.name === 'recycle_device'">
                 <div class="list-top">
                     <tis-icon class="info-icon" type="ios-information-circle" size="18"></tis-icon>
-                    <span class="info-word">设备报废审批通过后将会出现在此列表</span>
+                    <span class="info-word">设备报废后将会出现在此列表</span>
                 </div>
             </template>
-            <div class="list-content">
-                <div class="list-item" v-for="(item,index) in dataList" :key="item.deviceId">
+            <div class="list-content" :style="backData.count>10? {'min-height':'calc(100vh - 261px)'}: {'min-height' : ''}">
+                <div class="list-item" v-for="(item,index) in dataList" :key="item.id">
                     <div class="item-left" v-if="$route.name === 'pending_device'">
-                        <tis-checkbox :value="selectIds.includes(item.deviceId)" @on-change="(event) => checkboxChange(event, item)"></tis-checkbox>
+                        <tis-checkbox :value="selectIds.includes(item.id)" @on-change="(event) => checkboxChange(event, item)"></tis-checkbox>
                     </div>
                     <div class="item-right">
                         <div class="item-right-top">
                             <div class="item-title">
-                                <p class="item-title-word" v-title @click="toDetail(item)">[{{ item.deviceNumber }}] {{ item.title }}</p>
-                                <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
-                                <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='异常'">异常</tis-tag>
-                                <tis-tag type="brimless" color="blue" class="title-tag" v-if="item.status=='维修中'">维修中</tis-tag>
-                                <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='待确认'">待确认</tis-tag>
-                                <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='报废'">报废</tis-tag>
-                            </div>
-                            <div>
-                                <tis-icon></tis-icon>
+                                <p class="item-title-word" v-title @click="toDetail(item)">[{{ item.number }}] {{ item.name }}</p>
+                                <tis-tag type="brimless" color="green" class="title-tag" v-if="item.status=='1'">正常</tis-tag>
+                                <tis-tag type="brimless" color="red" class="title-tag" v-if="item.status=='2'">异常</tis-tag>
+                                <tis-tag type="brimless" color="blue" class="title-tag" v-if="item.status=='3'">维修中</tis-tag>
+                                <tis-tag type="brimless" color="yellow" class="title-tag" v-if="item.status=='4'">待确认</tis-tag>
+                                <tis-tag type="brimless" color="grey" class="title-tag" v-if="item.status=='5'">报废</tis-tag>
                             </div>
                         </div>
                         <div class="item-bottom">
                             <div class="item-bottom-left">
-                                <div class="item-bottom-field">设备种类：{{item.typeName}}</div>
+                                <div class="item-bottom-field">设备种类：{{item.type}}</div>
                                 <div class="item-bottom-field info-factory-field">所属厂区：<span class="info-factory">{{item.ownFactory}}</span></div>
                                 <div class="item-bottom-field">购入时间：{{item.buyTime}}</div>
-                                <div class="item-bottom-field">最后一次维修时间：{{item.lastFitTime}}</div>
+                                <div class="item-bottom-field">最后一次维修时间：{{item.lastFitTime? item.lastFitTIme : '暂无'}}</div>
                             </div>
                             <template v-if="$route.name == 'pending_device'">
-                                    <div v-if="item.status !== '待确认'" class="item-bottom-share" @click="pushItem(item, 'single')">
+                                    <div v-if="item.status !== '4'" class="item-bottom-share" @click="pushItem(item, 'single')">
                                         <i class="iconfont icontuisong share-icon"></i><span class="share-word">推送</span>
                                     </div>
-                                    <div v-else class="item-bottom-share" @click="openConfirmModal(item)">
+                                    <div v-if="item.status == '4'" class="item-bottom-share" @click="openConfirmModal(item)">
                                         <i class="iconfont iconcheck share-icon"></i><span class="share-word">确认</span>
                                     </div>
                             </template>
@@ -63,7 +60,7 @@
                 </div>
             </div>
             <div v-if="backData.count<=10 && backData.count>0" class="list-bottom-less">
-                <div class="bottom-left">
+                <div class="bottom-left" v-if="$route.name == 'pending_device'">
                     <tis-checkbox :value="selectIds.length == dataList.length"
                         :disabled="loading"  @on-change="handleCheckAll">
                         <span class="bottom-left-word">全选</span>
@@ -71,6 +68,7 @@
                     <tis-button type="primary" :disabled="selectIds.length === 0 || loading" @click="pushItem">推送设备</tis-button>
                     <p class="num-selected" v-if="selectIds.length">已选择<span class="num">{{selectIds.length}}</span>条</p>
                 </div>
+                <div v-else></div>
                 <p class="bottom-info-less">共 {{ backData.count }} 条</p>
             </div>
             <div v-if="backData.count>10" id="pageBottom" ref="pageBottom" class="list-bottom">
@@ -98,6 +96,22 @@
                     />
                 </div>
             </div>
+            <empty-view
+                v-if="(backData.count == 0 || backData.count == null) && !loading && !resetStatus"
+                :style="{'height': `calc(100vh - 301px)`, 'min-height': '250px'}"
+                :empty-img-url="'/common/no_message@2x.png'"
+                :title="'暂无数据'"
+                :title-style="{'font-size': '14px', 'font-weight': '400'}"
+                :new-list="true"
+            ></empty-view>
+            <empty-view
+                v-if="(backData.count==0 || backData.count ==null )&& !loading && resetStatus"
+                :style="{'height': `calc(100vh - 301px)`, 'min-height': '250px'}"
+                :empty-img-url="'/common/no_search_result@2x.png'"
+                :title="'搜索无结果'"
+                :title-style="{'font-size': '14px', 'font-weight': '400'}"
+                :new-list="true">
+            </empty-view>
         </div>
         <confirm-modal ref="confirmItemModal" @reload-list="reloadList"></confirm-modal>
         <tis-push-range
@@ -115,11 +129,17 @@
 </template>
 <script>
 import ConfirmModal from '@/components/device/confirm_modal/ConfirmModal.vue'
+import EmptyView from '@/components/common/empty_view/EmptyView.vue';
 export default {
     components: {
-        ConfirmModal
+        ConfirmModal,
+        EmptyView,
     },
     props: {
+        searchData: {
+            type: Object,
+            default: {},
+        },
         loading: {
             type: Boolean,
             default: false,
@@ -131,13 +151,20 @@ export default {
         dataList: {
             type: Array,
             default: [],
+        },
+        resetStatus: {
+            type: Boolean,
+            default: false,
         }
     },
     data() {
         return {
+            page: 1,
+            pageSize: 10,
             selectIds: [],
-            peopleList: [],
             singleId: [],
+            // 推送人员列表
+            peopleList: [],
         }
     },
     watch: {
@@ -196,7 +223,7 @@ export default {
             this.selectIds = []
             if (event) {
                 this.dataList.forEach(item => {
-                    this.selectIds.push(item.deviceId)
+                    this.selectIds.push(item.id)
                 })
             }
         },
@@ -207,7 +234,7 @@ export default {
             this.openModal();
             this.singleId = [];
             if(type == 'single') {
-                this.singleId.push(item.deviceId);
+                this.singleId.push(item.id);
             }
         },
         openModal() {
@@ -221,10 +248,10 @@ export default {
         checkboxChange(event, item) {
             if (event) {
                 // 选中
-                this.selectIds.push(item.deviceId)
+                this.selectIds.push(item.id)
             } else {
                 // 取消选中
-                this.selectIds.splice(this.selectIds.indexOf(item.deviceId), 1)
+                this.selectIds.splice(this.selectIds.indexOf(item.id), 1)
             }
         },
         openConfirmModal(item) {
@@ -303,7 +330,6 @@ export default {
             };
             let pushData = res.data;
             this.peopleList = JSON.parse(JSON.stringify(pushData.userTree));
-            console.log(this.peopleList,'qwe');
             if (this.$refs.tisPushRange) {
                 this.$refs.tisPushRange.hideLoading();
             }
@@ -314,7 +340,7 @@ export default {
          async pushConfirm(data) {
             const uidArray = [];
             data.forEach((item, index, array)=> {
-                uidArray.push(item.deviceId)
+                uidArray.push(item.id)
             })
             let params = {
                 uidArray: uidArray,
@@ -324,7 +350,7 @@ export default {
             this.selectIds = [];
         },
         toDetail(item) {
-            this.openDetailPage('device_detail', item.deviceId)
+            this.openDetailPage('device_detail', item.id)
         },
         openDetailPage(pageName, device_id) {
             window.open(this.$router.resolve({

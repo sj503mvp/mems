@@ -5,21 +5,21 @@
                 <div class="search-left">
                     <tis-row :gutter="12">
                         <tis-col span="6">
-                            <tis-input placeholder="设备ID 设备名称" clearable :max-length="20" v-model="searchData.keyword"></tis-input>
+                            <tis-input placeholder="设备名称" clearable :max-length="20" v-model="searchData.keyword"></tis-input>
                         </tis-col>
                         <tis-col span="6">
-                            <tis-select placeholder="设备类型" clearable v-model="searchData.type">
+                            <tis-select placeholder="设备类型" clearable v-model="searchData.typeId">
                                 <tis-option v-for="(item,index) in deviceTypeList" :key="index" :value="item.id + ''">{{ item.name }}</tis-option>
                             </tis-select>
                         </tis-col>
                         <tis-col span="6">
-                            <tis-select scroll-id="scrollId" placeholder="所属厂区" clearable multiple filterable v-model="searchData.factory">
-                                <tis-option v-for="(item,index) in deviceFactoryList" :key="index" :value="item.id" :label="item.name"></tis-option>
+                            <tis-select scroll-id="scrollId" placeholder="所属厂区" clearable v-model="searchData.ownFactoryId">
+                                <tis-option v-for="(item,index) in factoryList" :key="index" :value="item.id" :label="item.name"></tis-option>
                             </tis-select>
                         </tis-col>
-                        <tis-col span="6">
+                        <tis-col span="6" v-if="$route.name !== 'pending_device' && $route.name !== 'recycle_device' && $route.name !== 'all_device_follow' && $route.name !== 'my_device_follow'">
                             <tis-select placeholder="设备状态" clearable v-model="searchData.status">
-                                <tis-option v-for="(item,index) in deviceStatusList" :key="index" :value="item.id + ''">{{ item.name }}</tis-option>
+                                <tis-option v-for="(item,index) in statusList" :key="index" :value="item.id + ''">{{ item.name }}</tis-option>
                             </tis-select>
                         </tis-col>
                     </tis-row>
@@ -40,6 +40,16 @@
 </template>
 <script>
 export default {
+    props: {
+        resetStatus: {
+            type: Boolean,
+            default: false,
+        },
+        searchData: {
+            type: Object,
+            default: {},
+        }
+    },
     data() {
         return {
             deviceTypeList: [
@@ -64,29 +74,33 @@ export default {
                     name: '辅助设备',
                 },
             ],
-            deviceFactoryList: [
+            factoryList: [
                 {
                     id: '1',
-                    name: '华东冶炼一厂',
+                    name: '总部'
                 },
                 {
                     id: '2',
-                    name: '华南轧制二厂',
+                    name: '华东冶炼一厂'
                 },
                 {
                     id: '3',
-                    name: '华东连铸三厂',
+                    name: '华南轧制二厂'
                 },
                 {
                     id: '4',
-                    name: '华北冶炼四厂',
+                    name: '华东连铸三厂'
                 },
                 {
                     id: '5',
-                    name: '华南冶炼五厂',
+                    name: '华北冶炼四厂'
+                },
+                {
+                    id: '6',
+                    name: '华南冶炼五厂'
                 },
             ],
-            deviceStatusList: [
+            statusList: [
                 {
                     id: '1',
                     name: '正常',
@@ -101,21 +115,21 @@ export default {
                 },
                 {
                     id: '4',
+                    name: '待确认',
+                },
+                {
+                    id: '5',
                     name: '报废',
                 },
             ],
-            resetStatus: false,
-            searchData: {
-
-            }
         }
     },
     methods: {
         handleSearch() {
-            console.log('触发搜索');
+            this.$emit('on-search', this.searchData)
         },
         handleReset() {
-            console.log('重置');
+            this.$emit('on-clear')
         }
     }
 }

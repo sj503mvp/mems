@@ -6,11 +6,11 @@
                 <div class="device-base-info">
                     <p class="device-info-title">设备信息</p>
                     <tis-form ref="baseInfo" :model="baseInfo" :rules="baseInfoRule" :label-width="100" class="base-info">
-                        <tis-form-item label="设备名称" prop="deviceName">
-                            <tis-input v-model="baseInfo.deviceName" placeholder="设备名称" style="width: 500px" clearable></tis-input>
+                        <tis-form-item label="设备名称" prop="name">
+                            <tis-input v-model="baseInfo.name" placeholder="设备名称" style="width: 500px" clearable></tis-input>
                         </tis-form-item>
                         <tis-form-item label="设备种类">
-                            <tis-radio-group v-model="baseInfo.type" class="form-radio-class">
+                            <tis-radio-group v-model="baseInfo.typeId" class="form-radio-class">
                                 <tis-radio label="1">
                                     <span>冶炼设备</span>
                                 </tis-radio>
@@ -28,31 +28,36 @@
                                 </tis-radio>
                             </tis-radio-group>
                         </tis-form-item>
-                        <tis-form-item label="录入人" prop="deviceManager">
-                            <tis-select v-model="baseInfo.deviceManager" filterable clearable style="width: 500px">
-                                <tis-option v-for="item in managerList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
+                        <tis-form-item label="录入人" prop="recordUserId">
+                            <tis-select v-model="baseInfo.recordUserId" filterable clearable style="width: 500px">
+                                <tis-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
                             </tis-select>
                         </tis-form-item>
-                        <tis-form-item label="购入金额" prop="deviceMoney">
+                        <tis-form-item label="购入金额" prop="buyMoney">
                             <tis-splicing-input
                                 type="company"
                                 :unit-select="true"
                                 :unit-list="unitList"
                                 isClearable
                                 input1-placeholder="请输入金额"
-                                :default-text1="baseInfo.deviceMoney"
+                                :default-text1="baseInfo.buyMoney"
                                 @change-input="changeInput"
                                 style="width: 500px">
                             </tis-splicing-input>
                         </tis-form-item>
-                        <tis-form-item label="购入时间" prop="deviceTime">
-                            <tis-date-picker type="date" placeholder="购入时间" :value="baseInfo.deviceTime" style="width: 500px" @on-change="dateChange"></tis-date-picker>
+                        <tis-form-item label="购入时间" prop="buyTime">
+                            <tis-date-picker type="date" placeholder="购入时间" :value="baseInfo.buyTime" style="width: 500px" @on-change="dateChange"></tis-date-picker>
                         </tis-form-item>
                         <tis-form-item label="生产厂家">
-                            <tis-input v-model="baseInfo.deviceCreater" placeholder="请输入生产产家" style="width: 500px" clearable></tis-input>
+                            <tis-input v-model="baseInfo.productor" placeholder="请输入生产产家" style="width: 500px" clearable></tis-input>
+                        </tis-form-item>
+                        <tis-form-item label="所属厂区">
+                            <tis-select v-model="baseInfo.ownFactoryId" filterable clearable style="width: 500px">
+                                <tis-option v-for="item in factoryList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
+                            </tis-select>
                         </tis-form-item>
                         <tis-form-item label="设备介绍">
-                            <tis-input type="textarea" v-model="baseInfo.deviceDesc" placeholder="设备介绍" :autosize="{}" show-word-limit maxlength="200"></tis-input>
+                            <tis-input type="textarea" v-model="baseInfo.introduce" placeholder="设备介绍" :autosize="{}" show-word-limit maxlength="200"></tis-input>
                         </tis-form-item>
                     </tis-form>
                 </div>
@@ -62,7 +67,7 @@
                     <p class="device-info-title">其他信息</p>
                     <tis-form :label-width="100" class="base-info">
                         <tis-form-item label="来源渠道">
-                            <tis-radio-group v-model="baseInfo.source" class="form-radio-class">
+                            <tis-radio-group v-model="baseInfo.sourceId" class="form-radio-class">
                                 <tis-radio label="1">
                                     <span>制造商直接采购</span>
                                 </tis-radio>
@@ -101,77 +106,94 @@
     </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
+import $api from '@/api/device/index.js'
 export default {
     data() {
         return {
             baseInfo: {
-                deviceName: '',
-                type: '',
-                deviceManager: '',
-                deviceMoney: '',
-                unit: '',
-                deviceTime: '',
-                deviceCreater: '',
-                deviceDesc: '',
-                source: '',
+                name: '',
+                typeId: '',
+                recordUserId: '',
+                buyMoney: '',
+                unitId: '',
+                buyTime: '',
+                productor: '',
+                ownFactoryId: '',
+                introduce: '',
+                sourceId: '',
             },
             baseInfoRule: {
-                deviceName: [
+                name: [
                     { required: true, message: '请输入设备名称', trigger: 'blur' }
                 ],
-                deviceManager: [
+                recordUserId: [
                     { required: true, message: '请选择录入人', trigger: 'change' }
                 ],
-                deviceMoney: [
+                buyMoney: [
                     { required: true, message: '请输入金额', trigger: 'blur'}
                 ],
-                deviceTime: [
+                buyTime: [
                     { required: true, type: 'date', message: '请选择时间', trigger: 'change' }
                 ],
             },
-            managerList: [
-                {
-                    id: '1',
-                    name: '设备管理人1号'
-                },
-                {
-                    id: '2',
-                    name: '设备管理人2号'
-                },
-                {
-                    id: '3',
-                    name: '设备管理人3号'
-                },
-            ],
+            userList: [],
             unitList: [
                 {key: '1', value: '元'},
                 {key: '2', value: '美元'},
                 {key: '3', value: '日元'},
                 {key: '4', value: '法郎'},
             ],
+            factoryList: [
+                {
+                    id: '1',
+                    name: '总部'
+                },
+                {
+                    id: '2',
+                    name: '华东冶炼一厂'
+                },
+                {
+                    id: '3',
+                    name: '华南轧制二厂'
+                },
+                {
+                    id: '4',
+                    name: '华东连铸三厂'
+                },
+                {
+                    id: '5',
+                    name: '华北冶炼四厂'
+                },
+                {
+                    id: '6',
+                    name: '华南冶炼五厂'
+                },
+            ],
             bottom: 0,
             selectNumber: 0, // 获取锚点点击次数
             validateStatus: true,
             submitLoading: false,
-            scrollOffset: 0
+            scrollOffset: 0,
+            recordUserId: '',
         }
     },
     computed: {
         type() {
             if(this.$route.name == 'device_one') {
-                this.baseInfo.type = '1';
+                this.baseInfo.typeId = '1';
                 return '冶炼';
             }else if(this.$route.name == 'device_two') {
-                this.baseInfo.type = '2';
+                this.baseInfo.typeId = '2';
                 return '连铸';
             }else if(this.$route.name == 'device_three') {
-                this.baseInfo.type = '3';
+                this.baseInfo.typeId = '3';
                 return '轧制';
             }else if(this.$route.name == 'device_four') {
-                this.baseInfo.type = '4';
+                this.baseInfo.typeId = '4';
                 return '后步精整';
             }else {
-                this.baseInfo.type = '5';
+                this.baseInfo.typeId = '5';
                 return '辅助';
             }
         }
@@ -182,8 +204,23 @@ export default {
             that.scrollToFirst();
         })
         document.addEventListener('scroll',this.loadImg,false)
+        this.getAllUser();
     },
     methods: {
+        /**
+         * 获得所有用户
+         */
+        async getAllUser() {
+            this.baseInfo.recordUserId = Cookies.get('uid');
+            let res = await $api.getAllUserList();
+            this.userList = res.data.map(item => {
+                return {
+                    id: `${item.uid}`,
+                    name: item.name,
+                }
+            })
+        },
+
         /**
          * 触底滚动条监听位置
          */
@@ -236,13 +273,19 @@ export default {
             }else {
                 this.validateStatus = true;
                 let data = this.baseInfo;
-                // let res = await $api. ()
-                this.$TisMessage.success('保存成功');
-                this.submitLoading = false;
-                this.$refs.baseInfo.resetFields();
-                this.$router.push({
-                    name: '首页'
-                })
+                let res = await $api.saveDeviceInfo(data);
+                if(res.code == 200) {
+                    this.$TisMessage.success('保存成功');
+                    this.submitLoading = false;
+                    this.$refs.baseInfo.resetFields();
+                    this.$router.push({
+                        name: '首页'
+                    })
+                }else {
+                    this.submitLoading = false;
+                    this.$TisMessage.error('保存失败，请稍后再试');
+                }
+
             }
         },
         /**
@@ -254,15 +297,15 @@ export default {
             })
         },
         changeInput(index, type ,tel) {
-            this.baseInfo.deviceMoney = type
-            this.baseInfo.unit= tel
+            this.baseInfo.buyMoney = type
+            this.baseInfo.unitId= tel
         },
         /**
          * 日期改变
          * @param {Array} date 选择的日期
         */
         dateChange(date) {
-            this.baseInfo.deviceTime = date;
+            this.baseInfo.buyTime = date;
         },
     }
 }
