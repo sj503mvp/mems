@@ -168,13 +168,13 @@ export default {
     },
     computed: {
         type() {
-            if(this.deviceData.typeId = '1') {
+            if(this.deviceData.typeId == '1') {
                 return '冶炼';
-            }else if(this.deviceData.typeId = '2') {
+            }else if(this.deviceData.typeId == '2') {
                 return '连铸';
-            }else if(this.deviceData.typeId = '3') {
+            }else if(this.deviceData.typeId == '3') {
                 return '轧制';
-            }else if(this.deviceData.typeId = '4') {
+            }else if(this.deviceData.typeId == '4') {
                 return '后步精整';
             }else {
                 return '辅助';
@@ -269,13 +269,18 @@ export default {
             }else {
                 this.validateStatus = true;
                 let data = this.deviceData;
-                // let res = await $api. ()
-                this.$TisMessage.success('保存成功');
+                data.id = this.$route.params.device_id;
+                let res = await $api.editDeviceInfo(data);
+                if(res.code == 200) {
+                    this.$TisMessage.success(res.msg);
+                    this.$refs.deviceData.resetFields();
+                    this.$router.push({
+                        name: 'device_detail'
+                    })
+                }else {
+                    this.$TisMessage.error('编辑失败，请稍后再试')
+                }
                 this.submitLoading = false;
-                this.$refs.deviceData.resetFields();
-                this.$router.push({
-                    name: '首页'
-                })
             }
         },
         /**

@@ -1,7 +1,7 @@
 <template>
     <div class="pending-device">
         <search-option :reset-status="resetStatus" @on-search="onSearch" @on-clear="onClear" :search-data="searchData"></search-option>
-        <device-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage"></device-list>
+        <device-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage" @reload-list="reloadList"></device-list>
     </div>
 </template>
 <script>
@@ -37,6 +37,10 @@ export default {
         this.takeRouteParams();
     },
     methods: {
+        async reloadList() {
+            let params = JSON.parse(JSON.stringify(this.$route.query));
+            await this.getPendingDevice(params);
+        },
         onSearch(searchData) {
             this.searchData = searchData;
             this.searchData.page = 1;

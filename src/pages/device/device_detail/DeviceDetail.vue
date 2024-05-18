@@ -2,7 +2,7 @@
     <div class="device-detail" :style="{'min-height': 'calc(100vh - 117px)'}">
         <div class="device-card">
             <div class="device-header">
-                <device-header :device-data="deviceData"></device-header>
+                <device-header :device-data="deviceData" @reload-detail="reloadData"></device-header>
             </div>
         </div>
         <div class="device-info">
@@ -59,6 +59,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$route.path);
         this.deviceId = this.$route.path.split('/')[4];
         this.getPieData(this.deviceId);
         this.getDeviceData();
@@ -122,6 +123,9 @@ export default {
                 this.option = res.data
             }
             this.initEcharts();
+        },
+        reloadData() {
+            this.getDeviceData();
         },
         async getDeviceData() {
             let params = {

@@ -274,16 +274,15 @@ export default {
                 let data = this.baseInfo;
                 let res = await $api.saveDeviceInfo(data);
                 if(res.code == 200) {
-                    this.$TisMessage.success('保存成功');
-                    this.submitLoading = false;
+                    this.$TisMessage.success(res.msg);
                     this.$refs.baseInfo.resetFields();
                     this.$router.push({
                         name: '首页'
                     })
                 }else {
-                    this.submitLoading = false;
                     this.$TisMessage.error('保存失败，请稍后再试');
                 }
+                this.submitLoading = false;
 
             }
         },

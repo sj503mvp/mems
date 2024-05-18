@@ -12,10 +12,11 @@
                         <tis-radio-group v-model="confirmData.status">
                             <tis-radio label="1">正常</tis-radio>
                             <tis-radio label="2">异常</tis-radio>
-                            <tis-radio label="3">报废</tis-radio>
+                            <tis-radio label="3">维修中</tis-radio>
+                            <tis-radio label="5">报废</tis-radio>
                         </tis-radio-group>
                     </tis-form-item>
-                    <tis-form-item prop="reason" label="维修原因">
+                    <tis-form-item label="维修原因">
                         <tis-select scroll-id="scrollId" v-model="confirmData.reason" filterable clearable multiple>
                             <tis-option v-for="item in reasonList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
                         </tis-select>
@@ -30,6 +31,7 @@
     </tis-modal>
 </template>
 <script>
+import $api from '@/api/device/index.js'
 export default {
     data() {
         return {
@@ -42,30 +44,31 @@ export default {
                 status: [
                     { required: true, message: '请选择状态', trigger: 'change' }
                 ],
-                reason: [
-                    { required: true, type: 'array', min: 1,  message: '请选择原因', trigger: 'change' }
-                ]
             },
             item: {},
             reasonList: [
                 {
                     id: '1',
-                    name: '设备年老'
+                    name: '设备故障'
                 },
                 {
                     id: '2',
-                    name: '工作时间过长'
+                    name: '原材料问题'
                 },
                 {
                     id: '3',
-                    name: '设备不符合生产'
+                    name: '设备的制造和安装质量问题'
                 },
+                {
+                    id: '4',
+                    name: '设备的过度损耗'
+                }
             ]
         }
     },
     methods: {
         show(item) {
-            this.confirmData.status = '';
+            this.confirmData = {};
             this.item = item;
             this.$refs.confirmModal.resetFields();
             this.confirmModal = true;
@@ -74,10 +77,14 @@ export default {
             let validate = await this.$refs.confirmModal.validate();
             if(validate) {
                 let data = {
-                    id: this.item.deviceId,
-                    status: this.confirmData.status
+                    id: this.item.id,
+                    status: this.confirmData.status,
+                    reasons: this.confirmData.reason
                 }
-                // let res = await $api.  ();
+                let res = await $api.confrimDevice(data);
+                if(res.code == 200) {
+                    this.$TisMessage.success(res.msg)
+                }
                 this.handleCancel();
                 this.$emit('reload-list');
             }

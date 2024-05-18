@@ -72,7 +72,7 @@ export default {
             strOpen: '点击展开',
             showFeedback: false,
             feedbackForm:{   //问题反馈表单数据
-                // username:Cookie.get("username"),
+                // username:Cookies.get("username"),
                 contact:"",
                 // 首页网址
                 // url:"https://tis.tanikawa.com/index/admin_index",

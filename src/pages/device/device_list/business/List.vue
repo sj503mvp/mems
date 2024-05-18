@@ -1,6 +1,6 @@
 <template>
     <div class="device-list-bg">
-        <div class="list-bg-content" :style="{'min-height': `calc(100vh - 205px)`}">
+        <div class="list-bg-content" :style=" haveTab? {'min-height':'calc(100vh - 251px)'}: {'min-height' : 'calc(100vh - 205px)'}">
             <tis-spin v-if="loading" fix></tis-spin>
             <template v-if="$route.name === 'pending_device'">
                 <div class="list-top">
@@ -14,7 +14,7 @@
                     <span class="info-word">设备报废后将会出现在此列表</span>
                 </div>
             </template>
-            <div class="list-content" :style="backData.count>10? {'min-height':'calc(100vh - 261px)'}: {'min-height' : ''}">
+            <div class="list-content" :style="minHeightStyle">
                 <div class="list-item" v-for="(item,index) in dataList" :key="item.id">
                     <div class="item-left" v-if="$route.name === 'pending_device'">
                         <tis-checkbox :value="selectIds.includes(item.id)" @on-change="(event) => checkboxChange(event, item)"></tis-checkbox>
@@ -45,13 +45,18 @@
                                         <i class="iconfont iconcheck share-icon"></i><span class="share-word">确认</span>
                                     </div>
                             </template>
+                            <template v-if="$route.name == 'my_device_follow' && FiterList.indexOf(parseInt(userId)) !== -1">
+                                <div class="item-bottom-share" @click="pushItemConfrim(item)">
+                                    <i class="iconfont icontuisong share-icon"></i><span class="share-word">推送</span>
+                                </div>
+                            </template>
                             <template v-if="$route.name == 'my_device_collection'">
                                 <!-- 已关注 -->
-                                <div class="item-bottom-share" v-if="item.isFocus" @click="careOrNot(item, 0)">
+                                <div class="item-bottom-share" v-if="item.isFocus" @click="toFocus(item,false)">
                                     <i class="iconfont iconstar-fill share-icon"></i><span class="share-word">已关注</span>
                                 </div>
                                 <!-- 未关注 -->
-                                <div class="item-bottom-share" v-else @click="careOrNot(item, 1)">
+                                <div class="item-bottom-share" v-else @click="toFocus(item,true)">
                                     <i class="iconfont iconstar share-icon"></i><span class="share-word">关注</span>
                                 </div>
                             </template>
@@ -74,7 +79,7 @@
             <div v-if="backData.count>10" id="pageBottom" ref="pageBottom" class="list-bottom">
                 <div class="bottom-line-page"></div>
                 <div class="bottom-page">
-                    <div class="bottom-left">
+                    <div class="bottom-left"  v-if="$route.name == 'pending_device'">
                         <tis-checkbox :value="selectIds.length == dataList.length"
                         class="all-check"
                         :disabled="loading"  @on-change="handleCheckAll" label="全选">
@@ -83,6 +88,7 @@
                         <tis-button type="primary" :disabled="selectIds.length === 0 || loading" @click="pushItem">推送设备</tis-button>
                         <p class="num-selected" v-if="selectIds.length">已选择<span class="num">{{selectIds.length}}</span>条</p>
                     </div>
+                    <div v-else></div>
                     <tis-page class="bottom-right"
                         :total="parseInt(backData.count)"
                         :current="parseInt(searchData.page)"
@@ -128,8 +134,10 @@
     </div>
 </template>
 <script>
+import Cookies from 'js-cookie';
 import ConfirmModal from '@/components/device/confirm_modal/ConfirmModal.vue'
 import EmptyView from '@/components/common/empty_view/EmptyView.vue';
+import $api from '../../../../api/device/device';
 export default {
     components: {
         ConfirmModal,
@@ -155,6 +163,10 @@ export default {
         resetStatus: {
             type: Boolean,
             default: false,
+        },
+        haveTab: {
+            type: Boolean,
+            default: false,
         }
     },
     data() {
@@ -162,10 +174,26 @@ export default {
             page: 1,
             pageSize: 10,
             selectIds: [],
+            userId: '',
             singleId: [],
+            // 维修人员列表
+            FiterList: [],
             // 推送人员列表
             peopleList: [],
         }
+    },
+    computed: {  
+        minHeightStyle() {  
+            if (this.backData.count > 10) {  
+                if (this.haveTab) {  
+                    return { minHeight: 'calc(100vh - 307px)' };  
+                } else {  
+                    return { minHeight: 'calc(100vh - 261px)' };  
+                }  
+            } else {  
+                return { minHeight: '' };
+            }  
+        },  
     },
     watch: {
         'dataList': {
@@ -180,6 +208,8 @@ export default {
         // 调整页面高度触发
         window.addEventListener("resize", this.suctionBottom);
         this.getTreeList();
+        this.getAllUser();
+        this.userId = Cookies.get('uid')
     },
     beforeDestroy() {
         // 销毁监听事件
@@ -190,6 +220,10 @@ export default {
         this.$refs.pageBottom && this.stickyObserver && this.stickyObserver.unobserve(this.$refs.pageBottom || '')
     },
     methods: {
+        async getAllUser() {
+            let res = await $api.getAllUserList();
+            this.FiterList = res.data.filter(item => {return item.positionId == '2'}).map(item => item.uid);
+        },
          /**
          * 监听吸底样式
          */
@@ -260,74 +294,14 @@ export default {
         /**
          * 刷新页面
          */
-        async reloadList() {
-            // let params = JSON.parse(JSON.stringify(this.$route.query));
-            // await this.getListData(params);
-            console.log('123');
-        },
-        /**
-         * 是否关注
-         * @param item
-         * @param care 1：关注 其他：取消关注
-         */
-        async careOrNot(item, care) {
-            this.$set(item, "isFocus", care)
-            // let params = {
-            //     itemId: item.itemId,
-            //     isFocus: care==1 ? 1 : 0
-            // }
-            // let res = await $itemListApi.changeItemFocus(params)
-            // if (res.code == 200) {
-            //     if (care == 1) {
-            //         this.$TisMessage.success('关注成功')
-            //     } else {
-            //         this.$TisMessage.success('取消关注成功')
-            //     }
-            // }
+        reloadList() {
+            this.$emit('reload-list')
         },
         /**
          * 获取数据
          */
          async getTreeList(val) {
-            // let res = await $api.getPushData();
-            let res = {
-                data: {
-                    userTree: [
-                        {
-                            id: "1264",
-                            name: "设备管理员",
-                            children: [
-                                {
-                                    id: "100124",
-                                    name: "狗头苏丹",
-                                    gourpName: "设备管理员",
-                                },
-                                {
-                                    id: "100125",
-                                    name: "狗头苏丹1",
-                                    gourpName: "设备管理员",
-                                },
-                            ]
-                        },
-                        {
-                            id: "1266",
-                            name: "维修人员",
-                            children: [
-                                {
-                                    id: "100127",
-                                    name: "狗头苏丹",
-                                    gourpName: "维修人员",
-                                },
-                                {
-                                    id: "100128",
-                                    name: "狗头苏丹1",
-                                    gourpName: "维修人员",
-                                },
-                            ]
-                        },
-                    ]
-                }                
-            };
+            let res = await $api.getPushList();
             let pushData = res.data;
             this.peopleList = JSON.parse(JSON.stringify(pushData.userTree));
             if (this.$refs.tisPushRange) {
@@ -346,7 +320,11 @@ export default {
                 uidArray: uidArray,
                 itemIdArray: this.singleId.length == 1? this.singleId: this.selectIds,
             }
-            // let res = await $api.pushItem(params);
+            let res = await $api.pushItem(params);
+            if(res.code == 200) {
+                this.$TisMessage.success(res.msg)
+                this.reloadList();
+            }
             this.selectIds = [];
         },
         toDetail(item) {
@@ -359,7 +337,51 @@ export default {
                     device_id
                 }
             }).href, '_blank')
+        },
+        handlePage(page) {
+            this.page = page;
+            this.$emit("handle-page", this.page, this.pageSize)
+        },
+        handlePageSize(pageSize) {
+            this.pageSize = pageSize;
+            this.$emit("handle-page", 1, this.pageSize)
+        },
+        /**
+         * 关注设备
+         */
+        async toFocus(item, type) {
+            let data = {
+                userId: Cookies.get('uid'),
+                deviceId: item.id,
+                type: type
+            }
+            await $api.toFocus(data);
+            if(item.isFocus != type) {
+                item.isFocus = type;
+            }
+        },
+        pushItemConfrim(item) {
+            this.$TisModal.warning({
+                title: '推送给设备管理员',
+                content: '<p>此操作将会推送给设备录入人，即设备管理员</p>',
+                maskClosable: true,
+                showCancel: true,
+                onOk: async () => {
+                    let data = {
+                        deviceId: item.id,
+                        recordUserId: item.recordUserId,
+                    }
+                    let res = await $api.pushItemConfrim(data);
+                    if(res.code == 200) {
+                        this.$TisMessage.success(res.msg)
+                        this.reloadList();
+                    }
+                },
+                onCancel: () => {
+                }
+            });
         }
+
     }
 }
 </script>

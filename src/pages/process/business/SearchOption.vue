@@ -10,7 +10,7 @@
                         <tis-date-picker type="daterange" placeholder="发起时间" :value="searchData.processTime" @on-change="dateChange"></tis-date-picker>
                     </tis-col>
                     <tis-col span="6">
-                        <tis-select v-model="searchData.processType" clearable placeholder="申请种类">
+                        <tis-select ref="ownProcessType" v-model="searchData.processType" clearable placeholder="申请种类">
                             <tis-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.name }}</tis-option>
                         </tis-select>
                     </tis-col>
@@ -51,7 +51,18 @@ export default {
     },
     methods: {
         handleSearch() {
+            this.$nextTick(() => {
+                this.clearSelectQuery();
+            })
             this.$emit('on-search', this.searchData)
+        },
+        /**
+         * 收起筛选项下拉框
+        */
+        clearSelectQuery() {
+            if (this.$refs.ownProcessType && this.$refs.ownProcessType.$refs.head) {
+                this.$refs.ownProcessType.visible = false
+            }
         },
         handleReset() {
             this.$emit('on-clear')

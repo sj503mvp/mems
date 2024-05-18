@@ -8,17 +8,17 @@
                             <tis-input placeholder="设备名称" clearable :max-length="20" v-model="searchData.keyword"></tis-input>
                         </tis-col>
                         <tis-col span="6">
-                            <tis-select placeholder="设备类型" clearable v-model="searchData.typeId">
+                            <tis-select ref="ownDeviceType" placeholder="设备类型" clearable v-model="searchData.typeId">
                                 <tis-option v-for="(item,index) in deviceTypeList" :key="index" :value="item.id + ''">{{ item.name }}</tis-option>
                             </tis-select>
                         </tis-col>
                         <tis-col span="6">
-                            <tis-select scroll-id="scrollId" placeholder="所属厂区" clearable v-model="searchData.ownFactoryId">
+                            <tis-select ref="ownFactory" scroll-id="scrollId" placeholder="所属厂区" clearable v-model="searchData.ownFactoryId">
                                 <tis-option v-for="(item,index) in factoryList" :key="index" :value="item.id" :label="item.name"></tis-option>
                             </tis-select>
                         </tis-col>
                         <tis-col span="6" v-if="$route.name !== 'pending_device' && $route.name !== 'recycle_device' && $route.name !== 'all_device_follow' && $route.name !== 'my_device_follow'">
-                            <tis-select placeholder="设备状态" clearable v-model="searchData.status">
+                            <tis-select ref="ownDeviceStatus" placeholder="设备状态" clearable v-model="searchData.status">
                                 <tis-option v-for="(item,index) in statusList" :key="index" :value="item.id + ''">{{ item.name }}</tis-option>
                             </tis-select>
                         </tis-col>
@@ -126,7 +126,24 @@ export default {
     },
     methods: {
         handleSearch() {
+            this.$nextTick(() => {
+                this.clearSelectQuery();
+            })
             this.$emit('on-search', this.searchData)
+        },
+        /**
+         * 收起筛选项下拉框
+        */
+        clearSelectQuery() {
+            if (this.$refs.ownDeviceType && this.$refs.ownDeviceType.$refs.head) {
+                this.$refs.ownDeviceType.visible = false
+            }
+            if (this.$refs.ownFactory && this.$refs.ownFactory.$refs.head) {
+                this.$refs.ownFactory.visible = false
+            }
+            if (this.$refs.ownDeviceStatus && this.$refs.ownDeviceStatus.$refs.head) {
+                this.$refs.ownDeviceStatus.visible = false
+            }
         },
         handleReset() {
             this.$emit('on-clear')
