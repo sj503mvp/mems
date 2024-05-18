@@ -35,6 +35,14 @@ $api.quickSave = async(data) => {
 }
 
 /**
+ * 获得设备维修信息
+ */
+$api.getFitReason = async(params) => {
+    const url = '/getFitReason';
+    return await $http.get(url, { params: params })
+}
+
+/**
  * 关注
  */
 $api.toFocus = async(data) => {

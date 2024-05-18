@@ -75,50 +75,7 @@ export default {
             let params = {
                 id: id
             }
-            // let res = await $api. ();
-            let res = {
-                code: 200,
-                data: {
-                    title: {
-                        text: '所有维修原因',
-                        left: 'center'
-                    },
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: '{a} <br/>{b} : {c} ({d}%)'
-                    },
-                    legend: {
-                        left: 'center',
-                        top: 'bottom',
-                        daa: [
-                            'reason1',
-                            'reason2',
-                            'reason3',
-                            'reason4',
-                            'reason5',
-                        ]
-                    },
-                    series: [
-                        {
-                        name: '维修原因及比例',
-                        type: 'pie',
-                        radius: [20, 140],
-                        center: ['50%', '50%'],
-                        roseType: 'area',
-                        itemStyle: {
-                            borderRadius: 5
-                        },
-                        data: [
-                            { value: 30, name: '设备磨损严重' },
-                            { value: 28, name: '生产环境恶劣' },
-                            { value: 26, name: '维护保养不当' },
-                            { value: 24, name: '操作失误' },
-                            { value: 22, name: '技术更新滞后' },
-                        ]
-                        }
-                    ]
-                }
-            }
+            let res = await $api.getFitReason(params);
             if(res.code == 200) {
                 this.option = res.data
             }
