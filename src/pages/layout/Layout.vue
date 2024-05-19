@@ -4,7 +4,7 @@
         <header-menu @shrink-menu="retractMenu" @go-home="goHome"></header-menu>
         <!-- 左侧菜单栏 -->
         <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}" v-if="hideLeftMenuArr.indexOf($route.name) === -1">
-            <sidebarMenu :power="powerSiderData" v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
+            <sidebarMenu :sidebar-num="sidebarNum" :power="powerSiderData" v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
             <sidebar-menu-shrink v-show="shrink" :menu-array="menuArray" @on-change="handleChange"></sidebar-menu-shrink>
         </div>
         <div class="single-page-con" ref="pageBody"
@@ -27,6 +27,8 @@ import sidebarMenuShrink from './business/SidebarMenuShrink.vue';
 import CommonFooter from './business/CommonFooter.vue';
 import Cookies from 'js-cookie';
 import $api from '@/api/layout/index.js';
+import { createNamespacedHelpers } from 'vuex';
+const sidebarNum = createNamespacedHelpers('sidebarNum');
 export default {
     components: {
         headerMenu,
@@ -59,14 +61,33 @@ export default {
                 'device_edit',
             ],
             powerSiderData: [], //侧边栏权限,
+            sidebarNum: {},
+        }
+    },
+    computed: {
+        ...sidebarNum.mapGetters(['tabFieldTips']),
+    },
+    watch: {
+        '$route.name': function(val) {
+            this.saveTabFieldTips();
+        },
+        tabFieldTips: {
+            handler(newVal, oldVal) {
+                console.log(newVal,'qwe');
+                this.sidebarNum = newVal
+            }
         }
     },
     created() {
         this.initData();
     },
     methods: {
+        ...sidebarNum.mapActions([
+            'saveTabFieldTips'
+        ]),
         initData() {
             this.initMenuAuth();
+            this.saveTabFieldTips();
         },
         // 侧边栏展开收起
         changeMenuStatus() {

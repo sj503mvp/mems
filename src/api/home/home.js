@@ -13,8 +13,8 @@ $api.getPieData = async(params) => {
 /**
  * 获取首页设备总数数据
  */
-$api.getAllDevice = async() => {
-    const url = 'getAllDevice';
+$api.getAllDeviceInfo = async() => {
+    const url = 'getAllDeviceInfo';
     return await $http.get(url);
 }
 

@@ -26,6 +26,9 @@
                             <div class="menu second-menu">
                                 <i class="fa first-icon" :class=[item.iconAwesome] aria-hidden="true"></i>
                                 <span>{{ item.title }}</span>
+                                <tis-badge v-if="item.name == 'pending_device'" :count="sidebarNum.pendingDevice" style="margin-left: 16px;"></tis-badge>
+                                <tis-badge v-if="item.name == 'my_device'" :count="sidebarNum.followDevice" style="margin-left: 16px;"></tis-badge>
+                                <tis-badge v-if="item.name == 'notify_unread'" :count="sidebarNum.unreadNotify" style="margin-left: 16px;"></tis-badge>
                             </div>
                         </MenuItem>
                     </template>
@@ -45,6 +48,8 @@
 </template>
 <script>
 import utils from "@/utils";
+import {createNamespacedHelpers} from "vuex";
+const sidebarNum =createNamespacedHelpers('sidebarNum');
 export default {
     props: {
         menuArray: {
@@ -54,6 +59,10 @@ export default {
         power: {
             type: Array,
             default: []
+        },
+        sidebarNum: {
+            type: Object,
+            default: {}
         }
     },
     data() {
@@ -65,6 +74,9 @@ export default {
             itemPopAgoMenu: 'home', // 项目头部下点击项目录入气泡之前选中的菜单,
             lastActiveMenu: "", //上一次选中的
         }
+    },
+    computed: {
+        ...sidebarNum.mapGetters(['tabFieldTips']),
     },
     watch: {
         $route: function () {

@@ -29,12 +29,24 @@
                     <span class="device-detail-content">{{ this.deviceData.ownFactory }}</span>
                 </div>
                 <div class="device-info-hang">
+                    <span class="device-detail-title">生产厂家：</span>
+                    <span class="device-detail-content">{{ this.deviceData.productor ? this.deviceData.productor: '未填写' }}</span>
+                </div>
+                <div class="device-info-hang">
                     <span class="device-detail-title">购入时间：</span>
                     <span class="device-detail-content">{{ this.deviceData.buyTime }}</span>
                 </div>
                 <div class="device-info-hang">
+                    <span class="device-detail-title">购入金额：</span>
+                    <span class="device-detail-content">{{ this.deviceData.buyMoney}}&nbsp;{{this.deviceData.unit}}</span>
+                </div>
+                <div class="device-info-hang">
                     <span class="device-detail-title">最后一次维修时间：</span>
-                    <span class="device-detail-content">{{ this.deviceData.lastFitTime? this.deviceData.lastFitTime : '暂无' }}</span>
+                    <span class="device-detail-content">{{ this.deviceData.lastFitTime ? this.deviceData.lastFitTime : '暂无' }}</span>
+                </div>
+                <div class="device-info-hang">
+                    <span class="device-detail-title">介绍：</span>
+                    <span class="device-detail-content">{{ this.deviceData.introduce ? this.deviceData.introduce : '暂无' }}</span>
                 </div>
             </div>
         </div>

@@ -44,11 +44,6 @@ export default {
                 {
                     id: 'all_device_follow',
                     label: '跟进中',
-                    render: (h) => {
-                        return h('div', {class: {'tis-tabs-span': true,}},
-                            [h('tis-badge', {props: {count: Number(123)},style: {fontWeight: 'normal'}},
-                                [h('span', {style:{fontWeight: 'bold'}},'跟进中')],)])
-                    }
                 }
             ],
             startTab: '全部设备',

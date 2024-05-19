@@ -47,7 +47,7 @@ export default {
     },
     mounted() {
         this.getPieData(this.selected);
-        this.getAllDevice();
+        this.getAllDeviceInfo();
         this.initEcharts();
     },
     methods: {
@@ -79,8 +79,8 @@ export default {
             }
         },
         // 获得设备总数
-        async getAllDevice() {
-            let res = await $api.getAllDevice();
+        async getAllDeviceInfo() {
+            let res = await $api.getAllDeviceInfo();
             if(res.code == 200) {
                 this.optionTwo = res.data;
                 this.initEcharts();

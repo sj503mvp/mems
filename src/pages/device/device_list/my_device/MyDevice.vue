@@ -10,6 +10,8 @@
     </div>
 </template>
 <script>
+import {createNamespacedHelpers} from "vuex";
+const sidebarNum =createNamespacedHelpers('sidebarNum');
 import Cookies from 'js-cookie';
 import {debounce} from "lodash";
 import commonMixin from '@/mixins/common.js';
@@ -48,7 +50,7 @@ export default {
                     label: '跟进中',
                     render: (h) => {
                         return h('div', {class: {'tis-tabs-span': true,}},
-                            [h('tis-badge', {props: {count: Number(123)},style: {fontWeight: 'normal'}},
+                            [h('tis-badge', {props: {count: Number(this.tabFieldTips.followDevice)},style: {fontWeight: 'normal'}},
                                 [h('span', {style:{fontWeight: 'bold'}},'跟进中')],)])
                     }
                 },
@@ -59,6 +61,9 @@ export default {
             ],
             startTab: '我录入的',
         }
+    },
+    computed: {
+        ...sidebarNum.mapGetters(['tabFieldTips']),
     },
     watch: {
         '$route.name':{
@@ -83,6 +88,9 @@ export default {
         this.takeRouteParams();
     },
     methods: {
+        ...sidebarNum.mapActions([
+            'saveTabFieldTips'
+        ]),
         async reloadList() {
             let params = JSON.parse(JSON.stringify(this.$route.query));
             await this.getMyDevice(params);
@@ -124,6 +132,7 @@ export default {
             this.loading = true;
             this.dealPageOrPageSize(params);
             this.$nextTick(() => {
+                this.saveTabFieldTips();
                 this.resetJuged();
                 this.toPageTop();
             })

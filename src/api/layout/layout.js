@@ -33,4 +33,15 @@ $api.getNoticeInfo = async(params) => {
     return await $http.get(url, { params: params })
 }
 
+/**
+ * 获得侧边栏徽标数
+ */
+$api.getSidebarNumber = async(params) => {
+    const url = '/getSidebarNumber';
+    let res = await $http.get(url, { params: params })
+    if(res.code == 200) {
+        return res.data
+    }
+}
+
 export default $api;
