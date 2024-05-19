@@ -83,7 +83,18 @@ export default {
                     confirmPassWord: '',
                 }
             }
-        }
+        },
+        formValidate: {  
+            handler(newVal) { 
+                this.formValidate.username = newVal.username.replace(/\s/g, '');  
+                this.formValidate.password = newVal.password.replace(/\s/g, '');  
+                if (!this.isLogin) {  
+                    this.formValidate.confirmPassWord = newVal.confirmPassWord.replace(/\s/g, '');  
+                }  
+            },  
+            deep: true, 
+            immediate: true  
+        },  
     },
     methods: {
         ...userUid.mapActions([
@@ -96,6 +107,7 @@ export default {
             },500)
         },
         handleSubmit() {
+            
             this.$refs.loginForm.validate(async (valid) => {
                 if (valid) {
                     let data = {
