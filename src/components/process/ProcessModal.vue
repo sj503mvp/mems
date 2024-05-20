@@ -12,8 +12,23 @@
                     <span v-if="process.approvalType=='1'">购入申请</span>
                     <span v-if="process.approvalType=='2'">报废申请</span>
                 </p>
-                <p><span class="info-before">申请内容</span>：<br>
-                    <span class="max-five-line">{{ process.content }}</span></p>
+                <p v-if="process.approvalType == '1'"><span class="info-before">生产厂家</span>：{{ process.productor }}</p>
+                <p v-if="process.approvalType == '1'"><span class="info-before">设备名称</span>：{{ process.deviceName }}</p>
+                <p v-if="process.approvalType == '1'"><span class="info-before">设备数量</span>：{{ process.buyCount }}</p>
+                <p v-if="process.approvalType == '1'"><span class="info-before">设备单价</span>：{{ process.buyMoney }}
+                    <span v-if="process.unitId == '1'">元</span>
+                    <span v-if="process.unitId == '2'">美元</span>
+                    <span v-if="process.unitId == '3'">日元</span>
+                    <span v-if="process.unitId == '4'">法郎</span>
+                </p>
+                <p v-if="process.approvalType == '1'"><span class="info-before">设备种类</span>：
+                    <span v-if="process.deviceType == '1'">冶炼设备</span>
+                    <span v-if="process.deviceType == '2'">连铸设备</span>
+                    <span v-if="process.deviceType == '3'">轧制设备</span>
+                    <span v-if="process.deviceType == '4'">后步精整设备</span>
+                    <span v-if="process.deviceType == '5'">辅助设备</span>
+                </p>
+                <p v-if="process.approvalType == '2'"><span class="info-before">报废设备</span>：[{{ process.scrapDevice }}] - {{ deviceName }}</p>
             </div>
             <div class="process-body-footer">
                 <template v-if="$route.name == 'process_approval'">
@@ -31,11 +46,13 @@
 <script>
 import Cookies from 'js-cookie';
 import $api from '@/api/process/index.js'
+import $deviceApi from '@/api/device/index.js'
 export default {
     data() {
         return {
             processModal: false,
-            process: {}
+            process: {},
+            deviceName: '',
         }
     },
     computed: {
@@ -48,8 +65,24 @@ export default {
         }
     },
     methods: {
+        /**
+         * 获得设备名字
+         */
+        async getDeviceName() {
+            let params = {
+                deviceId: this.process.scrapDevice
+            }
+            let res = await $deviceApi.getDeviceName(params);
+            if(res.code == 200) {
+                this.deviceName = res.data;
+            }
+        },
         show(item) {
+            this.deviceName = '';
             this.process = item;
+            if(this.process.scrapDevice) {
+                this.getDeviceName();
+            }
             this.processModal = true;
         },
         handleCancel() {
@@ -58,10 +91,20 @@ export default {
         },
         async handleSubmit(type) {
             if(type) {
-                let data = {
-                    uid: Cookies.get('uid'),
-                    id: this.process.id,
-                    type: '1'
+                let data;
+                if(this.process.approvalType == '2') {
+                    data = {
+                        uid: Cookies.get('uid'),
+                        id: this.process.id,
+                        type: '1',
+                        deviceId: this.process.scrapDevice,
+                    }
+                }else {
+                    data = {
+                        uid: Cookies.get('uid'),
+                        id: this.process.id,
+                        type: '1'
+                    }
                 }
                 let res = await $api.approvalProcess(data);
                 if(res.code == 200) {

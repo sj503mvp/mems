@@ -15,8 +15,50 @@
                         <tis-option v-for="item in typeList" :key="item.id" :value="item.id" :label="item.name"></tis-option>
                     </tis-select>
                 </tis-form-item>
-                <tis-form-item label="申请内容" prop="processContent">
-                    <tis-input v-model="processInfo.processContent" placeholder="请输入内容" style="width: 500px" type="textarea" maxlength="200" show-word-limit></tis-input>
+                <tis-form-item label="生产厂家" prop="productor" v-if="processInfo.processType == '1'">
+                    <tis-input v-model="processInfo.productor" placeholder="请输入生产厂家" style="width: 500px;" clearable></tis-input>
+                </tis-form-item>
+                <tis-form-item label="设备名称" prop="deviceName" v-if="processInfo.processType == '1'">
+                    <tis-input v-model="processInfo.deviceName" placeholder="请输入设备名称" style="width: 500px;" clearable></tis-input>
+                </tis-form-item>
+                <tis-form-item label="设备数量" prop="buyCount" v-if="processInfo.processType == '1'">
+                    <tis-input v-model="processInfo.buyCount" placeholder="请输入设备数量" style="width: 500px;" clearable type="number"></tis-input>
+                </tis-form-item>
+                <tis-form-item label="设备单价" prop="buyMoney" v-if="processInfo.processType == '1'">
+                    <tis-splicing-input
+                        type="company"
+                        :unit-select="true"
+                        :unit-list="unitList"
+                        isClearable
+                        input1-placeholder="请输入金额"
+                        :default-text1="processInfo.buyMoney"
+                        @change-input="changeInput"
+                        style="width: 500px">
+                    </tis-splicing-input>
+                </tis-form-item>
+                <tis-form-item label="设备种类" prop="deviceType" v-if="processInfo.processType == '1'">
+                    <tis-radio-group v-model="processInfo.deviceType" class="form-radio-class">
+                        <tis-radio label="1">
+                            <span>冶炼设备</span>
+                        </tis-radio>
+                        <tis-radio label="2">
+                            <span>连铸设备</span>
+                        </tis-radio>
+                        <tis-radio label="3">
+                            <span>轧制设备</span>
+                        </tis-radio>
+                        <tis-radio label="4">
+                            <span>后步精整设备</span>
+                        </tis-radio>
+                        <tis-radio label="5">
+                            <span>辅助设备</span>
+                        </tis-radio>
+                    </tis-radio-group>
+                </tis-form-item>
+                <tis-form-item label="报废设备" prop="scrapDevice" v-if="processInfo.processType == '2'">
+                    <tis-select v-model="processInfo.scrapDevice" placeholder="请选择报废设备" style="width: 300px;" filterable>
+                        <tis-option v-for="item in deviceList" :key="item.id" :value="item.id" :label="`[${item.id}] ` + item.name"></tis-option>
+                    </tis-select>
                 </tis-form-item>
             </tis-form>
             <tis-button type="primary" class="bottom-button" @click="submit">提交审批</tis-button>
@@ -27,14 +69,21 @@
 import Cookies from 'js-cookie'
 import $notifyApi from '@/api/notify/index.js'
 import $api from '@/api/process/index.js'
+import $deviceApi from '@/api/device/index.js'
 export default {
     data() {
         return {
             processInfo: {
                 processTitle: '',
-                processContent: '',
                 processType: '1',
-                processTime: ''
+                processTime: '',
+                productor: '',
+                deviceName: '',
+                buyCount: '',
+                buyMoney: '',
+                unitId: '',
+                deviceType: '',
+                scrapDevice: '',
             },
             processInfoRule: {
                 processTitle: [
@@ -43,9 +92,19 @@ export default {
                 processType: [
                     { required: true, message: '请选择申请种类', trigger: 'change' }
                 ],
-                processContent: [
-                    { required: true, message: '请输入公告内容', trigger: 'change' }
-                ]
+                productor: [
+                    { required: true, message: '请输入生产厂家', trigger: 'change' }
+                ],
+                deviceName: [
+                    { required: true, message: '请输入设备名称', trigger: 'change' }
+                ],
+                buyCount: [
+                    { required: true, message: '请输入购买数量', trigger: 'change' }
+                ],
+                buyMoney: [
+                    { required: true, message: '请输入金额', trigger: 'blur'}
+                ],
+
             },
             userList: [],
             typeList: [
@@ -58,13 +117,35 @@ export default {
                     name: '报废申请',
                 },
             ],
+            unitList: [
+                {key: '1', value: '元'},
+                {key: '2', value: '美元'},
+                {key: '3', value: '日元'},
+                {key: '4', value: '法郎'},
+            ],
             userId: '',
+            deviceList: [],
         }
     },
     created() {
         this.getAllUser();
+        this.getDeviceList();
     },
     methods: {
+        /**
+         * 获得当前存在且非报废的设备
+         */
+        async getDeviceList() {
+            let res = await $deviceApi.getDeviceList();
+            if(res.code == 200) {
+                this.deviceList = res.data.map(item => {
+                    return {
+                        id: item.id,
+                        name: item.type + '-' + item.name
+                    }
+                })
+            }
+        },
         /**
          * 获得所有用户
          */
@@ -112,7 +193,11 @@ export default {
             var seconds = now.getSeconds();  
             seconds = seconds < 10 ? '0' + seconds : seconds;
             return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds
-        }
+        },
+        changeInput(index, type ,tel) {
+            this.processInfo.buyMoney = type
+            this.processInfo.unitId= tel
+        },
     }
 }
 </script>

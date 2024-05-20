@@ -67,6 +67,9 @@ export default {
         }
     },
     methods: {
+        ...sidebarNum.mapActions([
+            'saveTabFieldTips'
+        ]),
         show(item) {
             this.confirmData = {};
             this.item = item;
@@ -83,6 +86,7 @@ export default {
                 }
                 let res = await $api.confrimDevice(data);
                 if(res.code == 200) {
+                    this.saveTabFieldTips();
                     this.$TisMessage.success(res.msg)
                 }
                 this.handleCancel();

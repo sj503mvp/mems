@@ -137,7 +137,7 @@ $api.pushItem = async(data) => {
  * 推送设备
  */
 $api.pushItemConfrim = async(data) => {
-    const url = 'pushItemConfrim';
+    const url = '/pushItemConfrim';
     return await $http.post(url, data);
 }
 
@@ -145,8 +145,24 @@ $api.pushItemConfrim = async(data) => {
  * 确认状态
  */
 $api.confrimDevice = async(data) => {
-    const url = 'confrimDevice';
+    const url = '/confrimDevice';
     return await $http.post(url, data)
+}
+
+/**
+ * 获得所有未报废的设备
+ */
+$api.getDeviceList = async() => {
+    const url = '/getDeviceList';
+    return await $http.get(url)
+}
+
+/**
+ * 获得设备名称
+ */
+$api.getDeviceName = async(params) => {
+    const  url = '/getDeviceName';
+    return await $http.get(url, { params: params })
 }
 
 export default $api
