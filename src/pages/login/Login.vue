@@ -120,8 +120,8 @@ export default {
                         let params = {
                             uid: res.uid
                         }
-                        let userRes = await $api.getUserName(params);
                         if(res.code == 200) {
+                            let userRes = await $api.getUserName(params);
                             this.$TisMessage.success('登录成功');
                             Cookies.set('uid',res.uid);
                             Cookies.set('username',userRes.data)

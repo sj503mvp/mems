@@ -71,7 +71,6 @@ export default {
         }
     },
     mounted() {
-        console.log(this.$route.path);
         this.deviceId = this.$route.path.split('/')[4];
         this.getPieData(this.deviceId);
         this.getDeviceData();

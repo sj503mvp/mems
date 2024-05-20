@@ -8,7 +8,8 @@
                 </div>
             </div>
             <div class="header-middle">
-                <tis-input class="header-search" prefix="ios-search" placeholder="输入内容后搜索" clearable></tis-input>
+                <!-- <tis-input class="header-search" prefix="ios-search" placeholder="输入内容后搜索设备" clearable :max-length="20" v-model="searchKeyWord"></tis-input> -->
+                <p>欢迎来到金属冶炼设备管理系统━(*｀∀´*)ノ亻!</p>
             </div>
             <div class="header-avatar-con">
                 <div class="header-user" @click="toUser" style="height: 50px; display: flex; margin-right: 16px;">

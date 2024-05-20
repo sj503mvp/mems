@@ -73,7 +73,6 @@ export default {
         },
         tabFieldTips: {
             handler(newVal, oldVal) {
-                console.log(newVal,'qwe');
                 this.sidebarNum = newVal
             }
         }
