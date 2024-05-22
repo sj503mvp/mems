@@ -24,7 +24,7 @@
             <tis-row v-else>
                 <tis-col span="12">
                     <div class="user-info-content">
-                        <p class="info-content"><span class="info-type">姓名</span>：<tis-input v-model="info.name" placeholder="请输入姓名" clearable style="width: 200px;" disabled></tis-input></p>
+                        <p class="info-content"><span class="info-type">姓名</span>：<tis-input v-model="info.name" placeholder="请输入姓名" clearable style="width: 200px;"></tis-input></p>
                         <p class="info-content"><span class="info-type">厂区</span>：
                             <tis-select v-model="info.factoryId" style="width: 200px;">
                                 <tis-option v-for="item in factoryList" :key="item.id" :value="item.id">{{ item.name }}</tis-option>
@@ -109,6 +109,7 @@ export default {
                 this.changeTitle = '取消编辑'
             }else {
                 this.changeTitle = '编辑资料'
+                this.getUserInfo();
             }
         }
     },

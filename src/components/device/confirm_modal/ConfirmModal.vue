@@ -31,6 +31,8 @@
     </tis-modal>
 </template>
 <script>
+import {createNamespacedHelpers} from "vuex";
+const sidebarNum =createNamespacedHelpers('sidebarNum');
 import $api from '@/api/device/index.js'
 export default {
     data() {

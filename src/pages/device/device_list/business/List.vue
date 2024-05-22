@@ -3,18 +3,18 @@
         <div class="list-bg-content" :style=" haveTab? {'min-height':'calc(100vh - 251px)'}: {'min-height' : 'calc(100vh - 205px)'}">
             <tis-spin v-if="loading" fix></tis-spin>
             <template v-if="$route.name === 'pending_device'">
-                <div class="list-top">
+                <div class="list-top" id="listTop">
                     <tis-icon class="info-icon" type="ios-information-circle" size="18"></tis-icon>
                     <span class="info-word">请及时推送给相应人员消除以待处理设备</span>
                 </div>
             </template>
             <template v-if="$route.name === 'recycle_device'">
-                <div class="list-top">
+                <div class="list-top" id="listTop">
                     <tis-icon class="info-icon" type="ios-information-circle" size="18"></tis-icon>
                     <span class="info-word">设备报废后将会出现在此列表</span>
                 </div>
             </template>
-            <div class="list-content" :style="minHeightStyle">
+            <div class="list-content" :style="minHeightStyle" id="listTop">
                 <div class="list-item" v-for="(item,index) in dataList" :key="item.id">
                     <div class="item-left" v-if="$route.name === 'pending_device'">
                         <tis-checkbox :value="selectIds.includes(item.id)" @on-change="(event) => checkboxChange(event, item)"></tis-checkbox>
@@ -234,19 +234,36 @@ export default {
             }
             let top = document.getElementById('listTop').getBoundingClientRect().top;
             if (document.getElementById('pageBottom')) {
-                if (top< 200) {
-                    document.getElementById('pageBottom').style.position = "sticky";
-                    this.$nextTick(() => {
-                        const stickyElm = this.$refs.pageBottom
-                        this.stickyObserver = new IntersectionObserver(
-                            ([e]) => e.target.classList.toggle('is-sticky', e.intersectionRatio < 1),
-                            {threshold: [1],rootMargin: '0px 100% -1px 100%'}
-                        );
-                        this.stickyObserver.observe(stickyElm)
-                    })
-                } else {
-                    document.getElementById('pageBottom').style.position = "relative";
-                    this.stickyObserver.unobserve(this.$refs.pageBottom)
+                if(this.$route.name === 'pending_device' || this.$route.name === 'recycle_device') {
+                    if (top< 146) {
+                        document.getElementById('pageBottom').style.position = "sticky";
+                        this.$nextTick(() => {
+                            const stickyElm = this.$refs.pageBottom
+                            this.stickyObserver = new IntersectionObserver(
+                                ([e]) => e.target.classList.toggle('is-sticky', e.intersectionRatio < 1),
+                                {threshold: [1],rootMargin: '0px 100% -1px 100%'}
+                            );
+                            this.stickyObserver.observe(stickyElm)
+                        })
+                    } else {
+                        document.getElementById('pageBottom').style.position = "relative";
+                        this.stickyObserver.unobserve(this.$refs.pageBottom)
+                    }
+                }else {
+                    if (top< 200) {
+                        document.getElementById('pageBottom').style.position = "sticky";
+                        this.$nextTick(() => {
+                            const stickyElm = this.$refs.pageBottom
+                            this.stickyObserver = new IntersectionObserver(
+                                ([e]) => e.target.classList.toggle('is-sticky', e.intersectionRatio < 1),
+                                {threshold: [1],rootMargin: '0px 100% -1px 100%'}
+                            );
+                            this.stickyObserver.observe(stickyElm)
+                        })
+                    } else {
+                        document.getElementById('pageBottom').style.position = "relative";
+                        this.stickyObserver.unobserve(this.$refs.pageBottom)
+                    }
                 }
             }
         },
