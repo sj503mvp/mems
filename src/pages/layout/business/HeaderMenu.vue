@@ -18,7 +18,7 @@
                 </div>
                 <div class="header-dropdown" style="height: 50px; display: flex; margin-right: 16px;">
                     <tis-icon type='ios-megaphone-outline' style="margin-right: 8px" size="24"></tis-icon>
-                    <tis-badge :count="infoNumber"><span style="display: inline-block;">公告</span></tis-badge>
+                    <tis-badge :count="tabFieldTips.unreadNotify"><span style="display: inline-block;">公告</span></tis-badge>
                     <div class="dropdown-box">
                         <div v-for="item in infoList" :key="item.id" class="dropdown-info-box" @click="toNoticeDetail(item)">
                             <div class="info-top">
@@ -44,14 +44,18 @@
 <script>
 import Cookies from 'js-cookie'
 import $api from '@/api/layout/index.js'
+import {createNamespacedHelpers} from "vuex";
+const sidebarNum =createNamespacedHelpers('sidebarNum');
 export default {
     data() {
         return {
             modal: false,
             infoList: [],
-            infoNumber: 0,
             userName: '',
         }
+    },
+    computed: {
+        ...sidebarNum.mapGetters(['tabFieldTips']),
     },
     mounted() {
         this.getUserInfo();
@@ -64,7 +68,6 @@ export default {
             }
             let res = await $api.getNoticeInfo(params);
             if(res.code == 200) {
-                this.infoNumber = parseInt(res.data.count);
                 this.infoList = res.data.list;
                 if(this.infoList.length > 3) {
                     this.infoList = this.infoList.slice(0,3)

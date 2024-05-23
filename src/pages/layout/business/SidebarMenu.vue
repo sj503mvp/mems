@@ -26,9 +26,9 @@
                             <div class="menu second-menu">
                                 <i class="fa first-icon" :class=[item.iconAwesome] aria-hidden="true"></i>
                                 <span>{{ item.title }}</span>
-                                <tis-badge v-if="item.name == 'pending_device'" :count="sidebarNum.pendingDevice" style="margin-left: 16px;"></tis-badge>
-                                <tis-badge v-if="item.name == 'my_device'" :count="sidebarNum.followDevice" style="margin-left: 16px;"></tis-badge>
-                                <tis-badge v-if="item.name == 'notify_unread'" :count="sidebarNum.unreadNotify" style="margin-left: 16px;"></tis-badge>
+                                <tis-badge v-if="item.name == 'pending_device'" :count="tabFieldTips.pendingDevice" style="margin-left: 16px;"></tis-badge>
+                                <tis-badge v-if="item.name == 'my_device'" :count="tabFieldTips.followDevice" style="margin-left: 16px;"></tis-badge>
+                                <tis-badge v-if="item.name == 'notify_unread'" :count="tabFieldTips.unreadNotify" style="margin-left: 16px;"></tis-badge>
                             </div>
                         </MenuItem>
                     </template>
@@ -60,10 +60,6 @@ export default {
             type: Array,
             default: []
         },
-        sidebarNum: {
-            type: Object,
-            default: {}
-        }
     },
     data() {
         return {

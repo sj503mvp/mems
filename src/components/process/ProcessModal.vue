@@ -90,7 +90,7 @@ export default {
             this.processModal = false;
         },
         async handleSubmit(type) {
-            if(type) {
+            if(type == 'yes') {
                 let data;
                 if(this.process.approvalType == '2') {
                     data = {

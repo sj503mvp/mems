@@ -138,6 +138,8 @@ import Cookies from 'js-cookie';
 import ConfirmModal from '@/components/device/confirm_modal/ConfirmModal.vue'
 import EmptyView from '@/components/common/empty_view/EmptyView.vue';
 import $api from '../../../../api/device/device';
+import {createNamespacedHelpers} from "vuex";
+const sidebarNum =createNamespacedHelpers('sidebarNum');
 export default {
     components: {
         ConfirmModal,
@@ -220,6 +222,9 @@ export default {
         this.$refs.pageBottom && this.stickyObserver && this.stickyObserver.unobserve(this.$refs.pageBottom || '')
     },
     methods: {
+        ...sidebarNum.mapActions([
+            'saveTabFieldTips'
+        ]),
         async getAllUser() {
             let res = await $api.getAllUserList();
             this.FiterList = res.data.filter(item => {return item.positionId == '2'}).map(item => item.uid);
@@ -339,7 +344,8 @@ export default {
             }
             let res = await $api.pushItem(params);
             if(res.code == 200) {
-                this.$TisMessage.success(res.msg)
+                this.$TisMessage.success(res.msg);
+                this.saveTabFieldTips();
                 this.reloadList();
             }
             this.selectIds = [];
@@ -391,6 +397,7 @@ export default {
                     let res = await $api.pushItemConfrim(data);
                     if(res.code == 200) {
                         this.$TisMessage.success(res.msg)
+                        this.saveTabFieldTips();
                         this.reloadList();
                     }
                 },

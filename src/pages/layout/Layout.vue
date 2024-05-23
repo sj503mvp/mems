@@ -3,13 +3,13 @@
         <!-- 头部导航栏 -->
         <header-menu @shrink-menu="retractMenu" @go-home="goHome"></header-menu>
         <!-- 左侧菜单栏 -->
-        <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}" v-if="hideLeftMenuArr.indexOf($route.name) === -1">
-            <sidebarMenu :sidebar-num="sidebarNum" :power="powerSiderData" v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
+        <div class="sidebar-menu-con" :style="{width: shrink?'64px':'220px', overflow: shrink ? 'visible' : 'auto'}" v-if="hideLeftMenuArr.indexOf($route.name) === -1 && !$route.meta.hideMenu">
+            <sidebarMenu :power="powerSiderData" v-show="!shrink" :menu-array="menuArray" @on-change="handleChange" ref="sidebarMenu"></sidebarMenu>
             <sidebar-menu-shrink v-show="shrink" :menu-array="menuArray" @on-change="handleChange"></sidebar-menu-shrink>
         </div>
         <div class="single-page-con" ref="pageBody"
-            :style="{minWidth: contentBoxArr.indexOf($route.name) != -1? '1440px':'1200px',
-            marginLeft:contentBoxArr.indexOf($route.name) != -1? '0px':shrink?'60px':'220px'}">
+            :style="{minWidth: contentBoxArr.indexOf($route.name) != -1 || $route.meta.hideMenu? '1440px':'1200px',
+            marginLeft:contentBoxArr.indexOf($route.name) != -1 || $route.meta.hideMenu? '0px':shrink?'60px':'220px'}">
             <div class="single-page">
                 <router-view ref="view"></router-view>
                 <water-mark ref="waterMark"></water-mark>
@@ -60,8 +60,7 @@ export default {
                 'device_detail',
                 'device_edit',
             ],
-            powerSiderData: [], //侧边栏权限,
-            sidebarNum: {},
+            powerSiderData: [], //侧边栏权限,  
         }
     },
     computed: {
@@ -71,11 +70,6 @@ export default {
         '$route.name': function(val) {
             this.saveTabFieldTips();
         },
-        tabFieldTips: {
-            handler(newVal, oldVal) {
-                this.sidebarNum = newVal
-            }
-        }
     },
     created() {
         this.initData();
@@ -102,6 +96,18 @@ export default {
             let HASPROCESSAPPROVAL = power.hasProcessApproval != undefined || power.hasProcessApproval != null? power.hasProcessApproval: [];
             let HASCHANGEPERMISSION = power.hasChangePermission != undefined || power.hasChangePermission != null? power.hasChangePermission: [];
             this.powerSiderData = [HASNOTIFYAPPROVAL,HASPROCESSAPPROVAL,HASCHANGEPERMISSION];
+            let litRouterName = this.$route.path.split('/')[3];
+            let bigRouterName = this.$route.path.split('/')[2];
+            console.log(this.powerSiderData);
+            if(litRouterName == 'notify_approval' && !this.powerSiderData.includes('hasNotifyApproval')) {
+                this.$router.push({name: 'error-403'})
+            }
+            if((litRouterName == 'process_approval' || this.litRouterName == 'process_approved') && !this.powerSiderData.includes('hasProcessApproval')) {
+                this.$router.push({name: 'error-403'})
+            }
+            if(bigRouterName == 'permission' && !this.powerSiderData.includes('hasChangePermission')) {
+                this.$router.push({name: 'error-403'})
+            }
         },
         handleChange(menuItem) {
             if(menuItem.goUrlLocation) {

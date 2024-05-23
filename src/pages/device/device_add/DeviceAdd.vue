@@ -277,7 +277,7 @@ export default {
                     this.$TisMessage.success(res.msg);
                     this.$refs.baseInfo.resetFields();
                     this.$router.push({
-                        name: '首页'
+                        name: 'all_device_all'
                     })
                 }else {
                     this.$TisMessage.error('保存失败，请稍后再试');

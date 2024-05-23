@@ -7,7 +7,7 @@ import permission from './permission/permission.js'
 import userInfo from './user/user.js'
 
 // 登录和注册
-export const loginRouter = {
+const loginRouter = {
     path: '/',
     name: 'login_index',
     component: () => import('@/pages/login/Login.vue'),
@@ -15,6 +15,16 @@ export const loginRouter = {
     children: [
         login
     ]
+}
+
+const page403 = {
+    path: '403',
+    meta: {
+        title: '403-权限不足',
+        hideMenu: true
+    },
+    name: 'error-403',
+    component: () => import('@/components/common/error_page/new_403.vue')
 }
 
 export const appRouter = {
@@ -30,7 +40,8 @@ export const appRouter = {
         notify,
         userInfo,
         permission,
-        process
+        process,
+        page403
     ],
 };
 
