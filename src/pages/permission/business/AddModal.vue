@@ -34,7 +34,6 @@ export default {
         },
         async getUnrootList() {
             let res = await $api.getUnrootList();
-            console.log(res,'qwe');
             this.userList = res.data.map(item => {
                 return {
                     uid: item.uid,

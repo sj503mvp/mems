@@ -95,10 +95,10 @@ export default {
             let HASNOTIFYAPPROVAL = power.hasNotifyApproval != undefined || power.hasNotifyApproval != null? power.hasNotifyApproval: [];
             let HASPROCESSAPPROVAL = power.hasProcessApproval != undefined || power.hasProcessApproval != null? power.hasProcessApproval: [];
             let HASCHANGEPERMISSION = power.hasChangePermission != undefined || power.hasChangePermission != null? power.hasChangePermission: [];
-            this.powerSiderData = [HASNOTIFYAPPROVAL,HASPROCESSAPPROVAL,HASCHANGEPERMISSION];
+            let HASFEEDBACK = power.hasFeedback != undefined || power.hasFeedback != null? power.hasFeedback: [];
+            this.powerSiderData = [HASNOTIFYAPPROVAL, HASPROCESSAPPROVAL, HASCHANGEPERMISSION, HASFEEDBACK];
             let litRouterName = this.$route.path.split('/')[3];
             let bigRouterName = this.$route.path.split('/')[2];
-            console.log(this.powerSiderData);
             if(litRouterName == 'notify_approval' && !this.powerSiderData.includes('hasNotifyApproval')) {
                 this.$router.push({name: 'error-403'})
             }
@@ -106,6 +106,9 @@ export default {
                 this.$router.push({name: 'error-403'})
             }
             if(bigRouterName == 'permission' && !this.powerSiderData.includes('hasChangePermission')) {
+                this.$router.push({name: 'error-403'})
+            }
+            if(bigRouterName == 'feedback' && !this.powerSiderData.includes('hasFeedback')) {
                 this.$router.push({name: 'error-403'})
             }
         },

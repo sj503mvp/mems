@@ -1,11 +1,28 @@
-.notify-list {
-    position: relative;
-    .notify-list-table {
-        th {
-            height: 40px;
+.feedback-bg{
+    background: white;
+    padding: 0 24px;
+    .feedback-search {
+        background: #ffffff;
+        position: relative;
+        border-radius: 4px;
+        padding: 20px 0;
+        margin-bottom: 16px;
+    }
+    .feedback-list {
+        position: relative;
+        .feedback-list-table {
+            th {
+                height: 40px;
+            }
+        }
+        .max-three-line {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
-
     /* 小于等于10条 */
     .list-bottom-less {
         display: flex;

@@ -6,7 +6,7 @@ const $api = {};
  * 获取首页全部设备视图数据
  */
 $api.getPieData = async(params) => {
-    const url = 'getHomePieData';
+    const url = '/getHomePieData';
     return await $http.get(url, {params: params})
 }
 
@@ -14,7 +14,7 @@ $api.getPieData = async(params) => {
  * 获取首页设备总数数据
  */
 $api.getAllDeviceInfo = async() => {
-    const url = 'getAllDeviceInfo';
+    const url = '/getAllDeviceInfo';
     return await $http.get(url);
 }
 

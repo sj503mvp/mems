@@ -216,6 +216,15 @@ const menuArray = [
                 url: "/Mems/permission/manager_list"
             }
         ]
+    },
+    {
+        name: "问题反馈",
+        url: "/Mems/feedback",
+        powerStatus: "hasFeedback",
+        routerName: "feedback",
+        openName: "feedback",
+        iconAwesome: "fa fa-bug",
+        goUrlLocation: false
     }
 ]
 

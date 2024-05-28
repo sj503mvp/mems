@@ -44,4 +44,12 @@ $api.getSidebarNumber = async(params) => {
     }
 }
 
+/**
+ * 提交反馈问题
+ */
+$api.saveProblemFeedback = async(data) => {
+    const url = '/saveProblemFeedback';
+    return await $http.post(url, data)
+}
+
 export default $api;

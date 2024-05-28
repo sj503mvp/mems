@@ -138,7 +138,7 @@ export default {
             }
         },
         /**
-         * 改变页码、页面大小、排序方式触发搜索
+         * 改变页码、页面大小触发搜索
          */
         handlePage(page, pageSize) {
             let params = JSON.parse(JSON.stringify(this.$route.query))

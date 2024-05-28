@@ -381,6 +381,7 @@ export default {
                 hasNotifyApproval: res.hasNotifyApproval? true : false,
                 hasProcessApproval: res.hasProcessApproval? true : false,
                 hasChangePermission: res.hasChangePermission? true : false,
+                hasFeedback: res.hasFeedback? true : false,
             };
             this.$refs.changeModal.show();
         },
