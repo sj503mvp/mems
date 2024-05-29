@@ -107,7 +107,6 @@ export default {
             },500)
         },
         handleSubmit() {
-            
             this.$refs.loginForm.validate(async (valid) => {
                 if (valid) {
                     let data = {
@@ -127,6 +126,12 @@ export default {
                             Cookies.set('username',userRes.data)
                             Cookies.set('token',res.token);
                             this.getUserUid();
+                            let loginParams = {
+                                username: Cookies.get('username'),
+                                loginTime: this.getTime(),
+                                loginBrower: this.getBrower(),
+                            }
+                            await $api.saveLoginData(loginParams);
                             this.$router.push({
                                 name: '首页'
                             })
@@ -147,6 +152,45 @@ export default {
                 }
             })
         },
+        getTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            month = month< 10 ? '0' + month : month;
+            var date = now.getDate();
+            date = date < 10 ? '0' + date : date;
+            var hours = now.getHours();
+            hours = hours < 10 ? '0' + hours : hours;
+            var minutes = now.getMinutes();  
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var seconds = now.getSeconds();  
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds
+        },
+        getBrower() {
+            let userAgent = navigator.userAgent;
+            if(userAgent.indexOf("opera") > -1) {
+                return "Opera";
+            }
+            if(userAgent.indexOf("Edg") > -1) {
+                return "Edge";
+            }
+            if(userAgent.indexOf("Firefox") > -1) {
+                return "firefox";
+            }
+            if(userAgent.indexOf("Chrome") > -1) {
+                return "Chrome";
+            }
+            if(userAgent.indexOf("Safari") > -1) {
+                return "Safari";
+            }
+            if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+                return "IE";
+            }
+            if ( userAgent.indexOf("Trident") > -1){
+                return "IE";
+            }
+        }
     }
 }
 </script>

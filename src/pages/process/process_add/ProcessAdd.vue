@@ -102,7 +102,7 @@ export default {
                     { required: true, message: '请输入购买数量', trigger: 'change' }
                 ],
                 buyMoney: [
-                    { required: true, message: '请输入金额', trigger: 'change'}
+                    { required: true, message: '请输入金额', trigger: 'blur'}
                 ],
 
             },

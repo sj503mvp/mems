@@ -28,4 +28,12 @@ $api.getUserName = async(params) => {
     const url = '/getUserName';
     return await $http.get(url, { params: params })
 }
+
+/**
+ * 登录日志
+ */
+$api.saveLoginData = async(data) => {
+    const url = '/saveLoginData';
+    return await $http.post(url, data);
+}
 export default $api

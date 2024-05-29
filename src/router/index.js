@@ -6,6 +6,7 @@ import notify from './notify/notify.js'
 import permission from './permission/permission.js'
 import userInfo from './user/user.js'
 import feedback from './feedback/feedback.js'
+import loginRecord from './record/loginRecord.js'
 
 // 登录和注册
 const loginRouter = {
@@ -43,6 +44,7 @@ export const appRouter = {
         permission,
         process,
         feedback,
+        loginRecord,
         page403
     ],
 };

@@ -225,6 +225,15 @@ const menuArray = [
         openName: "feedback",
         iconAwesome: "fa fa-bug",
         goUrlLocation: false
+    },
+    {
+        name: "登录日志",
+        url: "/Mems/loginRecord",
+        powerStatus: "",
+        routerName: "loginRecord",
+        openName: "loginRecord",
+        iconAwesome: "fa fa-yelp",
+        goUrlLocation: false
     }
 ]
 
