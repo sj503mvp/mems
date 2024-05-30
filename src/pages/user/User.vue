@@ -14,7 +14,7 @@
                         <p class="info-content"><span class="info-type">职位</span><span>：</span>{{ info.position }}</p>
                         <p class="info-content"><span class="info-type">手机</span><span>：</span>{{ info.phone }}</p>
                         <p class="info-content"><span class="info-type">邮箱</span><span>：</span>{{ info.email }}</p>
-                        <p class="info-content"><span class="info-type">个人简介</span><span>：</span>{{ info.descText }}</p>    
+                        <p class="info-content"><span class="info-type">个人简介</span><span>：</span>{{ info.descText ? info.descText : '暂未填写' }}</p>    
                     </div>
                 </tis-col>
                 <tis-col span="12">
@@ -37,7 +37,7 @@
                         </p>
                         <p class="info-content"><span class="info-type">手机</span>：<tis-input v-model="info.phone" placeholder="请输入手机号" clearable style="width: 200px;"></tis-input></p>
                         <p class="info-content"><span class="info-type">邮箱</span>：<tis-input v-model="info.email" placeholder="请输入邮箱" clearable style="width: 200px;"></tis-input></p>
-                        <p class="info-content"><span class="info-type">个人简介</span>：<tis-input v-model="info.descText" placeholder="简介" clearable style="width: 400px;" type="textarea" maxlength="200" show-word-limit></tis-input></p>    
+                        <p class="info-content"><span class="info-type">个人简介</span>：<tis-input v-model="info.descText" placeholder="简介" clearable style="width: 400px;" type="textarea" maxlength="200" show-word-limit :isCanDrag="false"></tis-input></p>    
                     </div>
                     <tis-button type="primary" style="margin-top: 16px;" @click="submitInfo">保存</tis-button>
                 </tis-col>
