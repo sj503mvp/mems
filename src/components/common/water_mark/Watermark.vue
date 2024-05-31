@@ -11,7 +11,7 @@ export default {
         }
     },
     mounted(){
-        if(!this.img){
+        if(!this.img && this.name){
             this.againImg(this.name);
         }
     },
@@ -32,7 +32,7 @@ export default {
          */
          setWatermark(str){
             //特殊name的截取处理， 只保留名 
-              if(str.indexOf('·') != -1){
+            if(str.indexOf('·') != -1){
                 str = str.slice(0,str.indexOf('·'))
             }
             // 创建一个画布
