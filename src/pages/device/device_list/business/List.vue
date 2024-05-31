@@ -35,7 +35,7 @@
                                 <div class="item-bottom-field">设备种类：{{item.type}}</div>
                                 <div class="item-bottom-field info-factory-field">所属厂区：<span class="info-factory">{{item.ownFactory}}</span></div>
                                 <div class="item-bottom-field">购入时间：{{item.buyTime}}</div>
-                                <div class="item-bottom-field">最后一次维修时间：{{item.lastFitTime? item.lastFitTIme : '暂无'}}</div>
+                                <div class="item-bottom-field">最后一次维修时间：{{item.lastFitTime? item.lastFitTime : '暂无'}}</div>
                             </div>
                             <template v-if="$route.name == 'pending_device'">
                                     <div v-if="item.status !== '4'" class="item-bottom-share" @click="pushItem(item, 'single')">

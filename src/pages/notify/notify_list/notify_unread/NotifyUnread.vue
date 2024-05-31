@@ -1,7 +1,7 @@
 <template>
     <div class="unread-notify">
         <search-option :reset-status="resetStatus" @on-search="onSearch" @on-clear="onClear" :search-data="searchData"></search-option>
-        <notify-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage"></notify-list>
+        <notify-list :reset-status="resetStatus" :search-data="searchData" :loading="loading" :back-data="backData" :data-list="dataList" @handle-page="handlePage" @reload-unread="reload"></notify-list>
     </div>
 </template>
 <script>
@@ -36,6 +36,10 @@ export default {
         this.takeRouteParams();
     },
     methods: {
+        reload() {
+            this.initData();
+            this.takeRouteParams();
+        },
         onSearch(searchData) {
             this.searchData = searchData;
             this.searchData.page = 1;

@@ -42,7 +42,7 @@ export default {
             let res = await $api.changeUserPower(this.userPermission);
             if(res.code == 200) {
                 this.$TisMessage.success(res.msg);
-                location.reload();
+                // location.reload();
             }else {
                 this.$TisMessage.error('修改权限失败，请重试');
             }

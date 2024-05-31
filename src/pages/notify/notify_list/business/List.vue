@@ -73,6 +73,8 @@
     </div>
 </template>
 <script>
+import { createNamespacedHelpers } from 'vuex';
+const sidebarNum = createNamespacedHelpers('sidebarNum');
 import Cookies from 'js-cookie';
 import NotifyModal from '@/components/notify/NotifyModal.vue';
 import EmptyView from '@/components/common/empty_view/EmptyView.vue';
@@ -120,6 +122,9 @@ export default {
         }
     },
     methods: {
+        ...sidebarNum.mapActions([
+            'saveTabFieldTips'
+        ]),
         toAppraval(item) {
             this.$refs.notifyModal.show(item);
         },
@@ -130,6 +135,8 @@ export default {
                 userId: Cookies.get('uid'),
             }
             await $api.checkNotify(data);
+            this.$emit('reload-unread');
+            this.saveTabFieldTips();
         },
         handlePage(page) {
             this.page = page;
