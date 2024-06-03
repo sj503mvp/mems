@@ -20,15 +20,22 @@
                     <tis-icon type='ios-megaphone-outline' style="margin-right: 8px" size="24"></tis-icon>
                     <tis-badge :count="tabFieldTips.unreadNotify"><span style="display: inline-block;">公告</span></tis-badge>
                     <div class="dropdown-box">
-                        <div v-for="item in infoList" :key="item.id" class="dropdown-info-box" @click="toNoticeDetail(item)">
-                            <div class="info-top">
-                                <p class="info-title">{{ item.title }}</p>
-                                <p>{{ item.time }}</p>
+                        <template  v-if="infoList.length > 0">
+                            <div v-for="item in infoList" :key="item.id" class="dropdown-info-box" @click="toNoticeDetail(item)">
+                                <div class="info-top">
+                                    <p class="info-title">{{ item.title }}</p>
+                                    <p>{{ item.time }}</p>
+                                </div>
+                                <div class="info-bottom" v-title>{{ item.content }}</div>
                             </div>
-                            <div class="info-bottom" v-title>{{ item.content }}</div>
-                        </div>
-                        <tis-button style="width: 100%;" type="primary" class="header-button" @click="toAllNotice">查看全部未查看通知</tis-button>
-                    </div>  
+                            <tis-button style="width: 100%;" type="primary" class="header-button" @click="toAllNotice">查看全部未查看通知</tis-button>
+                        </template>
+                        <template v-else>
+                            <p class="dropdown-noinfo-box">
+                                暂无未查看通知
+                            </p>
+                        </template>
+                    </div>
                 </div>
                 <div class="header-logout" @click="logOut" style="height: 50px; display: flex; margin-right: 16px;">
                     <tis-icon type='ios-log-out' style="margin-right: 8px" size="24"></tis-icon>

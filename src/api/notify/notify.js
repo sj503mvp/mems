@@ -57,4 +57,13 @@ $api.getNotifyUnread = async(params) => {
     const url = '/getNotifyUnread';
     return await $http.get(url, { params: params })
 }
+
+/**
+ * 全部已读 (未查看通知)
+ */
+$api.readAllNotify = async(data) => {
+    const url = '/readAllNotify';
+    return await $http.post(url, data);
+}
+
 export default $api

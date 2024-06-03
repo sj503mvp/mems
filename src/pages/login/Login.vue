@@ -106,6 +106,7 @@ export default {
                 this.isLogin = !this.isLogin;
             },500)
         },
+        // 没有区分用户名和密码的大小写，即大小写都可以登录成功
         handleSubmit() {
             this.$refs.loginForm.validate(async (valid) => {
                 if (valid) {

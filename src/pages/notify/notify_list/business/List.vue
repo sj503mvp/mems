@@ -33,13 +33,21 @@
             </tis-table>
         </div>
         <div v-if="backData.count <= 10 && backData.count > 0" class="list-bottom-less" :key="$route.name">
-            <div></div>
+            <div>
+                <template v-if="$route.name == 'notify_unread'">
+                    <tis-button type="primary" @click="allRead">全部已读</tis-button>
+                </template>
+            </div>
             <p class="bottom-info-less">共 {{ backData.count }} 条</p>
         </div>
         <div v-if="backData.count > 10" class="list-bottom" id="pageBottom" ref="pageBottom" :key="$route.name">
             <div class="bottom-line-page"></div>
             <div class="bottom-page">
-                <div></div>
+                <div>
+                    <template v-if="$route.name == 'notify_unread'">
+                        <tis-button type="primary" @click="allRead">全部已读</tis-button>
+                    </template>
+                </div>
                 <tis-page class="bottom-right"
                     :total="parseInt(backData.count)"
                     :current="parseInt(searchData.page)"
@@ -148,6 +156,24 @@ export default {
         },
         reloadPage() {
             this.$emit('reload-page')
+        },
+        async allRead() {
+            const allNotifyId = [];
+            this.dataList.map(item => {
+                allNotifyId.push(item.id)
+            })
+            let data = {
+                allNotifyId: allNotifyId,
+                userId: Cookies.get('uid'),
+            }
+            let res = await $api.readAllNotify(data);
+            if(res.code == 200) {
+                this.$TisMessage.success(res.msg);
+                this.$emit('reload-unread');
+                this.saveTabFieldTips();
+            }else {
+                this.$TisMessage.error('出现错误，请联系系统管理员');
+            }
         }
     }
 }
