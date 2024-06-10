@@ -1,40 +1,43 @@
 <template>
-    <div class="record-bg">
-        <div class="record-search">
+    <div class="spare-parts-bg">
+        <div class="spare-parts-search">
             <tis-form @keyup.13.native="handleSearch">
                 <div class="search">
                     <tis-row :gutter="12">
                         <tis-col span="8">
-                            <tis-input placeholder="登录人姓名" clearable v-model="searchData.keyword" :max-length="20"></tis-input>
-                        </tis-col>
-                        <tis-col span="8">
-                            <tis-date-picker ref="recordPicker" type="daterange" placeholder="登录时间" :value="searchData.loginTime" @on-change="dateChange"></tis-date-picker>
+                            <tis-input placeholder="备品备件名称" clearable v-model="searchData.keyword" :max-length="20"></tis-input>
+                            <!-- 加一个隐藏的input 不然回车不会去触发搜索，而是去刷新页面了 -->
+                            <tis-input style="display: none;"></tis-input>
                         </tis-col>
                         <tis-col span="8">
                             <tis-button class="search-button" type="primary" @click="handleSearch" style="margin-right: 8px">搜索</tis-button>
                             <tis-button class="search-button" v-show="resetStatus" @click="handleReset">重置</tis-button>
                         </tis-col>
+                        <tis-col span="8">
+                            <tis-button type="primary" @click="addSpareParts">新增备品备件</tis-button>
+                        </tis-col>
                     </tis-row>
                 </div>
             </tis-form>
         </div>
-        <div class="record-list" :style="{'min-height': `calc(100vh - 205px)`}">
+        <div class="spare-parts-list" :style="{'min-height': `calc(100vh - 205px)`}">
             <tis-spin v-if="loading" fix></tis-spin>
             <div :style="backData.count>10? {'min-height':'calc(100vh - 261px)'}: {'min-height' : ''}">
-                <tis-table class="record-list-table" :midTdWidth="listWidth" :theadHeight="40">
+                <tis-table class="spare-parts-list" :midTdWidth="listWidth" :theadHeight="40">
                     <tr slot="table-head">
                         <th>编号</th>
-                        <th>登录人</th>
-                        <th>登录时间</th>
-                        <th>浏览器</th>
-                        <th>IP地址</th>
+                        <th>名称</th>
+                        <th>数量</th>
+                        <th>操作</th>
                     </tr>
                     <tr slot="table-body" v-for="item in dataList" :key="item.id">
                         <td>{{ item.id }}</td>
-                        <td>{{ item.username }}</td>
-                        <td>{{ item.loginTime }}</td>
-                        <td>{{ item.loginBrower }}浏览器</td>
-                        <td>{{ item.loginIp }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.count }}</td>
+                        <td>
+                            <tis-button type="text" color="blue" style="margin-right: 8px;" @click="toChange(item, 'add')">添加</tis-button>
+                            <tis-button type="text" color="blue" @click="toChange(item, 'use')">使用</tis-button>
+                        </td>
                     </tr>
                 </tis-table>
             </div>
@@ -76,17 +79,23 @@
                 :new-list="true">
             </empty-view>
         </div>
+        <add-spare-parts ref="addSpareParts" @reload="reload"></add-spare-parts>
+        <change-count ref="changeCount" @reload="reload"></change-count>
     </div>
 </template>
 <script>
 import {debounce} from "lodash";
 import commonMixin from '@/mixins/common.js';
 import EmptyView from '@/components/common/empty_view/EmptyView.vue';
-import $api from '@/api/loginRecord/index.js'
+import $api from '@/api/spareParts/index.js'
+import addSpareParts from './business/AddSpareParts.vue'
+import changeCount from './business/ChangeCount.vue'
 export default {
     mixins: [commonMixin],
     components: {
         EmptyView,
+        addSpareParts,
+        changeCount,
     },
     data() {
         return {
@@ -94,13 +103,12 @@ export default {
                 page: 1,
                 pageSize: 10,
                 keyword: '',
-                loginTime: [],
             },
             loading: true,
             backData: {},
             dataList: [],
             resetStatus: false,
-            listWidth: [20, 20, 20, 20, 20],
+            listWidth: [10, 30, 20, 20],
         }
     },
     mounted() {
@@ -113,21 +121,16 @@ export default {
                 this.pushRouteParams();
             }else {
                 let params = JSON.parse(JSON.stringify(this.$route.query));
-                this.getLoginData(params);
+                this.getSpareParts(params);
             }
         },
         /**
          * 请求接口并存路由
          */
-         async pushRouteParams() {
-            let arrType = ['loginTime']
+        async pushRouteParams() {
             for(let i in this.searchData) {
                 if(!this.searchData[i]) {
                     delete this.searchData[i]
-                }else if(Array.isArray(this.searchData[i])) {
-                    if(arrType.indexOf(i) != -1 && !this.searchData[i][0]) {
-                        delete this.searchData[i]
-                    }
                 }
             }
             // 存路由
@@ -136,12 +139,12 @@ export default {
                 name: this.$route.name,
                 query: params
             })
-            this.getLoginData(params);
+            this.getSpareParts(params);
         },
         /**
          * 取出路由参数
          */
-         takeRouteParams() {
+        takeRouteParams() {
             if (this.$route.query) {
                 let params = JSON.parse(JSON.stringify(this.$route.query))
                 for (let i in params) {
@@ -151,7 +154,7 @@ export default {
                 }
             }
         },
-        getLoginData: debounce(async function(params) {
+        getSpareParts: debounce(async function(params) {
             this.loading = true;
             this.dealPageOrPageSize(params);
             this.$nextTick(() => {
@@ -162,7 +165,7 @@ export default {
         /**
          * 在url中直接修改页码和页面大小的时候处理方法
          */
-         async dealPageOrPageSize(params) {
+        async dealPageOrPageSize(params) {
             if(params.pageSize > 40) {
                 params.pageSize = 40;
             }
@@ -174,14 +177,14 @@ export default {
                 params.pageSize = newPageSize;
             }
             let res;
-            res = await $api.getLoginData(JSON.stringify(params));
+            res = await $api.getSpareParts(params);
             let newPage = parseInt(res.data.count / params.pageSize);
             if(res.data.count % params.pageSize != 0) {
                 newPage = newPage + 1;
             }
             if(params.page > newPage && res.data.count != 0) {
                 params.page = newPage;
-                res = await $api.getLoginData(JSON.stringify(params));
+                res = await $api.getSpareParts(params);
             }
             if(res.code == 200) {
                 this.backData = res.data;
@@ -209,9 +212,6 @@ export default {
             }
             this.pushRouteParams();
         },
-        dateChange(date) {
-            this.searchData.loginTime = date;
-        },
         handlePage(page) {
             let params = JSON.parse(JSON.stringify(this.$route.query));
             params.page = page;
@@ -223,7 +223,7 @@ export default {
             this.searchData.pageSize = params.pageSize;
             this.searchData.keyword = params.keyword;
             this.searchData.loginTime = params.loginTime;
-            this.getLoginData(params);
+            this.getSpareParts(params);
         },
         handlePageSize(pageSize) {
             let params = JSON.parse(JSON.stringify(this.$route.query));
@@ -237,11 +237,20 @@ export default {
             this.searchData.pageSize = params.pageSize;
             this.searchData.keyword = params.keyword;
             this.searchData.loginTime = params.loginTime;
-            this.getLoginData(params);
+            this.getSpareParts(params);
         },
+        toChange(item, type) {
+            this.$refs.changeCount.show(item, type);
+        },
+        addSpareParts() {
+            this.$refs.addSpareParts.show();
+        },
+        reload() {
+            this.initData();
+        }
     }
 }
 </script>
 <style lang="less">
-@import './record.less';
+@import './sparePart.less';
 </style>

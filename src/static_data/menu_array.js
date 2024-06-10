@@ -96,6 +96,15 @@ const menuArray = [
         ]
     },
     {
+        name: "备品备件",
+        url: "/Mems/spareparts",
+        powerStatus: "",
+        routerName: "spareparts",
+        openName: "spareparts",
+        iconAwesome: "fa fa-link",
+        goUrlLocation: false
+    },
+    {
         name: "通知公告",
         url: "/Mems/notify",
         powerStatus: "",

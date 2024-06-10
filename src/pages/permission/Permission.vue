@@ -66,10 +66,10 @@
                         <td>{{ item.position }}</td>
                         <td>
                             <template v-if="$route.name == 'user'">
-                                <tis-button type="text" color="blue" class="first-button" @click="changeDetail(item.uid)">查看</tis-button>
+                                <tis-button type="text" color="blue" @click="changeDetail(item.uid)">查看</tis-button>
                             </template>
                             <template v-if="$route.name == 'manager'">
-                                <tis-button type="text" color="blue" class="first-button" @click="deleteManager(item.uid)">移除</tis-button>
+                                <tis-button type="text" color="blue" @click="deleteManager(item.uid)">移除</tis-button>
                             </template>
                         </td>
                     </tr>

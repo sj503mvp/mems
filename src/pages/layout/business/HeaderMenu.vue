@@ -23,7 +23,7 @@
                         <template  v-if="infoList.length > 0">
                             <div v-for="item in infoList" :key="item.id" class="dropdown-info-box" @click="toNoticeDetail(item)">
                                 <div class="info-top">
-                                    <p class="info-title">{{ item.title }}</p>
+                                    <p class="info-title" v-title>{{ item.title }}</p>
                                     <p>{{ item.time }}</p>
                                 </div>
                                 <div class="info-bottom" v-title>{{ item.content }}</div>

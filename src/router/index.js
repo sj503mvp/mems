@@ -7,6 +7,7 @@ import permission from './permission/permission.js'
 import userInfo from './user/user.js'
 import feedback from './feedback/feedback.js'
 import loginRecord from './record/loginRecord.js'
+import spareparts from './spareparts/spareparts.js'
 
 // 登录和注册
 const loginRouter = {
@@ -39,6 +40,7 @@ export const appRouter = {
     children: [
         home,
         device,
+        spareparts,
         notify,
         userInfo,
         permission,

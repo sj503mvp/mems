@@ -1,4 +1,4 @@
-const home = {
+const loginRecord = {
     path: 'loginRecord',
     name: '登录日志',
     meta: {
@@ -8,4 +8,4 @@ const home = {
     component: () => import('@/pages/record/Record.vue'),
 }
 
-export default home;
+export default loginRecord;
