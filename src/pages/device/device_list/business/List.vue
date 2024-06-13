@@ -15,7 +15,7 @@
                 </div>
             </template>
             <div class="list-content" :style="minHeightStyle" id="listTop">
-                <div class="list-item" v-for="(item,index) in dataList" :key="item.id">
+                <div class="list-item" v-for="(item, index) in dataList" :key="item.id">
                     <div class="item-left" v-if="$route.name === 'pending_device'">
                         <tis-checkbox :value="selectIds.includes(item.id)" @on-change="(event) => checkboxChange(event, item)"></tis-checkbox>
                     </div>

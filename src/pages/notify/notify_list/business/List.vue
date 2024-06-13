@@ -77,7 +77,7 @@
             :title-style="{'font-size': '14px', 'font-weight': '400'}"
             :new-list="true">
         </empty-view>
-        <notify-modal ref="notifyModal" @reload-page="reloadPage"></notify-modal>
+        <notify-modal ref="notifyModal" @reload-page="reloadPage" @reload-unread="reloadUnread"></notify-modal>
     </div>
 </template>
 <script>
@@ -143,8 +143,6 @@ export default {
                 userId: Cookies.get('uid'),
             }
             await $api.checkNotify(data);
-            this.$emit('reload-unread');
-            this.saveTabFieldTips();
         },
         handlePage(page) {
             this.page = page;
@@ -154,8 +152,13 @@ export default {
             this.pageSize = pageSize;
             this.$emit("handle-page", 1, this.pageSize)
         },
+        // 审批通过/未通过刷新页面
         reloadPage() {
             this.$emit('reload-page')
+        },
+        reloadUnread() {
+            this.$emit('reload-unread');
+            this.saveTabFieldTips();
         },
         async allRead() {
             const allNotifyId = [];

@@ -21,7 +21,7 @@
                 <template v-if="$route.name == 'notify_approval'">
                     <tis-button type="primary" @click="handleSubmit(true)" style="margin-right: 8px;">审批通过</tis-button>
                     <tis-button type="error" @click="handleSubmit(false)"  style="margin-right: 8px;">审批不通过</tis-button>
-                    <tis-button type="default" @click="handleCancel">取消审批</tis-button>
+                    <tis-button type="default" @click="handleCancelSubmit">取消审批</tis-button>
                 </template>
                 <template v-else>
                     <tis-button type="primary" @click="handleCancel">关闭</tis-button>
@@ -56,9 +56,14 @@ export default {
             this.notify = item;
             this.notifyModal = true;
         },
+        handleCancelSubmit() {
+            this.notify = {};
+            this.notifyModal = false;
+        },
         handleCancel() {
             this.notify = {};
             this.notifyModal = false;
+            this.$emit('reload-unread');
         },
         async handleSubmit(type) {
             if(type) {
