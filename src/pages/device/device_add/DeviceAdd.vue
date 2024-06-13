@@ -29,7 +29,7 @@
                             </tis-radio-group>
                         </tis-form-item>
                         <tis-form-item label="录入人" prop="recordUserId">
-                            <tis-select v-model="baseInfo.recordUserId" filterable clearable style="width: 500px">
+                            <tis-select v-model="baseInfo.recordUserId" filterable clearable style="width: 500px" disabled>
                                 <tis-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id"></tis-option>
                             </tis-select>
                         </tis-form-item>
