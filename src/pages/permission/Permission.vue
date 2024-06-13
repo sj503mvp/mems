@@ -139,6 +139,9 @@ export default {
             searchData: {
                 page: 1,
                 pageSize: 10,
+                keyword: '',
+                factoryId: '',
+                positionId: '',
             },
             backData: {},
             dataList: [],
