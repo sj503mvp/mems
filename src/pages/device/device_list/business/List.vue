@@ -342,6 +342,7 @@ export default {
                 uidArray: uidArray,
                 itemIdArray: this.singleId.length == 1? this.singleId: this.selectIds,
             }
+            // 此处即使是多选也只会去推送给第一个人员
             let res = await $api.pushItem(params);
             if(res.code == 200) {
                 this.$TisMessage.success(res.msg);
