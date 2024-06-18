@@ -153,6 +153,7 @@ export default {
             reader.onload = (e) => {
                 this.info.img = e.target.result;
             }
+            // 读取文件
             reader.readAsDataURL(file);
         }
     }

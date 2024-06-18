@@ -6,7 +6,7 @@
                 <div class="top-word">新增管理员</div>
             </div>
             <div class="add-body-middle">
-                <tis-select v-model="userId">
+                <tis-select v-model="userId" clearable>
                     <tis-option v-for="item in userList" :key="item.uid" :value="item.uid" :label="item.name"></tis-option>
                 </tis-select>
             </div>
